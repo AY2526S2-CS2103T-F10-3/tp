@@ -294,27 +294,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*` | first-time user | view preloaded sample student data | understand how student records are structured |
 | `*` | second-time user | purge all sample data | start working with my real student records |
 | `***` | second-time user | add students into the system | maintain a record of all students I teach |
-| `***` | second-time user | assign course tags to students | organise students by module |
-| `***` | second-time user | assign tutorial group tags to students | organise students by teaching groups |
-| `***` | early user | filter students by course or tutorial group | focus on a specific class |
-| `***` | early user | search for a student by name | easily access a particular student’s details |
-| `***` | early user | delete a student | remove students who are no longer enrolled or have transferred out |
-| `***` | early user | view/list all student contacts | see the student records currently in the system |
-| `***` | early user | mark attendance for students | track student presence for each session |
-| `**` | regular user | record participation for students | monitor student engagement during tutorials |
-| `*` | regular user | add timestamped academic notes to a student’s profile | record clarifications and misunderstandings discussed |
-| `**` | regular user | view a student’s past notes | prepare for consultations effectively and track their progress |
-| `**` | regular user | view a student’s attendance and participation history | identify patterns in performance and engagement |
-| `*` | regular user | edit a student’s details | correct mistakes or update information when needed |
-| `*` | regular user | assign a progress status (Red, Yellow, Green) to a student | identify students’ progress and recognise who needs the most help |
-| `*` | regular user | update a student’s progress status | reflect improvements or decline over time |
-| `*` | regular user | filter students by progress status | focus on students who need immediate attention |
-| `*` | regular user | filter students with >= 2 absences | flag students with low attendance |
-| `*` | regular user | copy high-risk student email addresses to clipboard | easily follow up with students who may be struggling |
-| `*` | user | receive confirmation before purging or deleting records | avoid accidentally losing important data |
-| `*` | user | add a consultation slot | keep track of the consultations I have |
-| `*` | end-of-semester user | record the final grade for each student | keep a record of students’ final results |
-| `*` | end-of-semester user | archive completed courses | keep past semester data accessible without cluttering the active workspace |
+
 *{More to be added}*
 
 ### Use cases
