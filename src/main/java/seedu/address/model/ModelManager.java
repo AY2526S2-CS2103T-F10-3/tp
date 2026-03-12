@@ -121,7 +121,6 @@ public class ModelManager implements Model {
      * Returns an unmodifiable sorted view of the list of {@code Person} backed by the internal list of
      * {@code versionedAddressBook}
      */
-    @Override
     public void updateSortedPersonList(Comparator<Person> comparator, Predicate<Person> predicate) {
         requireNonNull(comparator);
         filteredPersons.setPredicate(predicate);
