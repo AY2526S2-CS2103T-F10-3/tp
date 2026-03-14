@@ -1,8 +1,8 @@
 package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +21,9 @@ public class StudentIdTest {
 
     @Test
     public void isValidStudentId() {
+        // note: current Add implementation stores studentId as-is, without auto-capitalisation
+        // trail spaces also not removed yet, and accepts exactly 9 characters only (NUS specific)
+
         // null student ID
         assertFalse(StudentId.isValidStudentId(null));
 
@@ -52,7 +55,7 @@ public class StudentIdTest {
         // null -> returns false
         assertFalse(studentId.equals(null));
 
-        // different types -> returns false
+        // different types -> returns false (studentId should not be float)
         assertFalse(studentId.equals(5.0f));
 
         // different values -> returns false

@@ -2,8 +2,8 @@ package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ public class PersonTest {
                 new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, null));
     }
 
-    /** 
+    /**
      * Checks if 2 people are the same person if they have the same studentId.
      */
     @Test
