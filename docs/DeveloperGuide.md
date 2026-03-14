@@ -299,8 +299,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-**Use case: Delete a person**
-**Actor:** User
+**Use case: Delete a person**<br>
+**Actor:** User<br>
 **MSS**
 
 1.  User requests to list persons
@@ -319,8 +319,31 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. AddressBook shows an error message.
     * Use case ends.
 
-**Use Case: UC09 – View Student History**
-**Actor:** User
+**Use Case: UC05 – Mark Attendance**<br>
+**Actor:** User<br>
+**MSS:**
+
+1. User selects a tutorial session.
+2. TeachAssist displays the list of students in the tutorial group.
+3. User marks each student as present or absent.
+4. TeachAssist records the attendance for the session.
+5. TeachAssist confirms the attendance record.
+6. Use case ends.
+
+**Use Case: UC06 – Add Academic Notes**<br>
+**Actor:** User<br>
+**MSS:**
+
+1. User selects a student.
+2. User enters the add note command.
+3. TeachAssist requests the note content.
+4. User enters the note.
+5. TeachAssist attaches the note with a timestamp to the student profile.
+6. TeachAssist confirms the addition.
+7. Use case ends.
+ 
+**Use Case: UC09 – View Student History**<br>
+**Actor:** User<br>
 **MSS:**
 
 1. User selects a student.
@@ -333,16 +356,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Extensions**
 
 * 5a. User deletes a particular student history
-    * 5a1 User selects a student to delete.
-    * 5a2 User enters the delete command.
-    * 5a3 TeachAssist requests confirmation.
-    * 5a4 User confirms the deletion.
-    * 5a5 TeachAssist removes the student record.
-    * 5a6 TeachAssist displays confirmation.
-    * 5a7 Use case ends.
+    * 5a1. User selects a student to delete.
+    * 5a2. User enters the delete command.
+    * 5a3. TeachAssist requests confirmation.
+    * 5a4. User confirms the deletion.
+    * 5a5. TeachAssist removes the student record.
+    * 5a6. TeachAssist displays confirmation.
+    * Use case ends.
 
-**Use Case: UC10 – View Help Command**
-**Actor:** User
+**Use Case: UC10 – View Help Command** <br>
+**Actor:** User <br>
 **MSS:**
 
 1. User enters the help command.
@@ -351,11 +374,49 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. User reviews the available commands.
 5. Use case ends
 
+**Use Case: UC11 – Delete Student** <br>
+**Actor:** User <br>
+**MSS:**
 
+1. User enters the command to delete a student.
+2. TeachAssist identifies the student record to be deleted.
+3. TeachAssist removes the student record from the system.
+4. TeachAssist confirms that the student has been deleted.
+5. Use case ends.
+
+**Extensions**
+
+* 1a. The command format is invalid
+    * 1a1. TeachAssist displays an error message and the correct command format.
+    * Use case ends.
+* 2a. The specified student does not exist.
+    * 2a1. TeachAssist informs the user that the student record cannot be found.
+    * Use case ends.
+ 
+**Use Case: UC12 – View Student List** <br>
+**Actor:** User <br>
+**MSS:**
+
+1.User enters the command to view all students.
+2. TeachAssist retrieves all student records.
+3. TeachAssist displays the list of students.
+4. Use case ends.
+
+**Use Case: UC13 – Clear Student Filters** <br>
+**Actor:** User <br>
+**MSS:**
+
+1.User enters the command to clear the current filter.
+2. TeachAssist removes the applied filtering criteria.
+3. TeachAssist displays the full student list.
+4. Use case ends.
 
 ### Non-Functional Requirements
 
-3. Data Persistence
+2. Portability
+    * The system should run on Windows, macOS, and Linux environments supporting Java.
+      
+4. Data Persistence
     * Student records must be saved to persistent storage.
     * Data should remain available after the system is restarted
 
