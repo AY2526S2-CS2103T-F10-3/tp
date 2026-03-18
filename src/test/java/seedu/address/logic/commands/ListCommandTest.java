@@ -134,12 +134,10 @@ public class ListCommandTest {
         public ObservableList<Person> getFilteredPersonList() {
             return null;
         }
-        
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
 
         }
-        
         @Override
         public void updateSortedPersonList(Comparator<Person> comparator,
                                            Predicate<Person> predicate) {
