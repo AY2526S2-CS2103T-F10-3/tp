@@ -23,6 +23,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -101,8 +102,10 @@ public class EditCommand extends Command {
         CourseId updatedCourseId = editPersonDescriptor.getCourseId().orElse(personToEdit.getCourseId());
         TGroup updatedTGroup = editPersonDescriptor.getTGroup().orElse(personToEdit.getTGroup());
         Tele updatedTele = editPersonDescriptor.getTele().orElse(personToEdit.getTele());
+        Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
 
-        return new Person(updatedName, updatedCourseId, updatedEmail, updatedStudentId, updatedTGroup, updatedTele);
+        return new Person(updatedName, updatedCourseId, updatedEmail,
+                updatedStudentId, updatedTGroup, updatedRemark, updatedTele);
     }
 
     @Override

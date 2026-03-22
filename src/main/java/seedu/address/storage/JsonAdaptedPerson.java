@@ -8,6 +8,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -105,7 +106,7 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(TGroup.MESSAGE_CONSTRAINTS);
         }
         final TGroup modelTGroup = new TGroup(tGroup);
-
+        final Remark modelRemark = new Remark(""); //TODO: Implement parsing and marshalling in the storage commit.
         Tele modelTele = null;
         if (tele != null) {
             if (!Tele.isValidTele(tele)) {
@@ -114,7 +115,7 @@ class JsonAdaptedPerson {
             modelTele = new Tele(tele);
         }
         return new Person(modelName, modelCourseId, modelEmail,
-                modelStudentId, modelTGroup, modelTele);
+                modelStudentId, modelTGroup, modelRemark, modelTele);
     }
 
 }

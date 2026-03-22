@@ -18,11 +18,13 @@ public class Person {
     private final StudentId studentId;
     private final TGroup tGroup;
     private final Tele tele;
+    private final Remark remark;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup, Tele tele) {
+    public Person(Name name, CourseId courseId, Email email, StudentId studentId,
+                  TGroup tGroup, Remark remark, Tele tele) {
         requireAllNonNull(name, courseId, email, studentId, tGroup);
         this.name = name;
         this.courseId = courseId;
@@ -30,6 +32,7 @@ public class Person {
         this.studentId = studentId;
         this.tGroup = tGroup;
         this.tele = tele;
+        this.remark = remark;
     }
 
     public Name getName() {
@@ -54,6 +57,10 @@ public class Person {
 
     public Tele getTele() {
         return tele;
+    }
+
+    public Remark getRemark() {
+        return remark;
     }
 
     /**

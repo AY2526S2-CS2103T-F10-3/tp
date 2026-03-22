@@ -4,6 +4,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -20,12 +21,14 @@ public class PersonBuilder {
     public static final String DEFAULT_STUDENT_ID = "A1234567X";
     public static final String DEFAULT_TGROUP = "T01";
     public static final String DEFAULT_TELE = "91234567";
+    public static final String DEFAULT_REMARK = "";
 
     private Name name;
     private Email email;
     private CourseId courseId;
     private StudentId studentId;
     private TGroup tGroup;
+    private Remark remark;
     private Tele tele;
 
     /**
@@ -37,6 +40,7 @@ public class PersonBuilder {
         courseId = new CourseId(DEFAULT_COURSE_ID);
         studentId = new StudentId(DEFAULT_STUDENT_ID);
         tGroup = new TGroup(DEFAULT_TGROUP);
+        remark = new Remark(DEFAULT_REMARK);
         tele = new Tele(DEFAULT_TELE);
     }
 
@@ -49,6 +53,7 @@ public class PersonBuilder {
         courseId = personToCopy.getCourseId();
         studentId = personToCopy.getStudentId();
         tGroup = personToCopy.getTGroup();
+        remark = personToCopy.getRemark();
         tele = personToCopy.getTele();
     }
 
@@ -67,7 +72,13 @@ public class PersonBuilder {
         this.email = new Email(email);
         return this;
     }
-
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
     /**
      * Sets the {@code CourseId} of the {@code Person} that we are building.
      */
@@ -101,6 +112,6 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, courseId, email, studentId, tGroup, tele);
+        return new Person(name, courseId, email, studentId, tGroup, remark, tele);
     }
 }
