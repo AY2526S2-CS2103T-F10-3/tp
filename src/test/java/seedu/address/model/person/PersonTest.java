@@ -16,25 +16,28 @@ public class PersonTest {
     private final TGroup validTGroup = new TGroup("T01");
     private final Tele validTele = new Tele("alextan");
 
+    private final WeekList validWeekList = new WeekList();
+
     private final Person person = new Person(
-            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele);
+            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList);
 
     /**
      * Tests if any input is null.
-     * Assuming all fields compulsory in Person constructor.
      */
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele));
+                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele));
+                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele, validWeekList));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele));
+                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele, validWeekList));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele));
+                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, validWeekList));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele));
+                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, validWeekList));
+        assertThrows(NullPointerException.class, () ->
+                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null));
     }
 
     /**
@@ -43,12 +46,13 @@ public class PersonTest {
     @Test
     public void isSamePerson() {
         Person person = new Person(
-            new Name("Alex Tan"),
-            new CourseId("CS2030S"),
-            new Email("alextan@u.nus.edu"),
-            new StudentId("A1234567X"),
-            new TGroup("T01"),
-            new Tele("alextan"));
+                new Name("Alex Tan"),
+                new CourseId("CS2030S"),
+                new Email("alextan@u.nus.edu"),
+                new StudentId("A1234567X"),
+                new TGroup("T01"),
+                new Tele("alextan"),
+                new WeekList());
 
         // same object -> returns true
         assertTrue(person.isSamePerson(person));
@@ -63,17 +67,19 @@ public class PersonTest {
                 new Email("boblim@u.nus.edu"),
                 new StudentId("A1234567X"),
                 new TGroup("T02"),
-                new Tele("boblim"));
+                new Tele("boblim"),
+                new WeekList());
         assertTrue(person.isSamePerson(editedPerson));
 
-        // different studentId, all other attributes same -> returns false
+        // different studentId -> returns false
         editedPerson = new Person(
                 new Name("Alex Tan"),
                 new CourseId("CS2030S"),
                 new Email("alextan@u.nus.edu"),
                 new StudentId("B1234567X"),
                 new TGroup("T01"),
-                new Tele("alextan"));
+                new Tele("alextan"),
+                new WeekList());
         assertFalse(person.isSamePerson(editedPerson));
     }
 
@@ -86,7 +92,8 @@ public class PersonTest {
                 new Email("alextan@u.nus.edu"),
                 new StudentId("A1234567X"),
                 new TGroup("T01"),
-                new Tele("alextan"));
+                new Tele("alextan"),
+                new WeekList());
         assertTrue(person.equals(samePerson));
 
         // same object -> returns true
@@ -105,7 +112,8 @@ public class PersonTest {
                 new Email("other@u.nus.edu"),
                 validStudentId,
                 validTGroup,
-                validTele);
+                validTele,
+                new WeekList());
         assertFalse(person.equals(editedPerson));
 
         // different studentId -> returns false
@@ -115,7 +123,8 @@ public class PersonTest {
                 validEmail,
                 new StudentId("B1234567X"),
                 validTGroup,
-                validTele);
+                validTele,
+                new WeekList());
         assertFalse(person.equals(editedPerson));
 
         // different tele -> returns false
@@ -125,7 +134,8 @@ public class PersonTest {
                 validEmail,
                 validStudentId,
                 validTGroup,
-                new Tele("otheruser"));
+                new Tele("otheruser"),
+                new WeekList());
         assertFalse(person.equals(editedPerson));
 
         // different name, same email/studentId/tele -> returns true
@@ -135,27 +145,30 @@ public class PersonTest {
                 validEmail,
                 validStudentId,
                 validTGroup,
-                validTele);
+                validTele,
+                new WeekList());
         assertTrue(person.equals(editedPerson));
 
-        // different courseId, same email/studentId/tele -> returns true
+        // different courseId -> returns true
         editedPerson = new Person(
                 validName,
                 new CourseId("CS2040S"),
                 validEmail,
                 validStudentId,
                 validTGroup,
-                validTele);
+                validTele,
+                new WeekList());
         assertTrue(person.equals(editedPerson));
 
-        // different tGroup, same email/studentId/tele -> returns true
+        // different tGroup -> returns true
         editedPerson = new Person(
                 validName,
                 validCourseId,
                 validEmail,
                 validStudentId,
                 new TGroup("T02"),
-                validTele);
+                validTele,
+                new WeekList());
         assertTrue(person.equals(editedPerson));
     }
 
@@ -167,7 +180,9 @@ public class PersonTest {
                 + ", email=" + person.getEmail()
                 + ", studentId=" + person.getStudentId()
                 + ", tGroup=" + person.getTGroup()
-                + ", tele=" + (person.getTele() == null ? "-" : person.getTele()) + "}";
+                + ", tele=" + (person.getTele() == null ? "-" : person.getTele())
+                + ", weeklyAttendanceList=" + person.getWeeklyAttendanceList()
+                + "}";
         assertEquals(expected, person.toString());
     }
 }

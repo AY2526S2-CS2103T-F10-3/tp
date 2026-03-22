@@ -19,6 +19,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
+import seedu.address.model.person.WeekList;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -54,7 +55,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             tele = ParserUtil.parseTele(argMultimap.getValue(PREFIX_TELE).get());
         }
 
-        Person person = new Person(name, courseId, email, studentId, tGroup, tele);
+        Person person = new Person(name, courseId, email, studentId, tGroup, tele, new WeekList());
 
         return new AddCommand(person);
     }

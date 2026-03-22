@@ -11,6 +11,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
+import seedu.address.model.person.WeeklyAttendanceList;
 
 
 /**
@@ -118,5 +119,14 @@ public class ParserUtil {
             throw new ParseException(Tele.MESSAGE_CONSTRAINTS);
         }
         return new Tele(trimmedTele);
+    }
+
+    /**
+     * TODO: parse weekly attendance list
+     * @param weeklyAttendanceList
+     * @return
+     */
+    public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
+        throw new ParseException("Not implemented yet");
     }
 }

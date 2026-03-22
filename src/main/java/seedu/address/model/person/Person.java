@@ -19,17 +19,21 @@ public class Person {
     private final TGroup tGroup;
     private final Tele tele;
 
+    private final WeeklyAttendanceList weeklyAttendanceList;
+
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup, Tele tele) {
-        requireAllNonNull(name, courseId, email, studentId, tGroup);
+    public Person(Name name, CourseId courseId, Email email, StudentId studentId,
+                  TGroup tGroup, Tele tele, WeeklyAttendanceList weeklyAttendanceList) {
+        requireAllNonNull(name, courseId, email, studentId, tGroup, weeklyAttendanceList);
         this.name = name;
         this.courseId = courseId;
         this.email = email;
         this.studentId = studentId;
         this.tGroup = tGroup;
         this.tele = tele;
+        this.weeklyAttendanceList = weeklyAttendanceList;
     }
 
     public Name getName() {
@@ -54,6 +58,10 @@ public class Person {
 
     public Tele getTele() {
         return tele;
+    }
+
+    public WeeklyAttendanceList getWeeklyAttendanceList() {
+        return weeklyAttendanceList;
     }
 
     /**
@@ -105,6 +113,7 @@ public class Person {
                 .add("studentId", studentId)
                 .add("tGroup", tGroup)
                 .add("tele", tele)
+                .add("weeklyAttendanceList", weeklyAttendanceList)
                 .toString();
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -11,6 +12,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
+import seedu.address.model.person.WeeklyAttendanceList;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -25,6 +27,7 @@ class JsonAdaptedPerson {
     private final String studentId;
     private final String tGroup;
     private final String tele;
+    private final String weeklyAttendanceList;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -35,13 +38,15 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email,
             @JsonProperty("studentId") String studentId,
             @JsonProperty("tGroup") String tGroup,
-            @JsonProperty("tele") String tele) {
+            @JsonProperty("tele") String tele,
+            @JsonProperty("weeklyAttendanceList") String weeklyAttendanceList) {
         this.name = name;
         this.courseId = courseId;
         this.email = email;
         this.studentId = studentId;
         this.tGroup = tGroup;
         this.tele = tele;
+        this.weeklyAttendanceList = weeklyAttendanceList;
     }
 
     /**
@@ -54,6 +59,7 @@ class JsonAdaptedPerson {
         studentId = source.getStudentId().value;
         tGroup = source.getTGroup().value;
         tele = source.getTele() == null ? null : source.getTele().value;
+        weeklyAttendanceList = source.getWeeklyAttendanceList().toString();
     }
 
     /**
@@ -113,8 +119,20 @@ class JsonAdaptedPerson {
             }
             modelTele = new Tele(tele);
         }
+
+        if (weeklyAttendanceList == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    WeeklyAttendanceList.class.getSimpleName()));
+        }
+        WeeklyAttendanceList modelWeeklyAttendanceList;
+        try {
+            modelWeeklyAttendanceList = ParserUtil.parseWeeklyAttendanceList(weeklyAttendanceList);
+        } catch (IllegalValueException e) {
+            throw new IllegalValueException("Invalid weekly attendance data: " + e.getMessage());
+        }
+
         return new Person(modelName, modelCourseId, modelEmail,
-                modelStudentId, modelTGroup, modelTele);
+                modelStudentId, modelTGroup, modelTele, modelWeeklyAttendanceList);
     }
 
 }
