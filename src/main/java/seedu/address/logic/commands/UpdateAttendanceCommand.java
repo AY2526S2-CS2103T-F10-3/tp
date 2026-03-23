@@ -64,6 +64,9 @@ public class UpdateAttendanceCommand extends Command {
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException("Invalid person index");
         }
+        if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
+            throw new CommandException("Invalid Week, there are only 13 weeks");
+        }
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
         // Copy current attendance list

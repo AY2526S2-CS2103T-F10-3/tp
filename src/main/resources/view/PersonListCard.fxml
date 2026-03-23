@@ -28,11 +28,14 @@
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
       </HBox>
       <FlowPane fx:id="tags" />
-      <Label fx:id="studentId" styleClass="cell_small_label" text="\$studentId" />
-      <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
-      <Label fx:id="courseId" styleClass="cell_small_label" text="\$courseId" />
-      <Label fx:id="tGroup" styleClass="cell_small_label" text="\$tGroup" />
-      <Label fx:id="tele" styleClass="cell_small_label" text="\$tele" />
+      <Label fx:id="studentId" styleClass="cell_small_label" text="\$studentId" wrapText="true" maxWidth="200" />
+      <Label fx:id="email" styleClass="cell_small_label" text="\$email" wrapText="true" maxWidth="200" />
+      <Label fx:id="courseId" styleClass="cell_small_label" text="\$courseId" wrapText="true" maxWidth="200" />
+      <Label fx:id="tGroup" styleClass="cell_small_label" text="\$tGroup" wrapText="true" maxWidth="200" />
+      <Label fx:id="tele" styleClass="cell_small_label" text="\$tele" wrapText="true" maxWidth="200" />
     </VBox>
+    <FlowPane fx:id="weekAttendance" GridPane.columnIndex="1"
+              hgap="5" vgap="5" alignment="CENTER"
+              prefWrapLength="220" HBox.hgrow="ALWAYS"/>
   </GridPane>
 </HBox>

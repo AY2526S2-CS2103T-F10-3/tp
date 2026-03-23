@@ -350,3 +350,27 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+/* Week Attendance Tracker Colors */
+.week-green {
+    -fx-background-color: #4CAF50; /* Attended */
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+}
+
+.week-red {
+    -fx-background-color: #F44336; /* Absent */
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+}
+
+.week-grey {
+    -fx-background-color: #BDBDBD; /* Not marked */
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+}
