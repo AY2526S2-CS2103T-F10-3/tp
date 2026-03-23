@@ -11,7 +11,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
-import seedu.address.model.person.WeeklyAttendanceList;
+import seedu.address.model.person.Week;
 
 
 /**
@@ -122,11 +122,19 @@ public class ParserUtil {
     }
 
     /**
-     * TODO: parse weekly attendance list
-     * @param weeklyAttendanceList
-     * @return
+     * Parses a {@code String} into an {@code Week.Status}.
+     *
+     * @throws ParseException if the input is invalid
      */
-    public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
-        throw new ParseException("Not implemented yet");
+    public static Week.Status parseAttendanceStatus(String status)
+            throws ParseException {
+        requireNonNull(status);
+        String trimmed = status.trim().toUpperCase();
+
+        try {
+            return Week.Status.fromString(trimmed);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException("Status must be Y, A, or N");
+        }
     }
 }

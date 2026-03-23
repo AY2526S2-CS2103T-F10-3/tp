@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -12,6 +11,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
+import seedu.address.model.person.WeekList;
 import seedu.address.model.person.WeeklyAttendanceList;
 
 /**
@@ -126,7 +126,7 @@ class JsonAdaptedPerson {
         }
         WeeklyAttendanceList modelWeeklyAttendanceList;
         try {
-            modelWeeklyAttendanceList = ParserUtil.parseWeeklyAttendanceList(weeklyAttendanceList);
+            modelWeeklyAttendanceList = WeekList.buildWeekListFromString(weeklyAttendanceList);
         } catch (IllegalValueException e) {
             throw new IllegalValueException("Invalid weekly attendance data: " + e.getMessage());
         }

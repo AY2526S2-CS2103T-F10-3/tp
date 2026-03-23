@@ -44,6 +44,10 @@ public class Person {
         return courseId;
     }
 
+    public String getNameAndID() {
+        return name.toString() + " (" + studentId.toString() + ")";
+    }
+
     public Email getEmail() {
         return email;
     }
