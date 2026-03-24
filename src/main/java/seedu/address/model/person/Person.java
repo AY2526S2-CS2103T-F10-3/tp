@@ -19,19 +19,22 @@ public class Person {
     private final StudentId studentId;
     private final TGroup tGroup;
     private final Tele tele;
+    private final Progress progress;
     private String remarks;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup, Tele tele) {
-        requireAllNonNull(name, courseId, email, studentId, tGroup);
+    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup,
+        Tele tele, Progress progress) {
+        requireAllNonNull(name, courseId, email, studentId, tGroup, progress);
         this.name = name;
         this.courseId = courseId;
         this.email = email;
         this.studentId = studentId;
         this.tGroup = tGroup;
         this.tele = tele;
+        this.progress = progress;
         this.remarks = "";
     }
 
@@ -57,6 +60,10 @@ public class Person {
 
     public Tele getTele() {
         return tele;
+    }
+
+    public Progress getProgress() {
+        return progress;
     }
 
     public String getRemarks() {
@@ -108,13 +115,14 @@ public class Person {
         Person otherPerson = (Person) other;
         return studentId.equals(otherPerson.studentId)
                 && Objects.equals(otherPerson.getTele(), getTele())
-                && otherPerson.getEmail().equals(getEmail());
+                && otherPerson.getEmail().equals(getEmail())
+                && otherPerson.getProgress().equals(getProgress());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, courseId, email, studentId, tGroup, tele);
+        return Objects.hash(name, courseId, email, studentId, tGroup, tele, progress);
     }
 
     @Override
@@ -126,6 +134,7 @@ public class Person {
                 .add("studentId", studentId)
                 .add("tGroup", tGroup)
                 .add("tele", tele)
+                .add("progress", progress)
                 .toString();
     }
 
