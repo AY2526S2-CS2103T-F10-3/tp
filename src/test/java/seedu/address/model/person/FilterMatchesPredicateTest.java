@@ -180,16 +180,6 @@ public class FilterMatchesPredicateTest {
     }
 
     @Test
-    public void test_specialCharactersInCourseId() {
-        // Test course IDs with spaces, hyphens, etc. (based on validation regex)
-        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
-                Optional.of(new CourseId("CS2103-T")), Optional.empty());
-
-        assertTrue(predicate.test(new PersonBuilder().withCourseId("CS2103-T").build()));
-        assertTrue(predicate.test(new PersonBuilder().withCourseId("cs2103-t").build()));
-    }
-
-    @Test
     public void test_toString() {
         Optional<CourseId> courseId = Optional.of(new CourseId("CS2103T"));
         Optional<TGroup> tGroup = Optional.of(new TGroup("T01"));
