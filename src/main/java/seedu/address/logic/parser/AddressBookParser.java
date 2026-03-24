@@ -18,8 +18,8 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.UpdateAttendanceCommand;
 import seedu.address.logic.commands.ProgressCommand;
+import seedu.address.logic.commands.UpdateAttendanceCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**

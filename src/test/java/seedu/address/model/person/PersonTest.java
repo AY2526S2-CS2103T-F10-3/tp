@@ -19,7 +19,8 @@ public class PersonTest {
     private final WeekList validWeekList = new WeekList();
 
     private final Person person = new Person(
-            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET);
+            validName, validCourseId, validEmail, validStudentId,
+            validTGroup, validTele, validWeekList, Progress.NOT_SET);
 
     /**
      * Tests if any input is null.
@@ -27,17 +28,23 @@ public class PersonTest {
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
+                new Person(null, validCourseId, validEmail,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
+                new Person(validName, null, validEmail,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
+                new Person(validName, validCourseId, null,
+                        validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, validWeekList, Progress.NOT_SET));
+                new Person(validName, validCourseId, validEmail,
+                        null, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, validWeekList, Progress.NOT_SET));
+                new Person(validName, validCourseId, validEmail,
+                        validStudentId, null, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null, null));
+                new Person(validName, validCourseId, validEmail,
+                        validStudentId, validTGroup, validTele, null, null));
     }
 
     /**

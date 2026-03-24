@@ -67,14 +67,17 @@ public class UpdateAttendanceCommandTest {
         }
 
         // Unused methods throw UnsupportedOperationException
-        @Override public void addPerson(Person person) { throw new UnsupportedOperationException(); }
-        @Override public void deletePerson(Person person) { throw new UnsupportedOperationException(); }
+        @Override public void addPerson(Person person) {
+            throw new UnsupportedOperationException(); }
+        @Override public void deletePerson(Person person) {
+            throw new UnsupportedOperationException(); }
         @Override public void updateFilteredPersonList(java.util.function.Predicate<Person> predicate) {
             throw new UnsupportedOperationException(); }
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
         }
-        @Override public seedu.address.model.UserPrefs getUserPrefs() { throw new UnsupportedOperationException(); }
+        @Override public seedu.address.model.UserPrefs getUserPrefs() {
+            throw new UnsupportedOperationException(); }
 
         @Override
         public GuiSettings getGuiSettings() {
