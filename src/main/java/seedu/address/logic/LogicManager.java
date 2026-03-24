@@ -18,7 +18,6 @@ import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.storage.Storage;
 
@@ -99,7 +98,7 @@ public class LogicManager implements Logic {
             return false;
         }
 
-        String arguments = trimmedCommand.substring(DeleteCommand.COMMAND_WORD.length()).trim();
+        String arguments = trimmedCommand.substring(DeleteCommand.COMMAND_WORD.length());
 
         try {
             DeleteCommand deleteCommand = new DeleteCommandParser().parse(arguments);
@@ -110,9 +109,10 @@ public class LogicManager implements Logic {
                 return zeroBasedIndex >= 0 && zeroBasedIndex < filteredPersonList.size();
             }
 
-            Name targetName = deleteCommand.getTargetName();
-            return filteredPersonList.stream()
-                    .anyMatch(person -> person.getName().equals(targetName));
+            return filteredPersonList.stream().anyMatch(person ->
+                    person.getStudentId().equals(deleteCommand.getTargetStudentId())
+                    && person.getCourseId().equals(deleteCommand.getTargetCourseId())
+                    && person.getTGroup().equals(deleteCommand.getTargetTGroup()));
 
         } catch (ParseException e) {
             return false;

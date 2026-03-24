@@ -6,9 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -36,12 +34,12 @@ public class CommandBox extends UiPart<Region> {
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
     }
 
+    /**
+     * Returns true if the given command text is a delete command that should show
+     * the confirmation popup.
+     */
     @FunctionalInterface
     public interface DeleteConfirmationChecker {
-        /**
-         * Returns true if the given command text is a delete command that should show
-         * the confirmation popup.
-         */
         boolean canShowDeleteConfirmation(String commandText);
     }
 
@@ -57,7 +55,9 @@ public class CommandBox extends UiPart<Region> {
         }
 
         try {
-            if (deleteConfirmationChecker.canShowDeleteConfirmation(commandText)) {
+            boolean shouldShowPopup = deleteConfirmationChecker.canShowDeleteConfirmation(commandText);
+
+            if (shouldShowPopup) {
                 boolean confirmed = showDeleteConfirmationPopup();
 
                 if (!confirmed) {
