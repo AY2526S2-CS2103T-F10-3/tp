@@ -376,4 +376,24 @@
     -fx-background-radius: 3;
     -fx-min-width: 16px;
     -fx-min-height: 16px;
+
+.label.progress-on-track {
+    -fx-background-color: #e7f6ec;
+    -fx-text-fill: #166534;
+    -fx-background-radius: 10;
+    -fx-padding: 3 7 3 7;
+}
+
+.label.progress-needs-attention {
+    -fx-background-color: #fff7e6;
+    -fx-text-fill: #b45309;
+    -fx-background-radius: 10;
+    -fx-padding: 3 7 3 7;
+}
+
+.label.progress-at-risk {
+    -fx-background-color: #fdecec;
+    -fx-text-fill: #b91c1c;
+    -fx-background-radius: 10;
+    -fx-padding: 3 7 3 7;
 }

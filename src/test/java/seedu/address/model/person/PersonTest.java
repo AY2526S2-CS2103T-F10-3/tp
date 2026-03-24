@@ -19,7 +19,7 @@ public class PersonTest {
     private final WeekList validWeekList = new WeekList();
 
     private final Person person = new Person(
-            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList);
+            validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET);
 
     /**
      * Tests if any input is null.
@@ -27,17 +27,17 @@ public class PersonTest {
     @Test
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList));
+                new Person(null, validCourseId, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele, validWeekList));
+                new Person(validName, null, validEmail, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele, validWeekList));
+                new Person(validName, validCourseId, null, validStudentId, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, validWeekList));
+                new Person(validName, validCourseId, validEmail, null, validTGroup, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, validWeekList));
+                new Person(validName, validCourseId, validEmail, validStudentId, null, validTele, validWeekList, Progress.NOT_SET));
         assertThrows(NullPointerException.class, () ->
-                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null));
+                new Person(validName, validCourseId, validEmail, validStudentId, validTGroup, validTele, null, null));
     }
 
     /**
@@ -46,13 +46,14 @@ public class PersonTest {
     @Test
     public void isSamePerson() {
         Person person = new Person(
-                new Name("Alex Tan"),
-                new CourseId("CS2030S"),
-                new Email("alextan@u.nus.edu"),
-                new StudentId("A1234567X"),
-                new TGroup("T01"),
-                new Tele("alextan"),
-                new WeekList());
+            new Name("Alex Tan"),
+            new CourseId("CS2030S"),
+            new Email("alextan@u.nus.edu"),
+            new StudentId("A1234567X"),
+            new TGroup("T01"),
+            new Tele("alextan"),
+            new WeekList(),
+            Progress.NOT_SET);
 
         // same object -> returns true
         assertTrue(person.isSamePerson(person));
@@ -68,7 +69,8 @@ public class PersonTest {
                 new StudentId("A1234567X"),
                 new TGroup("T02"),
                 new Tele("boblim"),
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertTrue(person.isSamePerson(editedPerson));
 
         // different studentId -> returns false
@@ -79,7 +81,8 @@ public class PersonTest {
                 new StudentId("B1234567X"),
                 new TGroup("T01"),
                 new Tele("alextan"),
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertFalse(person.isSamePerson(editedPerson));
     }
 
@@ -93,7 +96,8 @@ public class PersonTest {
                 new StudentId("A1234567X"),
                 new TGroup("T01"),
                 new Tele("alextan"),
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertTrue(person.equals(samePerson));
 
         // same object -> returns true
@@ -113,7 +117,8 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertFalse(person.equals(editedPerson));
 
         // different studentId -> returns false
@@ -124,7 +129,8 @@ public class PersonTest {
                 new StudentId("B1234567X"),
                 validTGroup,
                 validTele,
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertFalse(person.equals(editedPerson));
 
         // different tele -> returns false
@@ -135,7 +141,8 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 new Tele("otheruser"),
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertFalse(person.equals(editedPerson));
 
         // different name, same email/studentId/tele -> returns true
@@ -146,7 +153,8 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertTrue(person.equals(editedPerson));
 
         // different courseId -> returns true
@@ -157,7 +165,8 @@ public class PersonTest {
                 validStudentId,
                 validTGroup,
                 validTele,
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertTrue(person.equals(editedPerson));
 
         // different tGroup -> returns true
@@ -168,7 +177,8 @@ public class PersonTest {
                 validStudentId,
                 new TGroup("T02"),
                 validTele,
-                new WeekList());
+                new WeekList(),
+                Progress.NOT_SET);
         assertTrue(person.equals(editedPerson));
     }
 
@@ -182,7 +192,7 @@ public class PersonTest {
                 + ", tGroup=" + person.getTGroup()
                 + ", tele=" + (person.getTele() == null ? "-" : person.getTele())
                 + ", weeklyAttendanceList=" + person.getWeeklyAttendanceList()
-                + "}";
+                + ", progress=" + person.getProgress() + "}";
         assertEquals(expected, person.toString());
     }
 }

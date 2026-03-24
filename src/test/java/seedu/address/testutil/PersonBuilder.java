@@ -4,6 +4,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -29,6 +30,8 @@ public class PersonBuilder {
     private TGroup tGroup;
     private Tele tele;
     private WeeklyAttendanceList weeklyAttendanceList;
+    private Progress progress;
+
     /**
      * Creates a {@code PersonBuilder} with the default details.
      */
@@ -40,6 +43,7 @@ public class PersonBuilder {
         tGroup = new TGroup(DEFAULT_TGROUP);
         tele = new Tele(DEFAULT_TELE);
         weeklyAttendanceList = new WeekList();
+        progress = Progress.NOT_SET;
     }
 
     /**
@@ -53,6 +57,7 @@ public class PersonBuilder {
         tGroup = personToCopy.getTGroup();
         tele = personToCopy.getTele();
         weeklyAttendanceList = personToCopy.getWeeklyAttendanceList();
+        progress = personToCopy.getProgress();
     }
 
     /**
@@ -110,7 +115,15 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Progress} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withProgress(Progress progress) {
+        this.progress = progress;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, courseId, email, studentId, tGroup, tele, weeklyAttendanceList);
+        return new Person(name, courseId, email, studentId, tGroup, tele, weeklyAttendanceList, progress);
     }
 }

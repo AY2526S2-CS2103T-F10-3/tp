@@ -14,4 +14,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_TELE = new Prefix("tel/");
     public static final Prefix PREFIX_WEEK = new Prefix("week/");
     public static final Prefix PREFIX_STATUS = new Prefix("sta/");
+    public static final Prefix PREFIX_PROGRESS = new Prefix("p/");
+
 }

@@ -8,6 +8,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -28,6 +29,7 @@ class JsonAdaptedPerson {
     private final String tGroup;
     private final String tele;
     private final String weeklyAttendanceList;
+    private final String progress;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -40,6 +42,7 @@ class JsonAdaptedPerson {
             @JsonProperty("tGroup") String tGroup,
             @JsonProperty("tele") String tele,
             @JsonProperty("weeklyAttendanceList") String weeklyAttendanceList) {
+            @JsonProperty("progress") String progress) {
         this.name = name;
         this.courseId = courseId;
         this.email = email;
@@ -47,6 +50,7 @@ class JsonAdaptedPerson {
         this.tGroup = tGroup;
         this.tele = tele;
         this.weeklyAttendanceList = weeklyAttendanceList;
+        this.progress = progress;
     }
 
     /**
@@ -60,6 +64,7 @@ class JsonAdaptedPerson {
         tGroup = source.getTGroup().value;
         tele = source.getTele() == null ? null : source.getTele().value;
         weeklyAttendanceList = source.getWeeklyAttendanceList().toString();
+        progress = source.getProgress().name();
     }
 
     /**
@@ -131,8 +136,17 @@ class JsonAdaptedPerson {
             throw new IllegalValueException("Invalid weekly attendance data: " + e.getMessage());
         }
 
+        Progress modelProgress = Progress.NOT_SET;
+        if (progress != null) {
+            try {
+                modelProgress = Progress.valueOf(progress);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalValueException("Invalid progress value: " + progress);
+            }
+        }
+
         return new Person(modelName, modelCourseId, modelEmail,
-                modelStudentId, modelTGroup, modelTele, modelWeeklyAttendanceList);
+                modelStudentId, modelTGroup, modelTele, modelWeeklyAttendanceList, modelProgress);
     }
 
 }

@@ -16,6 +16,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -55,7 +56,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             tele = ParserUtil.parseTele(argMultimap.getValue(PREFIX_TELE).get());
         }
 
-        Person person = new Person(name, courseId, email, studentId, tGroup, tele, new WeekList());
+        Person person = new Person(name, courseId, email, studentId, tGroup, tele, new WeekList(), Progress.NOT_SET);
 
         return new AddCommand(person);
     }
