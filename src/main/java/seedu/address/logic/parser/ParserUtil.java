@@ -121,14 +121,14 @@ public class ParserUtil {
         return new Tele(trimmedTele);
     }
 
-    /**
-     * TODO: parse weekly attendance list
-     * @param weeklyAttendanceList
-     * @return
-     */
-    public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
-        throw new ParseException("Not implemented yet");
-    }
+    // /**
+    //  * TODO: parse weekly attendance list
+    //  * @param weeklyAttendanceList
+    //  * @return
+    //  */
+    // public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
+    //     throw new ParseException("Not implemented yet");
+    // }
     
     public static Progress parseProgress(String progress) throws ParseException {
         requireNonNull(progress);
