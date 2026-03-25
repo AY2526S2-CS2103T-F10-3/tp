@@ -128,7 +128,6 @@ public class ParserUtil {
      */
     public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
         throw new ParseException("Not implemented yet");
-      
     /**
      * Parses a {@code String progress} into a {@code Progress}.
      * Leading and trailing whitespaces will be trimmed.
