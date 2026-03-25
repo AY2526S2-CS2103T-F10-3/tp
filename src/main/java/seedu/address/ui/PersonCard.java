@@ -1,13 +1,11 @@
 package seedu.address.ui;
 
-import java.util.Comparator;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -33,13 +31,17 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label phone;
+    private Label studentId;
     @FXML
-    private Label address;
+    private Label courseId;
+    @FXML
+    private Label tGroup;
     @FXML
     private Label email;
     @FXML
-    private FlowPane tags;
+    private Label tele;
+    @FXML
+    private Label progress;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -49,11 +51,38 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
+        studentId.setText(person.getStudentId().value);
+        courseId.setText(person.getCourseId().value);
+        tGroup.setText(person.getTGroup().value);
         email.setText(person.getEmail().value);
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        tele.setText(person.getTele() == null ? "-" : person.getTele().value);
+
+        // clear old style classes
+        progress.getStyleClass().removeAll("progress-on-track", "progress-needs-attention", "progress-at-risk");
+
+        if (person.getProgress() == Progress.NOT_SET) {
+            progress.setVisible(false);
+            progress.setManaged(false);
+        } else {
+            progress.setVisible(true);
+            progress.setManaged(true);
+
+            switch (person.getProgress()) {
+            case ON_TRACK:
+                progress.setText("On Track");
+                progress.getStyleClass().add("progress-on-track");
+                break;
+            case NEEDS_ATTENTION:
+                progress.setText("Needs Attention");
+                progress.getStyleClass().add("progress-needs-attention");
+                break;
+            case AT_RISK:
+                progress.setText("At Risk");
+                progress.getStyleClass().add("progress-at-risk");
+                break;
+            default:
+                break;
+            }
+        }
     }
 }

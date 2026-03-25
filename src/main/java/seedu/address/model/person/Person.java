@@ -2,13 +2,12 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Person in the address book.
@@ -18,49 +17,82 @@ public class Person {
 
     // Identity fields
     private final Name name;
-    private final Phone phone;
+    private final CourseId courseId;
     private final Email email;
-
-    // Data fields
-    private final Address address;
-    private final Set<Tag> tags = new HashSet<>();
+    private final StudentId studentId;
+    private final TGroup tGroup;
+    private final Tele tele;
+    private final Progress progress;
+    private final List<Remark> remarks;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, CourseId courseId, Email email, StudentId studentId, TGroup tGroup,
+        Tele tele, Progress progress) {
+        requireAllNonNull(name, courseId, email, studentId, tGroup, progress);
         this.name = name;
-        this.phone = phone;
+        this.courseId = courseId;
         this.email = email;
-        this.address = address;
-        this.tags.addAll(tags);
+        this.studentId = studentId;
+        this.tGroup = tGroup;
+        this.tele = tele;
+        this.progress = progress;
+        this.remarks = new ArrayList<>();
     }
 
     public Name getName() {
         return name;
     }
 
-    public Phone getPhone() {
-        return phone;
+    public CourseId getCourseId() {
+        return courseId;
     }
 
     public Email getEmail() {
         return email;
     }
 
-    public Address getAddress() {
-        return address;
+    public StudentId getStudentId() {
+        return studentId;
+    }
+
+    public TGroup getTGroup() {
+        return tGroup;
+    }
+
+    public Tele getTele() {
+        return tele;
+    }
+
+    public Progress getProgress() {
+        return progress;
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
+     * Returns an unmodifiable view of the remarks list.
      */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public List<Remark> getRemarks() {
+        return Collections.unmodifiableList(remarks);
     }
 
+    /**
+     * Adds a remark to this person.
+     */
+    public void addRemark(Remark remark) {
+        requireAllNonNull(remark);
+        remarks.add(remark);
+    }
+
+    /**
+     * Deletes a remark from this person.
+     *
+     * @return true if the remark was found and removed
+     */
+    public boolean deleteRemark(Remark remark) {
+        requireAllNonNull(remark);
+        return remarks.remove(remark);
+    }
     /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
@@ -71,7 +103,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getStudentId().equals(getStudentId());
     }
 
     /**
@@ -90,27 +122,29 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags);
+        return studentId.equals(otherPerson.studentId)
+                && Objects.equals(otherPerson.getTele(), getTele())
+                && otherPerson.getEmail().equals(getEmail())
+                && otherPerson.getProgress().equals(getProgress())
+                && remarks.equals(otherPerson.remarks);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, courseId, email, studentId, tGroup, tele, progress, remarks);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("name", name)
-                .add("phone", phone)
+                .add("courseId", courseId)
                 .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
+                .add("studentId", studentId)
+                .add("tGroup", tGroup)
+                .add("tele", tele)
+                .add("progress", progress)
                 .toString();
     }
 
