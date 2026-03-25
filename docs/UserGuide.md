@@ -13,10 +13,10 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
 ## Table of contents
 - [Quick Start](#quick-start)
 - [Features](#features)
-  - [Viewing help: `help`]
+  - [Viewing help: `help`](#help)
   - [Adding a student: `add`]
   - [Listing all students `list`]
-  - [Deleting a student: `delete`](#delete-a-student-delete)
+  - [Deleting a student: `delete`](#delete)
     - [Delete by index](#deletebyindex)
     - [Delete by student details](#deletebydetails)
   - [Finding a student: `find`](#finding-students-by-name-find)
@@ -26,9 +26,11 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
   - [Editing a student: `edit`]
   - [Updating a student's progress: `updateprogress`]
   - [Marking a student's attendance: `markattendance`]
-- [Command Summary]
-- [Parameter Summary]
-- [FAQ] 
+  - [Clearing list](#clear)
+  - [Exiting the app](#exit)
+- [Command Summary](#command-summary)
+- [Parameter Summary](#parameter-summary)
+- [FAQ](#faq)
 
 ---
 ## Quick start
@@ -68,7 +70,8 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
 
 ## Features
 
-### Viewing help : `help`
+<a name="help"></a>
+### Viewing help : `help` 
 
 Shows a message explaining how to access the help page.
 
@@ -79,6 +82,7 @@ Format:
 help
 ```
 
+<a name="delete"></a>
 ### Deleting a student : `delete`
 
 Removes a student from TeachAssist.
@@ -191,7 +195,7 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 `progress 2 p/not_set`
 * Clears the progress status of the 2nd student in the currently displayed student list.
 
-
+<a name="clear"></a>
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -201,6 +205,7 @@ Format:
 clear
 ```
 
+<a name="exit"></a>
 ### Exiting the program : `exit`
 
 Exits the program.
@@ -222,15 +227,21 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete INDEX`<br> e.g., `delete 3`<br> or alternatively,  `delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP`<br> e.g., `delete id/A1234567X crs/CS2103T tg/T01`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
 **Help**   | `help`
+**Update Progress** | `updateprogress INDEX p/PROGRESS`<br> e.g., `progress 1 p/on_track`<br> or alternatively, `updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS`<br> e.g., `progress id/A1234567X crs/CS2103T tg/T01 p/needs_attention`
+
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**Q: Do I need to enter parameters in a fixed order?**
+No. For commands with prefixes such as add and filter, parameters can be entered in any order as long as all required fields are provided.
+
+**Q: Why did delete 1 remove a different student than I expected?**
+Because the index refers to the current displayed list. You may be referring to an outdated list.
+
