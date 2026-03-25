@@ -104,18 +104,25 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 
 * Deletes the student with the exact details match for `STUDENT_ID`, `COURSE_ID`, and `TUTORIAL_GROUP`.
 
-**Confirmation prompt**
+### Finding students by name: `find`
 
-After entering a valid `delete` command, TeachAssist will show a confirmation pop-up.<br>
-Enter `yes` to proceed with the deletion, or `no` to cancel it.
+Finds students whose names contain words that start with any of the given keywords.
 
-**Examples**:
+Format: `find KEYWORD [MORE_KEYWORDS]...`
 
-`delete 1` followed by `yes`
-* Deletes the 1st student in the currently displayed student list.
+* The search is case-insensitive. e.g. `hans` matches `Hans`
+* The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
+* Only the name field is searched
+* Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
+    * e.g. `Han` matches `Hans`
+    * `an` will not match `Hans`
+* Persons matching at least one keyword are returned (i.e. `OR` search)
+    * e.g. `Hans Bo` returns `Hans Gruber`, `Bo Yang`
+* Keywords must contain only alphabetic characters (A–Z, a–z)
 
-`delete id/A1234567X crs/CS2103T tg/T01` followed by `yes`
-* Deletes the student with student ID A1234567X, course CS2103T, and tutorial group T01.
+Examples:
+* `find Jo` returns `John Doe`
+* `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
 `delete 3` followed by `no`
 * No change is made.
