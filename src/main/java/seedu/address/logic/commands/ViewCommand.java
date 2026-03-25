@@ -30,6 +30,23 @@ public class ViewCommand extends Command {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ViewCommand)) {
+            return false;
+        }
+        ViewCommand otherCommand = (ViewCommand) other;
+        return targetIndex.equals(otherCommand.targetIndex);
+    }
+
+    @Override
+    public String toString() {
+        return "ViewCommand: targetIndex=" + targetIndex;
+    }
+
+    @Override
     public CommandResult execute(Model model) throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList();
 

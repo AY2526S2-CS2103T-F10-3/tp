@@ -19,21 +19,6 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParserTest {
 
-    private static final String MESSAGE_INVALID_PREFIX =
-            "Invalid prefix in filter command. Allowed prefixes are: crs/, tg/, p/, and abs/.\n"
-                    + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_UNEXPECTED_PREAMBLE =
-            "Unexpected text before prefixes.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_COURSE_ID =
-            "Missing value for prefix: crs/\nCourse ID cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_TGROUP =
-            "Missing value for prefix: tg/\nTutorial group cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_PROGRESS =
-            "Missing value for prefix: p/\nProgress cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_ABSENCE =
-            "Missing value for prefix: abs/\nAbsence count cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_NO_FILTERS =
-            "At least one filter must be provided.\n" + FilterCommand.MESSAGE_USAGE;
     private static final String MESSAGE_INVALID_ABSENCE_COUNT =
             "Absence count must be a non-negative integer.";
 
@@ -41,57 +26,57 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_emptyArgs_failure() {
-        assertParseFailure(parser, "", MESSAGE_NO_FILTERS);
+        assertParseFailure(parser, "", FilterCommandParser.MESSAGE_NO_FILTERS);
     }
 
     @Test
     public void parse_invalidPrefix_failure() {
-        assertParseFailure(parser, " x/CS2103T", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " x/CS2103T", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_unknownPrefixAfterValidPrefix_failure() {
-        assertParseFailure(parser, " crs/CS2103T group/T01", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " crs/CS2103T group/T01", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_unknownPrefixAfterTGroup_failure() {
-        assertParseFailure(parser, " tg/T01 bad/value", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " tg/T01 bad/value", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_unknownPrefixAfterProgress_failure() {
-        assertParseFailure(parser, " p/ON_TRACK bad/value", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " p/ON_TRACK bad/value", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_unknownPrefixAfterAbsence_failure() {
-        assertParseFailure(parser, " abs/3 bad/value", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " abs/3 bad/value", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_missingCourseIdValue_failure() {
-        assertParseFailure(parser, " crs/", MESSAGE_EMPTY_COURSE_ID);
+        assertParseFailure(parser, " crs/", FilterCommandParser.MESSAGE_EMPTY_COURSE_ID);
     }
 
     @Test
     public void parse_missingTGroupValue_failure() {
-        assertParseFailure(parser, " tg/", MESSAGE_EMPTY_TGROUP);
+        assertParseFailure(parser, " tg/", FilterCommandParser.MESSAGE_EMPTY_TGROUP);
     }
 
     @Test
     public void parse_missingProgressValue_failure() {
-        assertParseFailure(parser, " p/", MESSAGE_EMPTY_PROGRESS);
+        assertParseFailure(parser, " p/", FilterCommandParser.MESSAGE_EMPTY_PROGRESS);
     }
 
     @Test
     public void parse_missingAbsenceValue_failure() {
-        assertParseFailure(parser, " abs/", MESSAGE_EMPTY_ABSENCE);
+        assertParseFailure(parser, " abs/", FilterCommandParser.MESSAGE_EMPTY_ABSENCE);
     }
 
     @Test
     public void parse_unexpectedTextBeforePrefixes_failure() {
-        assertParseFailure(parser, " hello crs/CS2103T", MESSAGE_UNEXPECTED_PREAMBLE);
+        assertParseFailure(parser, " hello crs/CS2103T", FilterCommandParser.MESSAGE_UNEXPECTED_PREAMBLE);
     }
 
     @Test
@@ -152,7 +137,7 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_bothPrefixesMissingValues_failure() {
-        assertParseFailure(parser, " crs/ tg/", MESSAGE_EMPTY_COURSE_ID);
+        assertParseFailure(parser, " crs/ tg/", FilterCommandParser.MESSAGE_EMPTY_COURSE_ID);
     }
 
     @Test
@@ -169,12 +154,12 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_invalidProgressWithValidCourseId_failure() {
-        assertParseFailure(parser, " crs/CS2103T prog/INVALID", MESSAGE_INVALID_PREFIX);
+        assertParseFailure(parser, " crs/CS2103T prog/INVALID", FilterCommandParser.MESSAGE_INVALID_PREFIX);
     }
 
     @Test
     public void parse_unexpectedTextBeforeBothPrefixes_failure() {
-        assertParseFailure(parser, " hello crs/CS2103T tg/T01", MESSAGE_UNEXPECTED_PREAMBLE);
+        assertParseFailure(parser, " hello crs/CS2103T tg/T01", FilterCommandParser.MESSAGE_UNEXPECTED_PREAMBLE);
     }
 
     @Test

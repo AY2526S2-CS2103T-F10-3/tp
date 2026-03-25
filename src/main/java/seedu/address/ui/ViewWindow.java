@@ -85,9 +85,13 @@ public class ViewWindow extends UiPart<Region> {
         courseIdLabel.setText(person.getCourseId().toString());
         tGroupLabel.setText(person.getTGroup().toString());
 
+        resetGridWithHeader();
+        populateRemarkRows(person.getRemarks());
+    }
+
+    private void resetGridWithHeader() {
         remarksGrid.getChildren().clear();
 
-        // re-add header row after clearing
         Label dateHeader = new Label("Date");
         dateHeader.setStyle("-fx-font-weight: bold;");
         Label remarkHeader = new Label("Remark");
@@ -95,11 +99,13 @@ public class ViewWindow extends UiPart<Region> {
 
         remarksGrid.add(dateHeader, 0, 0);
         remarksGrid.add(remarkHeader, 1, 0);
+    }
 
+    private void populateRemarkRows(java.util.List<Remark> remarks) {
         int row = 1;
-        for (Remark remark : person.getRemarks()) {
-            Label dateLabel = new Label(extractDate(remark));
-            Label remarkLabel = new Label(extractRemarkText(remark));
+        for (Remark remark : remarks) {
+            Label dateLabel = new Label(remark.getDate().toString());
+            Label remarkLabel = new Label(remark.getText());
 
             dateLabel.setWrapText(true);
             remarkLabel.setWrapText(true);
@@ -108,25 +114,5 @@ public class ViewWindow extends UiPart<Region> {
             remarksGrid.add(remarkLabel, 1, row);
             row++;
         }
-    }
-
-    /**
-     * Extracts the date portion of a remark.
-     *
-     * @param remark the remark to extract date from
-     * @return the extracted date as a string
-     */
-    private String extractDate(Remark remark) {
-        return remark.getDate().toString();
-    }
-
-    /**
-     * Extracts the remark text portion of a remark.
-     *
-     * @param remark the remark to extract text from
-     * @return the extracted remark text
-     */
-    private String extractRemarkText(Remark remark) {
-        return remark.getText();
     }
 }

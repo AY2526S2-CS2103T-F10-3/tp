@@ -24,12 +24,6 @@ public class ViewCommandParser implements Parser<ViewCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE));
         }
-
-        if (trimmedInput.matches("[1-9]\\d*\\s+.+")) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE));
-        }
-
         try {
             Index index = ParserUtil.parseIndex(trimmedInput);
             return new ViewCommand(index);

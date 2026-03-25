@@ -16,7 +16,6 @@ import seedu.address.commons.util.ToStringBuilder;
  */
 public class Person {
 
-    // Identity fields
     private final Name name;
     private final CourseId courseId;
     private final Email email;
@@ -80,7 +79,7 @@ public class Person {
         return progress;
     }
 
-    public double getAbsenceCount() {
+    public int getAbsenceCount() {
         return weeklyAttendanceList.calculateWeekAbsence();
     }
     /**
@@ -94,7 +93,7 @@ public class Person {
      * Adds a remark to this person.
      */
     public void addRemark(Remark remark) {
-        requireAllNonNull(remark);
+        Objects.requireNonNull(remark);
         remarks.add(remark);
     }
 
@@ -104,11 +103,12 @@ public class Person {
      * @return true if the remark was found and removed
      */
     public boolean deleteRemark(Index remarkIndex) {
-        requireAllNonNull(remarkIndex);
-        if (remarkIndex.getZeroBased() >= remarks.size()) {
+        Objects.requireNonNull(remarkIndex);
+        int idx = remarkIndex.getZeroBased();
+        if (idx >= remarks.size()) {
             return false;
         }
-        remarks.remove(remarks.get(remarkIndex.getZeroBased()));
+        remarks.remove(idx);
         return true;
     }
     /**

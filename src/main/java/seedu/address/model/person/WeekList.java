@@ -198,8 +198,8 @@ public class WeekList implements WeeklyAttendanceList {
      * Calculates the amount of absences
      * @return the number of absences
      */
-    public double calculateWeekAbsence() {
-        double count = 0;
+    public int calculateWeekAbsence() {
+        int count = 0;
         for (WeeklyAttendance week : weeks) {
             if (week.isAbsent()) {
                 count++;

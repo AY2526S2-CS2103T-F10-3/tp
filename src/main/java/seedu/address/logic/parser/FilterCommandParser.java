@@ -19,20 +19,20 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    private static final String MESSAGE_INVALID_PREFIX =
+    static final String MESSAGE_INVALID_PREFIX =
             "Invalid prefix in filter command. Allowed prefixes are: crs/, tg/, p/, and abs/.\n"
                     + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_UNEXPECTED_PREAMBLE =
+    static final String MESSAGE_UNEXPECTED_PREAMBLE =
             "Unexpected text before prefixes.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_COURSE_ID =
+    static final String MESSAGE_EMPTY_COURSE_ID =
             "Missing value for prefix: crs/\nCourse ID cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_TGROUP =
+    static final String MESSAGE_EMPTY_TGROUP =
             "Missing value for prefix: tg/\nTutorial group cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_PROGRESS =
+    static final String MESSAGE_EMPTY_PROGRESS =
             "Missing value for prefix: p/\nProgress cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_EMPTY_ABSENCE =
+    static final String MESSAGE_EMPTY_ABSENCE =
             "Missing value for prefix: abs/\nAbsence count cannot be empty.\n" + FilterCommand.MESSAGE_USAGE;
-    private static final String MESSAGE_NO_FILTERS =
+    static final String MESSAGE_NO_FILTERS =
             "At least one filter must be provided.\n" + FilterCommand.MESSAGE_USAGE;
 
     /**
@@ -86,7 +86,13 @@ public class FilterCommandParser implements Parser<FilterCommand> {
                 throw new ParseException(MESSAGE_INVALID_PREFIX);
             }
         }
+        checkForUnexpectedPreamble(argMultimap);
+    }
 
+    /**
+     * Checks for unexpected preamble text (text before any recognized prefixes).
+     */
+    private void checkForUnexpectedPreamble(ArgumentMultimap argMultimap) throws ParseException {
         String preamble = argMultimap.getPreamble().trim();
         if (!preamble.isEmpty()) {
             throw new ParseException(MESSAGE_UNEXPECTED_PREAMBLE);
@@ -169,7 +175,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
      * Returns true if the given prefix is present but its value is blank.
      */
     private boolean hasBlankValue(ArgumentMultimap argMultimap, Prefix prefix) {
-        return argMultimap.getValue(prefix).isPresent()
-                && argMultimap.getValue(prefix).get().trim().isEmpty();
+        Optional<String> value = argMultimap.getValue(prefix);
+        return value.isPresent() && value.get().trim().isEmpty();
     }
 }
