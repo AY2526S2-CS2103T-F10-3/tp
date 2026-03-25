@@ -112,8 +112,6 @@ public class ViewWindow extends UiPart<Region> {
 
     /**
      * Extracts the date portion of a remark.
-     * Replace this implementation if your Remark class has a proper getDate()
-     * method.
      *
      * @param remark the remark to extract date from
      * @return the extracted date as a string
@@ -124,8 +122,6 @@ public class ViewWindow extends UiPart<Region> {
 
     /**
      * Extracts the remark text portion of a remark.
-     * Replace this implementation if your Remark class has a proper getter for the
-     * remark text.
      *
      * @param remark the remark to extract text from
      * @return the extracted remark text
