@@ -103,7 +103,7 @@ public class EditCommand extends Command {
         Tele updatedTele = editPersonDescriptor.getTele().orElse(personToEdit.getTele());
 
         return new Person(updatedName, updatedCourseId, updatedEmail, updatedStudentId,
-                updatedTGroup, updatedTele, personToEdit.getWeeklyAttendanceList());
+                updatedTGroup, updatedTele)
     }
 
     @Override

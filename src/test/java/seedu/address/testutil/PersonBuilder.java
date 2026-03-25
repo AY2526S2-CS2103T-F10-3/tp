@@ -4,6 +4,7 @@ import seedu.address.model.person.CourseId;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Progress;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
@@ -17,7 +18,7 @@ import seedu.address.model.person.WeeklyAttendanceList;
 public class PersonBuilder {
 
     public static final String DEFAULT_NAME = "Amy Bee";
-    public static final String DEFAULT_EMAIL = "amy@gmail.com";
+    public static final String DEFAULT_EMAIL = "amy@u.nus.edu";
     public static final String DEFAULT_COURSE_ID = "CS2103T";
     public static final String DEFAULT_STUDENT_ID = "A1234567X";
     public static final String DEFAULT_TGROUP = "T01";
@@ -28,7 +29,9 @@ public class PersonBuilder {
     private StudentId studentId;
     private TGroup tGroup;
     private Tele tele;
-    private WeeklyAttendanceList weeklyAttendanceList;
+//     private WeeklyAttendanceList weeklyAttendanceList;
+//     private Progress progress;
+
     /**
      * Creates a {@code PersonBuilder} with the default details.
      */
@@ -39,7 +42,8 @@ public class PersonBuilder {
         studentId = new StudentId(DEFAULT_STUDENT_ID);
         tGroup = new TGroup(DEFAULT_TGROUP);
         tele = new Tele(DEFAULT_TELE);
-        weeklyAttendanceList = new WeekList();
+//         weeklyAttendanceList = new WeekList();
+//         progress = Progress.NOT_SET;
     }
 
     /**
@@ -52,7 +56,8 @@ public class PersonBuilder {
         studentId = personToCopy.getStudentId();
         tGroup = personToCopy.getTGroup();
         tele = personToCopy.getTele();
-        weeklyAttendanceList = personToCopy.getWeeklyAttendanceList();
+//         weeklyAttendanceList = personToCopy.getWeeklyAttendanceList();
+//         progress = personToCopy.getProgress();
     }
 
     /**
@@ -110,7 +115,15 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Progress} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withProgress(Progress progress) {
+        this.progress = progress;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, courseId, email, studentId, tGroup, tele, weeklyAttendanceList);
+        return new Person(name, courseId, email, studentId, tGroup, tele);
     }
 }
