@@ -129,6 +129,7 @@ public class ParserUtil {
     public static WeeklyAttendanceList parseWeeklyAttendanceList(String weeklyAttendanceList) throws ParseException {
         throw new ParseException("Not implemented yet");
     }
+    
     /**
      * Parses a {@code String progress} into a {@code Progress}.
      * Leading and trailing whitespaces will be trimmed.
@@ -138,7 +139,6 @@ public class ParserUtil {
     public static Progress parseProgress(String progress) throws ParseException {
         requireNonNull(progress);
         String normalizedProgress = progress.trim().toLowerCase();
-
         switch (normalizedProgress) {
         case "on_track":
             return Progress.ON_TRACK;
