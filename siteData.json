@@ -113,6 +113,7 @@
         "viewing-help-help": "Viewing help : help",
         "deleting-a-student-delete": "Deleting a student : delete",
         "finding-students-by-name-find": "Finding students by name: find",
+        "updating-a-student-s-progress-progress": "Updating a student's progress : progress",
         "clearing-all-entries-clear": "Clearing all entries : clear",
         "exiting-the-program-exit": "Exiting the program : exit",
         "saving-the-data": "Saving the data",
