@@ -14,7 +14,6 @@ import seedu.address.model.person.TGroup;
 import seedu.address.model.person.Tele;
 import seedu.address.model.person.WeeklyAttendanceList;
 
-
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
  */
