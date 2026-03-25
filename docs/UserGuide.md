@@ -4,9 +4,13 @@
   pageNav: 3
 ---
 
-# AB-3 User Guide
+# TeachAssist User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+TeachAssist is a **desktop app for university Teaching Assistants (TAs) to manage their students**, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, TeachAssist can get your student management tasks done faster than traditional GUI apps.
+
+**Target User:** Full-time university TAs who manage multiple classes and tutorial groups each semester, and prefer a fast, keyboard-driven workflow.
+
+**Value Proposition:** TeachAssist helps TAs efficiently track student information, attendance, progress, and remarks — all in one place, without tedious manual data management.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -120,19 +124,82 @@ Finds students whose names contain words that start with any of the given keywor
 
 Format: `find KEYWORD [MORE_KEYWORDS]...`
 
-* The search is case-insensitive. e.g. `hans` matches `Hans`
-* The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
-* Only the name field is searched
-* Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
+<box type="info" seamless>
+
+**Notes:**
+* The search is case-insensitive. e.g. `hans` will match `Hans`
+* The order of keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* Only the name field is searched.
+* Keywords match the **start of words** in names (prefix matching). Substrings in the middle of a word are **not** matched.
     * e.g. `Han` matches `Hans`
-    * `an` will not match `Hans`
-* Persons matching at least one keyword are returned (i.e. `OR` search)
+    * e.g. `an` will **not** match `Hans`
+* Students matching **at least one** keyword are returned (i.e. `OR` search).
     * e.g. `Hans Bo` returns `Hans Gruber`, `Bo Yang`
-* Keywords must contain only alphabetic characters (A–Z, a–z)
+* Keywords must contain only alphabetic characters (A–Z, a–z).
+</box>
 
 Examples:
-* `find Jo` returns `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
+* `find Jo` returns `John Doe`, `Joy Tan`
+* `find alex david` returns `Alex Yeoh`, `David Li`
+
+![Result for 'find alex david'](images/findAlexDavidResult.png)
+
+### Filtering students : `filter`
+
+Filters the student list by one or more criteria such as course, tutorial group, progress status, or number of absences.
+
+Format: `filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
+
+<box type="info" seamless>
+
+**Notes:**
+* At least one filter criterion must be provided.
+* All provided criteria must match for a student to be included (i.e. `AND` search).
+* `COURSE_ID` and `TUTORIAL_GROUP` matching is case-insensitive. e.g. `crs/cs2103t` matches `CS2103T`
+* Valid values for `PROGRESS` (must be exact, case-sensitive):
+
+| Value | Meaning |
+|-------|---------|
+| `NOT_SET` | No progress status assigned |
+| `ON_TRACK` | Student is keeping up with the course |
+| `NEEDS_ATTENTION` | Student may need additional support |
+| `AT_RISK` | Student is struggling and needs intervention |
+
+* `ABSENCE_COUNT` filters students with **at least** that many absences. Must be a non-negative integer.
+</box>
+
+<box type="tip" seamless>
+
+**Tip:** Combine multiple filters to narrow down your list. For example, `filter crs/CS2103T tg/T01 p/AT_RISK` shows only at-risk students in tutorial group T01 of CS2103T.
+</box>
+
+Examples:
+* `filter crs/CS2103T` returns all students enrolled in CS2103T.
+* `filter tg/T01` returns all students in tutorial group T01.
+* `filter p/AT_RISK` returns all students with a progress status of `AT_RISK`.
+* `filter abs/3` returns all students with 3 or more absences.
+* `filter crs/CS2103T tg/T01` returns all students in tutorial group T01 for course CS2103T.
+* `filter crs/CS2103T p/NEEDS_ATTENTION abs/2` returns students in CS2103T with progress `NEEDS_ATTENTION` and at least 2 absences.
+
+### Viewing a student's full details : `view`
+
+Displays the complete details of a student, including their attendance record and remarks.
+
+Format: `view INDEX`
+
+* Displays the student at the specified `INDEX`.
+* The index refers to the index number shown in the **currently displayed** student list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+<box type="tip" seamless>
+
+**Tip:** Use `find` or `filter` to narrow down your list first, then use `view` to inspect a specific student's full details.
+</box>
+
+Examples:
+* `list` followed by `view 2` displays the full details of the 2nd student in the student list.
+* `find Alex` followed by `view 1` displays the full details of the 1st student returned by the `find` command.
+* `filter tg/T01` followed by `view 3` displays the full details of the 3rd student in tutorial group T01.
 
 ### Deleting a person : `delete`
 
@@ -203,6 +270,8 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Filter** | `filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`<br> e.g., `filter crs/CS2103T tg/T01`, `filter p/AT_RISK`, `filter abs/3`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
 **Help**   | `help`
+**View**   | `view INDEX`<br> e.g., `view 1`
