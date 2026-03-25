@@ -120,7 +120,6 @@ public class ParserUtil {
         }
         return new Tele(trimmedTele);
     }
-
     // /**
     //  * TODO: parse weekly attendance list
     //  * @param weeklyAttendanceList
