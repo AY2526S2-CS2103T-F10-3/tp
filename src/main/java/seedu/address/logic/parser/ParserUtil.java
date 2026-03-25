@@ -130,12 +130,6 @@ public class ParserUtil {
         throw new ParseException("Not implemented yet");
     }
     
-    /**
-     * Parses a {@code String progress} into a {@code Progress}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code progress} is invalid.
-     */
     public static Progress parseProgress(String progress) throws ParseException {
         requireNonNull(progress);
         String normalizedProgress = progress.trim().toLowerCase();
