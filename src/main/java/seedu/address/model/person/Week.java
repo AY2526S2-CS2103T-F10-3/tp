@@ -107,4 +107,9 @@ public class Week implements WeeklyAttendance {
     public String toString() {
         return String.format("W%d: %s", weekNo, getStatus());
     }
+
+    @Override
+    public boolean isAbsent() {
+        return this.status == Status.A;
+    }
 }
