@@ -221,12 +221,12 @@ Updates a student's Attendance Status to either:
 :bulb: **Tip:**<br><br>
 
 
-<a name="progressbyindex"></a>
+<a name="attendancebyindex"></a>
 **Update attendance by index, week, status**
 
 Format:
 ```
-markprogress INDEX week/WEEK sta/STATUS
+markattendance INDEX week/WEEK sta/STATUS
 ```
 
 * Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
@@ -235,13 +235,13 @@ markprogress INDEX week/WEEK sta/STATUS
 * The week referes to school weeks, which are visible to the right of teachassist
 
 **Examples**:  
-`markprogress 1 week/3 sta/y`
+`markattendance 1 week/3 sta/y`
 * marks the attendance of the 1st student's attendance in week 3 as present -> Green.
 
-`markprogress 2 week/6 sta/a`
+`markattendance 2 week/6 sta/a`
 * marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
 
-`markprogress 4 week/4 sta/n`
+`markattendance 4 week/4 sta/n`
 * marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
 <a name="clear"></a>
 
