@@ -13,23 +13,25 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
 ## Table of contents
 - [Quick Start](#quick-start)
 - [Features](#features)
-    - [Viewing help: `help`](#help)
-    - [Adding a student: `add`]
-    - [Listing all students `list`]
-    - [Deleting a student: `delete`](#delete)
-        - [Delete by index](#deletebyindex)
-        - [Delete by student details](#deletebydetails)
-    - [Finding a student: `find`](#finding-students-by-name-find)
-    - [Filtering students: `filter`]
-        - [Filter by __]
-        - [Filter by __]
-    - [Editing a student: `edit`]
-    - [Updating a student's progress: `updateprogress`]
-    - [Marking a student's attendance: `markattendance`]
-    - [Clearing list](#clear)
-    - [Adding a remark: `remark`]
-    - [Deleting a remark: `unremark`]
-    - [Exiting the app](#exit)
+  - [Viewing help: `help`](#help)
+  - [Adding a student: `add`]
+  - [Listing all students `list`]
+  - [Deleting a student: `delete`](#delete)
+    - [Delete by index](#deletebyindex)
+    - [Delete by student details](#deletebydetails)
+  - [Finding a student: `find`](#finding-students-by-name-find)
+  - [Filtering students: `filter`]
+    - [Filter by __]
+    - [Filter by __]
+  - [Editing a student: `edit`]
+  - [Updating a student's progress: `updateprogress`]
+  - [Marking a student's attendance: `markattendance`]
+  - [Cancelling a tutorial: `cancelweek`]
+  - [Uncancelling a tutorial: `uncancelweek`]
+  - [Clearing list](#clear)
+  - [Adding a remark: `remark`]
+  - [Deleting a remark: `unremark`]
+  - [Exiting the app](#exit)
 - [Command Summary](#command-summary)
 - [Parameter Summary](#parameter-summary)
 - [FAQ](#faq)
@@ -46,26 +48,26 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
 >
 > **If Java is not installed, or the version number is below 17:**
 > - Download and install Java 17 by following the guide:
-    >   - [for Windows users](https://se-education.org/guides/tutorials/javaInstallationWindows.html) [for Mac users](https://se-education.org/guides/tutorials/javaInstallationMac.html) [for Linux users](https://se-education.org/guides/tutorials/javaInstallationLinux.html)
+>   - [for Windows users](https://se-education.org/guides/tutorials/javaInstallationWindows.html) [for Mac users](https://se-education.org/guides/tutorials/javaInstallationMac.html) [for Linux users](https://se-education.org/guides/tutorials/javaInstallationLinux.html)
 > - After installation, restart your terminal and check that the correct version has been installed.
 
 2. Download the latest `TeachAssist.jar` file from [here](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.3)
 3. Copy the `TeachAssist.jar` file to the folder you want to use as the _home folder_ for your LambdaLab.
 4. Open the command terminal again and do the following:
-    - Type `cd name-of-your-home-folder` and press Enter.
-    - Type `java -jar TeachAssist.jar` and press Enter to run the application.
-      A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-      ![Ui](images/Ui.png)
+   - Type `cd name-of-your-home-folder` and press Enter.
+   - Type `java -jar TeachAssist.jar` and press Enter to run the application.
+   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   ![Ui](images/Ui.png)
 
 5. Type the command in the command box and press Enter to execute it. e.g. typing `help` and pressing Enter will open the help window.<br>
    Some example commands you can try:
-    - `help` : Shows the help window that explains the command usage.
-    - `list` : Lists all students.
-    - `delete 3`: Deletes the student at the current list's index 3.
-    - `add n/John Doe id/A0123456X e/johnd@u.nus.edu.com crs/CS2103T tg/T01 tel/@johndoe`: Adds a student named `John Doe`.
-    - `clear`: Deletes all students.
-    - `exit`: Exits the app.
-
+   - `help` : Shows the help window that explains the command usage.
+   - `list` : Lists all students.
+   - `delete 3`: Deletes the student at the current list's index 3.
+   - `add n/John Doe id/A0123456X e/johnd@u.nus.edu.com crs/CS2103T tg/T01 tel/@johndoe`: Adds a student named `John Doe`.
+   - `clear`: Deletes all students.
+   - `exit`: Exits the app.
+   
 6. Refer to the [Features](#features) below for details of each command.
 
 ---
@@ -83,15 +85,27 @@ add n/NAME id/ID e/EMAIL crs/COURSE tg/TGROUP [tel/TELE]
 ```
 
 <a name="help"></a>
-### Viewing help : `help`
+### Viewing help : `help` 
 
 Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
-Format:
+Format: 
 ```
 help
+```
+
+<a name="delete"></a>
+
+<a name="list"></a>
+### Listing all students `list`
+
+Shows all Persons stored sorted in Ascending order
+
+Format:
+```
+list
 ```
 
 <a name="delete"></a>
@@ -102,7 +116,7 @@ Removes a student from TeachAssist.
 <a name="deletebyindex"></a>
 **Delete by index**
 
-Format:
+Format: 
 ```
 delete INDEX
 ```
@@ -114,7 +128,7 @@ delete INDEX
 <a name="deletebydetails"></a>
 **Delete by student details**
 
-Format:
+Format: 
 ```
 delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 ```
@@ -178,7 +192,7 @@ To remove the progress tag of a student, use `not_set`
 <a name="progressbyindex"></a>
 **Update Progress by index**
 
-Format:
+Format: 
 ```
 updateprogress INDEX p/PROGRESS
 ```
@@ -190,7 +204,7 @@ updateprogress INDEX p/PROGRESS
 <a name="progressbydetails"></a>
 **Update progress by student details**
 
-Format:
+Format: 
 ```
 updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 ```
@@ -208,11 +222,46 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 * Clears the progress status of the 2nd student in the currently displayed student list.
 
 <a name="clear"></a>
+
+### Marking a student's attendance : `markattendance`
+Updates a student's Attendance Status to either:
+1. `y` --> Present  --> Green
+2. `a` --> Absent   --> Red
+3. `n` --> Undetermined   --> Grey
+
+<div markdown="span" class="alert alert-primary"></div>
+:bulb: **Tip:**<br><br>
+
+
+<a name="attendancebyindex"></a>
+**Update attendance by index, week, status**
+
+Format:
+```
+markattendance INDEX week/WEEK sta/STATUS
+```
+
+* Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
+* The index refers to the index number shown in the currently displayed student list.
+* The index **must be a positive integer** 1, 2, 3, …
+* The week referes to school weeks, which are visible to the right of teachassist
+
+**Examples**:  
+`markattendance 1 week/3 sta/y`
+* marks the attendance of the 1st student's attendance in week 3 as present -> Green.
+
+`markattendance 2 week/6 sta/a`
+* marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
+
+`markattendance 4 week/4 sta/n`
+* marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
+<a name="clear"></a>
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
 
-Format:
+Format: 
 ```
 clear
 ```
@@ -245,7 +294,7 @@ unremark INDEX r/REMARK_INDEX
 
 Exits the program.
 
-Format:
+Format: 
 ```
 exit
 ```
