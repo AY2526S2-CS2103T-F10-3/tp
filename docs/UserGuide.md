@@ -26,6 +26,8 @@ TeachAssist is a desktop app designed to help full-time teaching assistants mana
   - [Editing a student: `edit`]
   - [Updating a student's progress: `updateprogress`]
   - [Marking a student's attendance: `markattendance`]
+  - [Cancelling a tutorial: `cancelweek`]
+  - [Uncancelling a tutorial: `uncancelweek`]
   - [Clearing list](#clear)
   - [Exiting the app](#exit)
 - [Command Summary](#command-summary)
@@ -80,6 +82,18 @@ Shows a message explaining how to access the help page.
 Format: 
 ```
 help
+```
+
+<a name="delete"></a>
+
+<a name="list"></a>
+### Listing all students `list`
+
+Shows all Persons stored sorted in Ascending order
+
+Format:
+```
+list
 ```
 
 <a name="delete"></a>
@@ -196,6 +210,41 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 * Clears the progress status of the 2nd student in the currently displayed student list.
 
 <a name="clear"></a>
+
+### Marking a student's attendance : `markattendance`
+Updates a student's Attendance Status to either:
+1. `y` --> Present  --> Green
+2. `a` --> Absent   --> Red
+3. `n` --> Undetermined   --> Grey
+
+<div markdown="span" class="alert alert-primary"></div>
+:bulb: **Tip:**<br><br>
+
+
+<a name="progressbyindex"></a>
+**Update attendance by index, week, status**
+
+Format:
+```
+markprogress INDEX week/WEEK sta/STATUS
+```
+
+* Updates the attendance of student at the specified `INDEX` and `WEEK` to `STATUS`.
+* The index refers to the index number shown in the currently displayed student list.
+* The index **must be a positive integer** 1, 2, 3, …
+* The week referes to school weeks, which are visible to the right of teachassist
+
+**Examples**:  
+`markprogress 1 week/3 sta/y`
+* marks the attendance of the 1st student's attendance in week 3 as present -> Green.
+
+`markprogress 2 week/6 sta/a`
+* marks the attendance of the 2nd student's attendance in week 6 as absent -> Red.
+
+`markprogress 4 week/4 sta/n`
+* marks the attendance of the 4th student's attendance in week 4 as unmarked -> Grey.
+<a name="clear"></a>
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
