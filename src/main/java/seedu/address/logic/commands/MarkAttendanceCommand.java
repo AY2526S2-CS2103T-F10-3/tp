@@ -13,7 +13,6 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Week;
 import seedu.address.model.person.WeekList;
-import seedu.address.model.person.WeeklyAttendanceList;
 
 /**
  * Marks the specified week (tutorial) as attended or not attended for a person.
@@ -106,7 +105,7 @@ public class MarkAttendanceCommand extends Command {
     /**
      * Applies the correct attendance update based on status.
      */
-    private void applyStatusUpdate(WeeklyAttendanceList list) throws CommandException {
+    private void applyStatusUpdate(WeekList list) throws CommandException {
         int index = weekNumber.getZeroBased();
 
         switch (status) {
