@@ -110,6 +110,7 @@ public class Person {
         remarks.remove(remarks.get(remarkIndex.getZeroBased()));
         return true;
     }
+
     /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
