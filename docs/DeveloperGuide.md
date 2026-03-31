@@ -330,7 +330,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. TCMS confirms that sample data has been removed.
 7. Use case ends.
 
-**Extensions:** 
+**Extensions:**
 
 * 3a. User cancels the purge.
     * 3a1. TCMS aborts the purge operation.
@@ -454,7 +454,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 2a. The specified student does not exist.
     * 2a1. TeachAssist informs the user that the student record cannot be found.
     * Use case ends.
- 
+
 **Use Case: UC12 – View Student List** <br>
 **Actor:** User <br>
 **MSS:**
@@ -479,7 +479,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 2. Portability
     * The system should run on Windows, macOS, and Linux environments supporting Java.
-      
+
 4. Data Persistence
     * Student records must be saved to persistent storage.
     * Data should remain available after the system is restarted

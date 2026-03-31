@@ -257,7 +257,7 @@ markattendance INDEX week/WEEK sta/STATUS
 * The index **must be a positive integer** 1, 2, 3, …
 * The week referes to school weeks, which are visible to the right of teachassist
 
-**Examples**:  
+**Examples**:
 `markattendance 1 week/3 sta/y`
 * marks the attendance of the 1st student's attendance in week 3 as present -> Green.
 
