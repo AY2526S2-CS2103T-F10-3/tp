@@ -39,7 +39,7 @@
     {
       "src": "DeveloperGuide.md",
       "headings": {
-        "ab-3-developer-guide": "AB-3 Developer Guide",
+        "teachassist-developer-guide": "TeachAssist Developer Guide",
         "acknowledgements": "Acknowledgements",
         "setting-up-getting-started": "Setting up, getting started",
         "design": "Design",
