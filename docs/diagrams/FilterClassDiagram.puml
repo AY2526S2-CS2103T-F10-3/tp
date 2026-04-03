@@ -1,0 +1,42 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+
+package "seedu.address.logic.commands" {
+    Class "FilterCommand" as FilterCommand
+}
+
+package "seedu.address.logic.parser" {
+    Class "<<interface>>\nParser" as Parser
+    Class "FilterCommandParser" as FilterCommandParser
+}
+
+package "seedu.address.model" {
+    Class "<<interface>>\nModel" as Model MODEL_COLOR
+}
+
+package "seedu.address.model.person" {
+    Class "<<interface>>\nPredicate<Person>" as Predicate MODEL_COLOR
+    Class "FilterMatchesPredicate" as FilterMatchesPredicate MODEL_COLOR
+    Class "CourseId" as CourseId MODEL_COLOR
+    Class "TGroup" as TGroup MODEL_COLOR
+    Class "Progress" as Progress MODEL_COLOR
+}
+
+skinparam classBackgroundColor MODEL_COLOR
+FilterMatchesPredicate .up.|> Predicate
+FilterMatchesPredicate *--> "0..1" CourseId
+FilterMatchesPredicate *--> "0..1" TGroup
+FilterMatchesPredicate *--> "0..1" Progress
+FilterMatchesPredicate *--> "0..1" "Integer\n(absenceCount)" as AbsenceCount MODEL_COLOR
+
+skinparam classBackgroundColor LOGIC_COLOR
+FilterCommandParser .up.|> Parser
+FilterCommandParser ..> FilterCommand : <<create>>
+FilterCommandParser ..> FilterMatchesPredicate : <<create>>
+
+FilterCommand ..> FilterMatchesPredicate : <<use>>
+FilterCommand ..> Model : <<call>>\nupdateFilteredPersonList()
+@enduml

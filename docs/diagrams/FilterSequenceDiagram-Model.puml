@@ -1,0 +1,37 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Model MODEL_COLOR_T1
+participant ":FilterCommand" as FilterCommand LOGIC_COLOR
+participant ":ModelManager" as ModelManager MODEL_COLOR
+participant ":FilteredList<Person>" as FilteredList MODEL_COLOR
+end box
+
+[-> FilterCommand : execute(model)
+activate FilterCommand
+
+FilterCommand -> ModelManager : updateFilteredPersonList(predicate)
+activate ModelManager
+
+ModelManager -> FilteredList : setPredicate(predicate)
+activate FilteredList
+FilteredList --> ModelManager
+deactivate FilteredList
+
+ModelManager --> FilterCommand
+deactivate ModelManager
+
+FilterCommand -> ModelManager : getFilteredPersonList()
+activate ModelManager
+ModelManager --> FilterCommand : filteredList
+deactivate ModelManager
+
+FilterCommand -> FilteredList : size()
+activate FilteredList
+FilteredList --> FilterCommand : count
+deactivate FilteredList
+
+[<-- FilterCommand : CommandResult("There are N students...")
+deactivate FilterCommand
+@enduml

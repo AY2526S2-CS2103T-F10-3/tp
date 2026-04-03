@@ -283,6 +283,124 @@ Explain how the command identifies the target student, retrieves the required de
 
 Relevant diagram: Sequence diagram showing how the selected student’s details and remarks are retrieved and passed to the UI for display.
 
+### Feature: Filter Command
+
+#### Overview
+
+The `filter` command narrows the displayed student list by one or more structured criteria: course ID (`crs/`), tutorial group (`tg/`), progress status (`p/`), and/or absence count threshold (`abs/`). Unlike `find`, which searches by name keywords, `filter` matches against student metadata fields and supports combining multiple criteria in a single command.
+
+Filter is a **read-only** command — it does not modify any student record, does not write to storage, and does not support undo.
+
+#### Architecture and component involvement
+
+The `filter` command touches the following components:
+
+* **UI** – Receives the user’s input and re-renders the student list panel when the filtered list changes.
+* **Logic** – `AddressBookParser` recognises the `filter` keyword and delegates to `FilterCommandParser`, which produces a `FilterCommand` containing a `FilterMatchesPredicate`.
+* **Model** – `FilterCommand` calls `Model#updateFilteredPersonList(Predicate<Person>)`, which updates the internal `FilteredList<Person>` used by the UI. No data is written back.
+* **Storage** – Not involved. The filtered view is transient and is not persisted.
+
+#### Key classes and their roles
+
+| Class | Package | Role |
+|---|---|---|
+| `FilterCommand` | `seedu.address.logic.commands` | Executes the filter by calling `model.updateFilteredPersonList()` and returns a `CommandResult` with the match count. |
+| `FilterCommandParser` | `seedu.address.logic.parser` | Parses raw argument string; validates all prefixes and values; constructs `FilterMatchesPredicate`; returns `FilterCommand`. |
+| `FilterMatchesPredicate` | `seedu.address.model.person` | Implements `Predicate<Person>`; holds up to four `Optional` criteria; `test()` applies AND-logic across all present fields. |
+
+The following partial class diagram illustrates the static relationships among these classes:
+
+<puml src="diagrams/FilterClassDiagram.puml" alt="FilterClassDiagram" />
+
+#### Step-by-step execution walkthrough
+
+The following sequence diagram shows how the command `filter crs/CS2103T tg/T01` flows through the Logic component:
+
+<puml src="diagrams/FilterSequenceDiagram-Logic.puml" alt="Interactions Inside the Logic Component for the filter Command" />
+
+1. `LogicManager` passes the raw input to `AddressBookParser.parseCommand()`, which matches `"filter"` and instantiates `FilterCommandParser`.
+2. `FilterCommandParser.parse()` calls `ArgumentTokenizer.tokenize()` to extract values for the prefixes `crs/`, `tg/`, `p/`, and `abs/`.
+3. Validation runs in sequence (see the parsing activity diagram below): invalid prefixes, unexpected preamble, duplicate prefixes, blank values, and at least one filter present.
+4. Each present field is parsed via `ParserUtil` into its typed form (`CourseId`, `TGroup`, `Progress`, or `Integer`).
+5. A `FilterMatchesPredicate` is constructed with the four `Optional` fields, then wrapped in a `FilterCommand`.
+6. `LogicManager` calls `FilterCommand.execute(model)`.
+7. The command calls `model.updateFilteredPersonList(predicate)`, updating the `FilteredList<Person>` in `ModelManager`.
+8. The size of the resulting list is used to produce the success message: *"There are N students matching this filter."*
+
+The following sequence diagram shows the model-side interaction in step 7:
+
+<puml src="diagrams/FilterSequenceDiagram-Model.puml" alt="Interactions Inside the Model Component for the filter Command" />
+
+#### Filtering logic (AND-semantics)
+
+`FilterMatchesPredicate#test(Person)` evaluates each present criterion and returns `true` only when **all** present criteria match:
+
+* **courseId** – Case-insensitive string equality against `person.getCourseId().value`.
+* **tGroup** – Case-insensitive string equality against `person.getTGroup().value`.
+* **progress** – Exact enum equality against `person.getProgress()`.
+* **absenceCount** – `person.getAbsenceCount() >= threshold` (students with *at least* that many absences pass).
+
+Absent criteria (empty `Optional`) are always treated as matching, so a predicate with only `courseId` set will match every student in that course regardless of their other fields.
+
+#### Parsing flow
+
+The following activity diagram summarises the validation sequence inside `FilterCommandParser.parse()`:
+
+<puml src="diagrams/FilterActivityDiagram.puml" alt="FilterCommandParser Activity Diagram" />
+
+#### Example usage scenarios
+
+**Scenario 1 – Filter by course only**
+
+Input: `filter crs/CS2103T`
+
+`FilterMatchesPredicate` is created with `courseId = Optional.of(new CourseId("CS2103T"))` and all other fields empty. Every student whose course ID equals `"cs2103t"` (case-insensitive) is shown. The result message reports the count.
+
+**Scenario 2 – Filter by tutorial group and progress**
+
+Input: `filter tg/T01 p/AT_RISK`
+
+The predicate holds `tGroup = T01` and `progress = AT_RISK`. Only students in tutorial group T01 who are also at risk are shown, demonstrating AND-combination of two criteria.
+
+**Scenario 3 – Filter by absence threshold**
+
+Input: `filter abs/3`
+
+The predicate holds `absenceCount = 3`. Every student with three or more absences is displayed, regardless of their course or tutorial group.
+
+**Scenario 4 – All four criteria combined**
+
+Input: `filter crs/CS2103T tg/T01 p/ON_TRACK abs/0`
+
+The predicate holds all four fields. Only students who are simultaneously in CS2103T, in tutorial group T01, on track, and have zero or more absences (effectively all students matching the first three criteria) are shown.
+
+#### Design considerations
+
+**Aspect: How filter criteria are combined**
+
+* **Alternative 1 (current choice): AND-semantics** — every specified criterion must match.
+  * Pros: Intuitive for narrowing a list; simple and predictable; easy to implement and test.
+  * Cons: Cannot express OR-queries (e.g., “all students in T01 *or* T02”).
+* **Alternative 2: OR-semantics** — a student passes if any single criterion matches.
+  * Pros: More flexible for broad, exploratory searches.
+  * Cons: Less intuitive; tends to produce unexpectedly large result sets.
+* **Alternative 3: Mixed AND/OR with grouping syntax** — different operators or prefix conventions for each semantic.
+  * Pros: Maximum expressiveness.
+  * Cons: Complex parser, steep learning curve, higher maintenance cost.
+
+**Aspect: How `FilterMatchesPredicate` is structured**
+
+* **Alternative 1 (current choice): Single predicate class with four `Optional` fields.**
+  * Pros: Single object to pass and compare for equality; clean, minimal API surface.
+  * Cons: `test()` contains all four checks; adding a new criterion requires modifying the class.
+* **Alternative 2: Compose multiple smaller `Predicate` objects and combine with `Predicate#and()`.**
+  * Pros: Open/closed principle; each criterion is independently testable; new criteria can be added without touching existing predicates.
+  * Cons: More classes to maintain; harder to inspect or log the combined predicate as a whole.
+
+#### Non-modifying nature
+
+`FilterCommand` does **not** call `Model#saveAddressBook()`. It therefore does not support undo and introduces no changes to persistent data. The filtered view is reset whenever another command (such as `list`, `add`, or `delete`) replaces the active predicate on the `FilteredList`.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
