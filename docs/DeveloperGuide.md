@@ -399,7 +399,7 @@ The predicate holds all four fields. Only students who are simultaneously in CS2
 
 #### Non-modifying nature
 
-`FilterCommand` does **not** call `Model#saveAddressBook()`. It therefore does not support undo and introduces no changes to persistent data. The filtered view is reset whenever another command (such as `list`, `add`, or `delete`) replaces the active predicate on the `FilteredList`.
+`FilterCommand` does **not** call `Model#saveAddressBook()`. As a read-only command, there is no state change to undo, and no changes to persistent data are introduced. The filtered view is reset whenever another command (such as `list`, `add`, or `delete`) replaces the active predicate on the `FilteredList`.
 
 
 --------------------------------------------------------------------------------------------------------------------
