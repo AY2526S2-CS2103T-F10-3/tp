@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -71,17 +72,11 @@ public class WeekList implements WeeklyAttendanceList {
             return true;
         }
 
-        if (!(other instanceof WeekList)) {
+        if (!(other instanceof WeekList otherList)) {
             return false;
         }
 
-        WeekList otherList = (WeekList) other;
-        for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
-            if (this.weeks[i].isAttended() != otherList.weeks[i].isAttended()) {
-                return false;
-            }
-        }
-        return true;
+        return Objects.equals(this.toString(), otherList.toString());
     }
 
     /**
