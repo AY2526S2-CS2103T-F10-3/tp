@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEEK;
 
 import seedu.address.commons.core.index.Index;
@@ -33,11 +34,12 @@ public class UnCancelWeekCommand extends Command {
     /**
      * Creates an UnCancelCommand to Uncancel a
      * specific week for a courseid-tutorial pair.
-     * @param courseId
-     * @param tGroup
+     * @param courseId ID of a particular course
+     * @param tGroup tutorial group of particular course
      * @param weekNumber week of tutorial to cancel
      */
     public UnCancelWeekCommand(CourseId courseId, TGroup tGroup, Index weekNumber) {
+        requireAllNonNull(courseId, tGroup, weekNumber);
         this.courseId = courseId;
         this.tGroup = tGroup;
         this.weekNumber = weekNumber;
@@ -72,6 +74,10 @@ public class UnCancelWeekCommand extends Command {
             }
         }
 
-        return new CommandResult("Week uncancelled successfully");
+        return new CommandResult(String.format(
+                MESSAGE_SUCCESS,
+                weekNumber.getOneBased(),
+                courseId,
+                tGroup));
     }
 }

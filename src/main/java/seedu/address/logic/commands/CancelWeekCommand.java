@@ -42,7 +42,7 @@ public class CancelWeekCommand extends Command {
      * @param tGroup tutorial group of particular course
      */
     public CancelWeekCommand(CourseId courseId, TGroup tGroup, Index weekNumber) {
-        requireAllNonNull(courseId, tGroup);
+        requireAllNonNull(courseId, tGroup, weekNumber);
         this.courseId = courseId;
         this.tGroup = tGroup;
         this.weekNumber = weekNumber;
