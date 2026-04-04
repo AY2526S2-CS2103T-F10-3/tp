@@ -26,6 +26,8 @@ public class UnCancelWeekCommand extends Command {
 
     public static final String MESSAGE_SUCCESS =
             "Week %1$d uncancelled for course %2$s tutorial %3$s";
+    public static final String MESSAGE_DUPLICATE =
+            "Week %1$d is not cancelled for course %2$s tutorial %3$s";
 
     private final CourseId courseId;
     private final TGroup tGroup;
@@ -47,6 +49,13 @@ public class UnCancelWeekCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        if (!model.isCancelledWeek(courseId, tGroup, weekNumber.getZeroBased())) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE,
+                    weekNumber.getOneBased(),
+                    courseId,
+                    tGroup));
+        }
 
         model.removeCancelledWeek(courseId, tGroup, weekNumber.getZeroBased());
 

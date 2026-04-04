@@ -29,6 +29,8 @@ public class CancelWeekCommand extends Command {
 
     public static final String MESSAGE_SUCCESS =
             "Week %1$d cancelled for course %2$s tutorial %3$s";
+    public static final String MESSAGE_DUPLICATE =
+            "Week %1$d is already cancelled for course %2$s tutorial %3$s";
 
     public final CourseId courseId;
     public final TGroup tGroup;
@@ -55,6 +57,13 @@ public class CancelWeekCommand extends Command {
         if (weekNumber.getZeroBased() >= WeekList.NUMBER_OF_WEEKS) {
             throw new CommandException("Invalid Week, there are only 13 weeks");
         }
+        if (model.isCancelledWeek(courseId, tGroup, weekNumber.getZeroBased())) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE,
+                    weekNumber.getOneBased(),
+                    courseId,
+                    tGroup));
+        }
         for (Person personToEdit : persons) {
             if (personToEdit.getCourseId().equals(courseId)
                     && personToEdit.getTGroup().equals(tGroup)) {
@@ -62,12 +71,7 @@ public class CancelWeekCommand extends Command {
                 WeekList weekList = personToEdit
                         .getWeekList().copy();
 
-                try {
-                    weekList.markAsCancelled(weekNumber.getZeroBased());
-                } catch (IllegalStateException e) {
-                    // ignore duplicates
-                    continue;
-                }
+                weekList.markAsCancelled(weekNumber.getZeroBased());
 
                 Person editedPerson = new Person(
                         personToEdit.getName(),

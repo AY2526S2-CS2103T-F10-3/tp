@@ -142,6 +142,11 @@ public class ModelManager implements Model {
 
         addressBook.getCancelledWeeksMap().putAll(cancelledWeeksMap); // to save
     }
+    @Override
+    public boolean isCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+        String key = makeKey(courseId, tGroup);
+        return cancelledWeeksMap.containsKey(key);
+    }
 
     @Override
     public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {

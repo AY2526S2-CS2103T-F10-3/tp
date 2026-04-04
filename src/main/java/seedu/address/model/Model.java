@@ -87,6 +87,8 @@ public interface Model {
 
     void addCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex);
 
+    boolean isCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex);
+
     void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex);
 
     /**

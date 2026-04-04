@@ -167,6 +167,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean isCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
+            return false;
+        }
+
+        @Override
         public void removeCancelledWeek(CourseId courseId, TGroup tGroup, int weekIndex) {
 
         }
