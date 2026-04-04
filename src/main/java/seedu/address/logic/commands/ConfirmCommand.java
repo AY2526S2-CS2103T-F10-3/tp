@@ -18,6 +18,10 @@ public class ConfirmCommand extends Command {
 
     private final ConfirmationManager confirmationManager;
 
+    /**
+     * creates a confirm command
+     * @param confirmationManager
+     */
     public ConfirmCommand(ConfirmationManager confirmationManager) {
         requireNonNull(confirmationManager);
         this.confirmationManager = confirmationManager;

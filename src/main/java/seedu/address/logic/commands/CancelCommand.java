@@ -21,6 +21,10 @@ public class CancelCommand extends Command {
 
     private final ConfirmationManager confirmationManager;
 
+    /**
+     * Creates a cancel command
+     * @param confirmationManager
+     */
     public CancelCommand(ConfirmationManager confirmationManager) {
         requireNonNull(confirmationManager);
         this.confirmationManager = confirmationManager;
