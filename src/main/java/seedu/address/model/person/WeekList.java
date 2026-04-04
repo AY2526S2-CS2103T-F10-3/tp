@@ -156,7 +156,7 @@ public class WeekList implements WeeklyAttendanceList {
     /**
      * Uses a String internal representation of Attendancelist to create an attendanceList
      * @return WeekList
-     * @throws IllegalValueException
+     * @throws IllegalValueException if the input is not a valid week list
      */
     public static WeekList buildWeekListFromString(String weeklyAttendanceList) throws IllegalValueException {
         requireNonNull(weeklyAttendanceList);
@@ -199,12 +199,16 @@ public class WeekList implements WeeklyAttendanceList {
      */
     public double calculateWeekAttendance() {
         double count = 0;
+        double total = 0;
         for (WeeklyAttendance week : weeks) {
             if (week.isAttended()) {
                 count++;
             }
+            if (!week.isCancelled()) {
+                total++;
+            }
         }
-        return count / NUMBER_OF_WEEKS * 100;
+        return count / total * 100;
     }
     /**
      * Calculates the amount of absences

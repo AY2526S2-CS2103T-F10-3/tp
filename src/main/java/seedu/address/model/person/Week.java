@@ -12,8 +12,8 @@ public class Week implements WeeklyAttendance {
     public enum Status {
         Y, // Attended
         A, // Absent
-        N, // Not marked
-        C; // Default
+        N, // Default
+        C; // Cancelled
         public static Status fromString(String value) {
             return Status.valueOf(value.toUpperCase());
         }
