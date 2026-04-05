@@ -172,7 +172,7 @@ public class ModelManager implements Model {
 
                 WeekList weekList = person
                         .getWeekList().copy();
-                weekList.markWeekAsDefault(weekIndex);
+                weekList.markAsUncancelled(weekIndex);
 
                 Person updated = new Person(
                         person.getName(),

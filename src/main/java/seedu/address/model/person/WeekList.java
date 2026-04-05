@@ -64,6 +64,12 @@ public class WeekList implements WeeklyAttendanceList {
         assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
         weeks[index].markAsCancelled();
     }
+    @Override
+    public void markAsUncancelled(int index) {
+        assert index >= 0 : "Index must be >= 0";
+        assert index < NUMBER_OF_WEEKS : "Index must be < " + NUMBER_OF_WEEKS;
+        weeks[index].markAsUncancelled();
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -92,19 +98,8 @@ public class WeekList implements WeeklyAttendanceList {
         for (int i = 0; i < NUMBER_OF_WEEKS; i++) {
             Week original = (Week) this.weeks[i];
             Week newWeek = new Week(i + 1);
-            switch (original.getStatus()) {
-            case "Y":
-                newWeek.markAsAttended();
-                break;
-            case "A":
-                newWeek.markAsAbsent();
-                break;
-            case "C":
-                newWeek.markAsCancelled();
-                break;
-            default:
-                break;
-            }
+            newWeek.setStatus(Week.Status.valueOf(original.getStatus())); // copy current status
+            newWeek.setPrevStatus(original.getPrevStatus()); // copy previous status
             copiedWeeks[i] = newWeek;
         }
         return new WeekList(copiedWeeks);
