@@ -83,7 +83,6 @@ Format:
 help
 ```
 
-## 
 
 <a name="list"></a>
 ### Listing all students: `list`
@@ -95,7 +94,7 @@ Format:
 list
 ```
 
-##
+
 
 <a name="add"></a>
 ### Adding a student: `add`
@@ -112,7 +111,7 @@ Examples:
 add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
 ```
 
-##
+
 
 <a name="delete"></a>
 ### Deleting a student : `delete`
@@ -157,7 +156,7 @@ Enter `yes` to proceed with the deletion, or `no` to cancel it.
 `delete 3` followed by `no`
 * No change is made.
 
-##
+
 
 <a name="clear"></a>
 ### Clears all students : `clear`
@@ -169,7 +168,7 @@ Format:
 clear
 ```
 
-##
+
 
 <a name="find"></a>
 ### Finding students by name: `find`
@@ -192,7 +191,7 @@ Examples:
 * `find Jo` returns `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
-##
+
 
 <a name="filter"></a>
 ### Filtering students: `filter`
@@ -224,7 +223,7 @@ Expected output:
 
 Tip: if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 
-##
+
 
 <a name="edit"></a>
 ### Editing a student: `edit`
@@ -245,7 +244,7 @@ Examples:
 * `edit 6 id/A1234567B crs/CS2040S tg/T12` - Edits the student ID, course ID, and tutorial group of the 6th student.
 * `edit 7 n/John Tan id/A1234567B e1384397@u.nus.edu crs/CS2105 tg/T08 tel/@john_tan` - Edits all editable fields of the 7th student.
 
-##
+
 
 <a name="view"></a>
 ### Viewing a student: `view`
@@ -257,7 +256,7 @@ Format:
 view INDEX
 ```
 
-##
+
 
 <a name="mark-attendance"></a>
 ### Marks a students attendance: `markattendance`
@@ -279,7 +278,7 @@ Examples:
 markattendance 1 week/1 sta/y
 ```
 
-##
+
 
 <a name="update-progress"></a>
 ### Updating a student's progress : `updateprogress`
@@ -320,7 +319,7 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 * `updateprogress id/A1234567X crs/CS2103T tg/T01 p/needs_attention` - Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to `needs_attention`.
 * `updateprogress 2 p/not_set` - Clears the progress status of the 2nd student in the currently displayed student list.
 
-##
+
 
 <a name="remark"></a>
 ### Adding a remark : `remark`
@@ -337,7 +336,7 @@ Examples:
 remark 1 txt/Participates actively in class!
 ```
 
-##
+
 
 <a name="unremark"></a>
 ### Removing a remark : `unremark`
@@ -354,10 +353,7 @@ Examples:
 unremark 1 r/2
 ```
 
-##
 
-<div markdown="span" class="alert alert-primary"></div>
-:bulb: **Tip:**<br><br>
 
 <a name='remark'></a>
 ### Adding a remark: `remark`
