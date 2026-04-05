@@ -1,0 +1,41 @@
+@startuml
+!include style.puml
+
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam classBorderColor LOGIC_COLOR_T4
+skinparam classFontColor white
+
+package "Logic" {
+    package "Parser" {
+        class DeleteCommandParser
+    }
+
+    package "Commands" {
+        abstract class Command
+        class DeleteCommand
+        class ConfirmedDeleteCommand
+        class ConfirmCommand
+        class CancelCommand
+    }
+
+    class ConfirmationManager
+}
+
+Command <|-- DeleteCommand
+Command <|-- ConfirmedDeleteCommand
+Command <|-- ConfirmCommand
+Command <|-- CancelCommand
+
+DeleteCommandParser --> DeleteCommand : creates
+DeleteCommandParser --> ConfirmationManager
+
+DeleteCommand --> ConfirmationManager
+DeleteCommand ..> ConfirmedDeleteCommand : creates
+
+ConfirmCommand --> ConfirmationManager
+CancelCommand --> ConfirmationManager
+
+ConfirmationManager --> Command : stores pending
+@enduml
