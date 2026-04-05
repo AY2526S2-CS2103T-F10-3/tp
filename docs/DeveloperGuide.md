@@ -195,23 +195,97 @@ Explain how TeachAssist checks whether a student record already exists before ad
 
 #### Overview
 
-Describe the purpose of the `delete` command and explain that it has been extended beyond the original AB3 version.
+The `delete` command removes a student from TeachAssist. Unlike the original AB3 implementation, which only supported deletion by displayed index and performed the deletion immediately, TeachAssist extends this feature in two ways.
+
+First, TeachAssist supports deleting a student either by displayed index or by exact student details. This gives users flexibility when working with filtered lists or when they prefer to identify a student directly by their stored attributes.
+
+Second, TeachAssist introduces a confirmation workflow before the deletion is carried out. This reduces the likelihood of accidental deletion and makes the feature safer to use, especially in a teaching context where student records are important and should not be removed unintentionally.
 
 #### Supported delete modes
 
-Explain that TeachAssist supports deletion by displayed index and by student details. State the exact student details required for detail-based deletion.
+TeachAssist supports two modes of deletion.
+
+The first mode is **deletion by displayed index**, where the user deletes a student using the index shown in the current filtered student list.
+
+Example: `delete 1`
+
+The second mode is **deletion by exact student details**, where the user deletes a student by specifying the student’s:
+- `StudentId`
+- `CourseId`
+- `TGroup`
+
+Example: `delete id/A1234567X crs/CS2103T tg/T01`
+
+This identity-based deletion mode is useful when the user wants to target a specific student directly, rather than relying on the current displayed index.
 
 #### Confirmation workflow
 
-Explain that deletion does not happen immediately after a valid delete command. Describe how TeachAssist first identifies the target student, prompts the user for confirmation, and then proceeds only if the user confirms.
+A valid `delete` command does not immediately remove the student from TeachAssist. Instead, the system first resolves the student targeted by the command and then prompts the user for confirmation.
 
-Relevant diagram: Activity diagram showing the branching delete flow, including deletion by index, deletion by student details, and confirmation handling.
+For index-based deletion, TeachAssist first checks whether the given index is valid in the current filtered student list. For detail-based deletion, TeachAssist searches the currently displayed list for a student whose `StudentId`, `CourseId`, and `TGroup` all match the given values exactly.
+
+If the student cannot be resolved, the command fails and no confirmation is requested. If the student is successfully resolved, TeachAssist creates a pending delete action and returns a confirmation prompt asking the user whether the deletion should proceed.
+
+If the user enters `yes`, the pending deletion is executed and the student is removed from the model. If the user enters `no`, the pending deletion is discarded and no changes are made.
+
+<box type="info" seamless>
+
+**Relevant diagram:** Activity diagram showing the branching delete flow, including deletion by index, deletion by student details, and confirmation handling.
+
+<@Isha place the activity diagram here!>
+
+</box>
 
 #### Implementation
 
-Explain how the parser distinguishes between the supported delete formats, what validation is performed in the parser, what validation is deferred to command execution, and how the final deletion is carried out after confirmation.
+The `delete` feature is implemented using `AddressBookParser`, `DeleteCommandParser`, `DeleteCommand`, `ConfirmedDeleteCommand`, `ConfirmCommand`, `CancelCommand`, and `ConfirmationManager`.
 
-Relevant diagram: Sequence diagram showing the successful delete flow through parser, command, model, and confirmation logic.
+At the parsing stage, `AddressBookParser` first determines whether the system is currently waiting for a confirmation response. If a deletion is pending, it interprets `yes` as a `ConfirmCommand` and `no` as a `CancelCommand`. Otherwise, normal command parsing proceeds.
+
+When the user enters a `delete` command, `AddressBookParser` delegates parsing of the command arguments to `DeleteCommandParser`. `DeleteCommandParser` supports two valid formats:
+- `delete INDEX`
+- `delete id/STUDENT_ID crs/COURSE_ID tg/TGROUP`
+
+It performs format-level validation, such as:
+- checking that the delete input is not empty
+- distinguishing between index-based and identity-based deletion
+- ensuring that all required prefixes for detail-based deletion are present
+- rejecting duplicate prefixes
+- rejecting malformed index input or unexpected trailing text after an index
+
+After successful parsing, a `DeleteCommand` object is created. However, some validation is intentionally deferred to command execution. In particular, whether the target index is within the bounds of the current filtered list, and whether the given student details actually match a student in the current filtered list, can only be determined during execution because they depend on the current model state.
+
+During execution, `DeleteCommand` resolves the student to be deleted. Once the student is identified, it does not delete the student immediately. Instead, it creates a `ConfirmedDeleteCommand` containing the resolved `Person` object and stores it in `ConfirmationManager` as the pending command. A confirmation message is then returned to the user.
+
+If the user subsequently enters `yes`, `ConfirmCommand` retrieves the pending `ConfirmedDeleteCommand` from `ConfirmationManager`, clears the pending state, and executes it. `ConfirmedDeleteCommand` then performs the actual deletion by calling `Model#deletePerson(...)`.
+
+If the user enters `no`, `CancelCommand` clears the pending command in `ConfirmationManager` and returns a cancellation message instead.
+
+This separation keeps the responsibilities of the classes clear. `DeleteCommand` is responsible for resolving the deletion target and initiating confirmation, `ConfirmedDeleteCommand` performs the actual deletion, and `ConfirmationManager` stores the pending action between the initial delete request and the final user response.
+
+<box type="info" seamless>
+
+**Relevant diagram:** Delete-related class structure.
+
+<puml src="diagrams/DeleteClassDiagram.puml" width="700" />
+
+</box>
+
+<box type="info" seamless>
+
+**Relevant diagram:** Successful confirmation flow after the user enters `yes`.
+
+<puml src="diagrams/ConfirmedDeleteSequenceDiagram.puml" width="700" />
+
+</box>
+
+#### Design considerations
+
+A key design consideration was where to place the confirmation logic. An earlier approach placed delete-specific confirmation handling in the UI layer and in `LogicManager`. However, this weakened the separation of concerns because UI classes and top-level logic classes became aware of command-specific workflow details.
+
+The final design keeps the confirmation workflow within the logic and command layers. `AddressBookParser` remains responsible for translating user input into command objects, while command execution and model mutation remain outside the parser. This preserves a cleaner abstraction boundary compared to handling delete confirmation directly in the UI.
+
+Another design consideration was whether to delete the student immediately after parsing a valid command. This was rejected because it would make accidental deletions easier. The confirmation-based design was chosen to improve safety and usability.
 
 ### Feature: Update Progress
 
