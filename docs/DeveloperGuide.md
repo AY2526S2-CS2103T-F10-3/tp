@@ -707,39 +707,41 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a student by index
 
-    1. _{Fill in test case}_
+   1. **Test case:** `delete 1`
 
-    2. _{Fill in expected behaviour}_
+   2. **Expected behaviour:** If index `1` refers to a valid student in the current filtered list, TeachAssist does not delete the student immediately. Instead, it shows a confirmation message asking the user to type `yes` to confirm or `no` to cancel.
 
 2. Deleting a student by student details
 
-    1. _{Fill in test case}_
+   1. **Test case:** `delete id/A1234567X crs/CS2103T tg/T01`
 
-    2. _{Fill in expected behaviour}_
+   2. **Expected behaviour:** If a student matching the given `StudentId`, `CourseId`, and `TGroup` exists in the current filtered list, TeachAssist does not delete the student immediately. Instead, it shows a confirmation message asking the user to type `yes` to confirm or `no` to cancel.
 
 3. Confirming a deletion
 
-    1. _{Fill in test case}_
+   1. **Test case:** Enter a valid delete command such as `delete 1`, then enter `yes`
 
-    2. _{Fill in expected behaviour}_
+   2. **Expected behaviour:** The pending deletion is executed, the student is removed from TeachAssist, and a success message is shown.
 
 4. Cancelling a deletion
 
-    1. _{Fill in test case}_
+   1. **Test case:** Enter a valid delete command such as `delete 1`, then enter `no`
 
-    2. _{Fill in expected behaviour}_
+   2. **Expected behaviour:** The pending deletion is cancelled, no student is removed, and a cancellation message is shown.
 
 5. Deleting with invalid command format
 
-    1. _{Fill in test case}_
+   1. **Test case:** `delete abc`
 
-    2. _{Fill in expected behaviour}_
+   2. **Expected behaviour:** The command is rejected, no confirmation is requested, and an error message is shown to indicate that the command format is invalid.
 
 6. Deleting a non-existent student
+    
+   1. **Prerequisite:** ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
 
-    1. _{Fill in test case}_
+   2. **Test case:** `delete id/A0000000Z crs/CS9999 tg/T99`
 
-    2. _{Fill in expected behaviour}_
+   3. **Expected behaviour:** The command is rejected because no matching student exists in the current filtered list, no confirmation is requested, and an error message is shown.
 
 ### Updating progress
 
