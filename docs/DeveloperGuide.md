@@ -747,21 +747,29 @@ testers are expected to do more *exploratory* testing.
 
 1. Updating progress with a valid status
 
-    1. _{Fill in test case}_
+    1. **Test case:** `progress 1 p/ON_TRACK`
 
-    2. _{Fill in expected behaviour}_
+    2. **Expected behaviour:** If index `1` refers to a valid student in the current filtered list and the progress status is valid, the student’s progress is updated to `ON_TRACK` and a success message is shown.
 
 2. Updating progress with an invalid status
 
-    1. _{Fill in test case}_
+    1. **Test case:** `progress 1 p/GOOD`
 
-    2. _{Fill in expected behaviour}_
+    2. **Expected behaviour:** The command is rejected, no student record is updated, and an error message is shown to indicate that the progress status is invalid.
 
 3. Updating progress for a non-existent student
 
-    1. _{Fill in test case}_
+   1. **Prerequisite:** ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
+   
+   2. **Test case:** `progress id/A0000000Z crs/CS9999 tg/T99 p/AT_RISK`
 
-    2. _{Fill in expected behaviour}_
+   3. **Expected behaviour:** The command is rejected because no matching student exists in the current filtered list, no student record is updated, and an error message is shown.
+
+4. Removing progress using `NOT_SET`
+
+    1. **Test case:** `progress 1 p/NOT_SET`
+
+    2. **Expected behaviour:** If index `1` refers to a valid student in the current filtered list, the student’s progress is updated to `NOT_SET`. The progress tag is removed from the student card in the UI, and a success message is shown.
 
 ### Marking attendance
 
