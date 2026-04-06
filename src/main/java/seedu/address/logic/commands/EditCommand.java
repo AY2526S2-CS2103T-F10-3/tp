@@ -102,8 +102,11 @@ public class EditCommand extends Command {
         TGroup updatedTGroup = editPersonDescriptor.getTGroup().orElse(personToEdit.getTGroup());
         Tele updatedTele = editPersonDescriptor.getTele().orElse(personToEdit.getTele());
 
-        return new Person(updatedName, updatedCourseId, updatedEmail, updatedStudentId,
+        Person editedPerson = new Person(updatedName, updatedCourseId, updatedEmail, updatedStudentId,
                 updatedTGroup, updatedTele, personToEdit.getWeekList(), personToEdit.getProgress());
+
+        editedPerson.getRemarks().forEach(editedPerson::addRemark);
+        return editedPerson;
     }
 
     @Override
