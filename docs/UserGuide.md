@@ -6,9 +6,11 @@
 
 # TeachAssist User Guide
 
-TeachAssist is a desktop app for full-time Teaching Assistants (TAs) at the National University of Singapore (NUS) who manage student records across multiple courses and tutorial groups. It helps TAs record attendance, track student progress, search for student details, and update or remove records. Users can type commands to complete tasks quickly, while the app also provides a clear visual interface for viewing and managing student information.
+Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and progress, and keeping track of endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus? TeachAssist is for you.
 
-This guide assumes that users are familiar with basic computer operations, such as opening a terminal or command window, running the application with a given command, and managing files such as copying or backing up data. Users do not need programming knowledge or an understanding of how the application is built.
+TeachAssist is a desktop application designed for full-time University Teaching Assistants (TAs) at NUS who manage multiple classes and tutorials each semester.If you're a fast typist, TeachAssist can help you quickly filter student lists, track attendance, and log important notes using straightforward keyboard commands, all while offering an easy-to-navigate visual interface.
+
+And the best part? No technical expertise needed—just basic computer skills like installing software and navigating files.
 
 ## Table of contents
 - [Quick Start](#quick-start)
@@ -74,7 +76,7 @@ This guide assumes that users are familiar with basic computer operations, such 
 <a name="help"></a>
 ### Viewing help : `help`
 
-Shows a message explaining how to access the User Guide and displays the available commands.
+If you ever need a quick refresher on TeachAssist features, the Help Window provides a summary of all commands and a direct link to the User Guide.
 
 ![help message](images/helpMessage.png)
 
@@ -82,6 +84,7 @@ Format:
 ```
 help
 ```
+Tip: You can also press F1 to open the Help window.
 
 ## 
 
@@ -174,30 +177,36 @@ clear
 <a name="find"></a>
 ### Finding students by name: `find`
 
-Finds students whose names contain any of the given keywords.
+Instantly locate students by typing the beginning of any word in their name.
 
 Format: `find KEYWORD [MORE_KEYWORDS]...`
 
+**Search Rules:**
 * The search is case-insensitive. e.g. `hans` matches `Hans`
 * The order of keywords does not matter. e.g. `Hans Bo` matches `Bo Hans`
 * Only the name field is searched
 * Keywords match the **start of words** in names (prefix matching).Substrings in the middle of words are not matched.
     * e.g. `Han` matches `Hans`
     * `an` will not match `Hans`
-* Persons matching at least one keyword are returned (i.e. `OR` search)
-    * e.g. `Hans Bo` returns `Hans Gruber`, `Bo Yang`
-* Keywords must contain only alphabetic characters (A–Z, a–z)
+* If you provide multiple keywords, TeachAssist will find students that match any of them (e.g., find Al Bob finds both Albert and Bobby)
 
-Examples:
-* `find Jo` returns `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
+**Example:** `find jo doe` — Finds **Jo**hn **Doe** and **Jo**anne **Doe**bertson.
+
+**Expected Output:**
+The student list updates instantly to show only matching records, and the Result Box (see Figure X) displays the total count of students found.
+
+<box type="warning">
+Warning: Keywords must be **alphabetic only** (A–Z). Using numbers or symbols (e.g., `find A123`) will result in an error.
+</box>
+
+**Note:** The `find` command searches through the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 
 ##
 
 <a name="filter"></a>
 ### Filtering students: `filter`
 
-Filters students using one or more of the available filter fields.
+Narrow down your student list by Course ID, Tutorial Group, Progress, or Absence count. This is the most efficient way to identify "at-risk" students or specific tutorial sections.
 
 Format:
 ```
@@ -206,11 +215,12 @@ filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]`
 
 Behaviour:
 * Course ID (`crs/`) and tutorial group (`tg/`) are matched case-insensitively.
-* Progress (`p/`) must be one of the supported tokens: `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`). Parsing is case-insensitive (for example, `ON_TRACK` or `on_track` are accepted) but matching is by exact token mapping — partial or prefix matches are not supported.
+* Progress (`p/`) must be one of the supported tokens(case insensitive): `on_track`, `needs_attention`, `at_risk`, or `clear` (alias `not_set`).
 * Absence count (`abs/`) matches students whose absence count is greater than or equal to the provided number.
 * Multiple filters combine with AND semantics — a student must satisfy every provided filter to be included in the results.
-* At least one filter parameter must be provided; using no parameters will result in an error.
-* Note: the `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
+
+**Warning:**At least one filter parameter must be provided; using no parameters will result in an error.
+** Note:** the `filter` command applies to the entire stored student list and replaces any existing filter — it does not apply on top of a previously displayed (filtered) list.
 
 Examples:
 * `filter crs/CS2103T` — returns students enrolled in CS2103T.
@@ -219,10 +229,22 @@ Examples:
 * `filter abs/2` — returns students with 2 or more absences.
 * `filter crs/CS2103T tg/T02 p/needs_attention abs/1` — returns students matching all four criteria.
 
-Expected output:
-`There are N students matching this filter.`
+**Examples:**
 
-Tip: if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
+filter crs/CS2103T — Returns all students enrolled in CS2103T.
+
+filter crs/CS2103T tg/T01 — Returns students in CS2103T and tutorial group T01.
+
+filter abs/2 — Returns students with 2 or more absences.
+
+filter crs/CS2103T tg/T02 p/needs_attention abs/1 — Returns students matching all four criteria.
+
+**Expected Output:**
+The student list updates instantly. The Result Box will display the total count:
+
+`There are 5 students matching this filter.`
+
+**Tip:** if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 
 ##
 
@@ -250,12 +272,23 @@ Examples:
 <a name="view"></a>
 ### Viewing a student: `view`
 
-Shows student details.
+If you need to see a student's remarks history, use the view command to display their information in the side panel.
 
 Format:
 ```
 view INDEX
 ```
+**Example:** `view 1` — Displays the full details of the first student in the list.
+
+**Expected Output:**
+The **View Window** on the right side of the application updates to show the selected student's details. A confirmation message also appears in the Result Box:
+> `Viewing student: John Doe; ID: A0123456X; ...`
+
+**Note** The `view` command works on the *currently filtered* list. If you have filtered the list to show only "At Risk" students, `view 1` will show the first student in that filtered sub-list.
+
+<box type="warning">
+**Warning:** If the index provided is larger than the number of students currently visible (e.g., typing `view 10` when only 5 students are listed), TeachAssist will show an "Invalid index" error.
+</box>
 
 ##
 
