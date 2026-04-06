@@ -127,12 +127,6 @@ public class ViewWindow extends UiPart<Region> {
         remarksGrid.add(dateLabel, 1, rowIndex);
         remarksGrid.add(remarkLabel, 2, rowIndex);
     }
-
-    /**
-     * Shows the view window and centers it on the screen.
-     */
-    // The lifecycle (show/hide/focus) is managed by the embedding container (MainWindow).
-
     /**
      * Clears the current view and resets UI components.
      */
