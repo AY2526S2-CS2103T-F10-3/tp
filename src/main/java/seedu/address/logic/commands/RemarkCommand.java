@@ -60,10 +60,39 @@ public class RemarkCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Person editedPerson = createEditedPerson(personToEdit, remark);
 
-        personToEdit.addRemark(remark);
-        return new CommandResult(String.format(MESSAGE_ADD_REMARKS_SUCCESS, Messages.format(personToEdit) + "\n"
+        model.setPerson(personToEdit, editedPerson);
+
+        return new CommandResult(String.format(MESSAGE_ADD_REMARKS_SUCCESS, Messages.format(editedPerson) + "\n"
                 + "Remark: " + this.remark.getText()));
+    }
+
+    /**
+     * Creates and returns a new {@code Person} based on {@code personToEdit},
+     * with all existing details and remarks preserved, and the given
+     * {@code remarkToAdd} appended to the remarks list.
+     *
+     * @param personToEdit The original person to copy from.
+     * @param remarkToAdd The remark to be added to the copied person.
+     * @return A new {@code Person} containing the original person's data and the added remark.
+     */
+    public static Person createEditedPerson(Person personToEdit, Remark remarkToAdd) {
+        Person editedPerson = new Person(
+            personToEdit.getName(),
+            personToEdit.getCourseId(),
+            personToEdit.getEmail(),
+            personToEdit.getStudentId(),
+            personToEdit.getTGroup(),
+            personToEdit.getTele(),
+            personToEdit.getWeekList(),
+            personToEdit.getProgress());
+
+        for (Remark existingRemark : personToEdit.getRemarks()) {
+            editedPerson.addRemark(existingRemark);
+        }
+        editedPerson.addRemark(remarkToAdd);
+        return editedPerson;
     }
 
     @Override

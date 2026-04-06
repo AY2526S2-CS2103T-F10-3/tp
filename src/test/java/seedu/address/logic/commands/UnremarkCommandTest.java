@@ -62,11 +62,12 @@ public class UnremarkCommandTest {
         UnremarkCommand command = new UnremarkCommand(Index.fromOneBased(1), Index.fromOneBased(1));
 
         CommandResult commandResult = command.execute(modelStub);
+        Person updatedPerson = modelStub.getFilteredPersonList().get(0);
 
-        assertEquals(String.format(UnremarkCommand.MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(person) + "\n"
+        assertEquals(String.format(UnremarkCommand.MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(updatedPerson) + "\n"
                 + "Deleted Remark: " + remark.getText()),
                 commandResult.getFeedbackToUser());
-        assertEquals(0, person.getRemarks().size());
+        assertEquals(0, updatedPerson.getRemarks().size());
     }
 
     @Test
@@ -234,6 +235,12 @@ public class UnremarkCommandTest {
         ModelStubWithPersonList(Person person) {
             requireNonNull(person);
             this.filteredPersonList.add(person);
+        }
+
+        @Override
+        public void setPerson(Person target, Person editedPerson) {
+            int index = filteredPersonList.indexOf(target);
+            filteredPersonList.set(index, editedPerson);
         }
 
         @Override

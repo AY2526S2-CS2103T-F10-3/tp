@@ -67,9 +67,39 @@ public class UnremarkCommand extends Command {
         }
 
         Remark deletedRemark = personToEdit.getRemarks().get(remarkIndex.getZeroBased());
-        personToEdit.deleteRemark(remarkIndex);
-        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(personToEdit)) + "\n"
+        Person editedPerson = createEditedPersonWithRemovedRemark(personToEdit, remarkIndex);
+        model.setPerson(personToEdit, editedPerson);
+        return new CommandResult(String.format(MESSAGE_DELETE_REMARKS_SUCCESS, Messages.format(editedPerson)) + "\n"
                 + "Deleted Remark: " + deletedRemark.getText());
+    }
+
+    /**
+     * Creates and returns a new {@code Person} based on {@code personToEdit},
+     * with all existing details preserved and the remark at the specified
+     * {@code remarkIndex} removed from the remarks list.
+     *
+     * @param personToEdit The original person to copy from.
+     * @param remarkIndex The index of the remark to remove.
+     * @return A new {@code Person} containing the original person's data except for the removed remark.
+     */
+    private static Person createEditedPersonWithRemovedRemark(Person personToEdit, Index remarkIndex) {
+        Person editedPerson = new Person(
+                personToEdit.getName(),
+                personToEdit.getCourseId(),
+                personToEdit.getEmail(),
+                personToEdit.getStudentId(),
+                personToEdit.getTGroup(),
+                personToEdit.getTele(),
+                personToEdit.getWeekList(),
+                personToEdit.getProgress());
+
+        for (int i = 0; i < personToEdit.getRemarks().size(); i++) {
+            if (i != remarkIndex.getZeroBased()) {
+                editedPerson.addRemark(personToEdit.getRemarks().get(i));
+            }
+        }
+
+        return editedPerson;
     }
 
     @Override
