@@ -147,11 +147,45 @@ Examples:
 add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
 ```
 
+When done successfully, it should look like this:
+
+![successful edit](images/successfulEdit.png)
+
+If any required fields are missing or the index is wrong, an error will be shown:
+
+![edit error index 0](images/errorEditIndexZero.png)
+
+![edit error index out](images/errorEditIndexOut.png)
+
+![edit error no field](images/errorEditNoField.png)
+
 <find>
 
 <filter>
 
-<edit>
+<a name="edit"></a>
+### Editing a student: `edit`
+
+Edits a student based on the index given. At least one field must be present.
+
+Format:
+```
+edit [n\NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]
+```
+
+Examples:
+```
+edit 1 n/JOHN HOE
+```
+
+When done successfully, it should look like this:
+
+![successful add](images/successfulAdd.png)
+
+If any required fields are missing or wrong, an error will be shown:
+
+![add error](images/errorAdd.png)
+
 
 <markattendance>
 
@@ -550,4 +584,3 @@ No. For commands with prefixes such as add and filter, parameters can be entered
 
 **Q: Why did delete 1 remove a different student than I expected?**
 Because the index refers to the current displayed list. You may be referring to an outdated list.
-
