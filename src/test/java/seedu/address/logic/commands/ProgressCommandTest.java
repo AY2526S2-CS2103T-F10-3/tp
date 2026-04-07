@@ -252,4 +252,6 @@ public class ProgressCommandTest {
         assertFalse(firstIndexCommand.equals(null));
         assertFalse(firstIndexCommand.equals(1));
     }
+
+
 }
