@@ -58,6 +58,7 @@
         "feature-update-progress": "Feature: Update Progress",
         "feature-mark-attendance": "Feature: Mark Attendance",
         "feature-remark-command": "Feature: Remark Command",
+        "feature-unremark-command": "Feature: Unremark Command",
         "feature-view-command": "Feature: View Command",
         "documentation-logging-testing-configuration-dev-ops": "Documentation, logging, testing, configuration, dev-ops",
         "appendix-requirements": "Appendix: Requirements",
