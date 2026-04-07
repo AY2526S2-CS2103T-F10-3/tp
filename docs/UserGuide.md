@@ -358,7 +358,7 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 <a name="remark"></a>
 ### Adding a remark : `remark`
 
-Adds a textual remark to the student.
+There may be times when you want to record important notes about a student. For instance, a CS2100 TA may wish to attach the remark "Weak understanding of Sequential Circuits" to a student after a tutorial. This is where the `remark` feature comes in handy!
 
 Format:
 ```
@@ -370,12 +370,23 @@ Examples:
 remark 1 txt/Participates actively in class!
 ```
 
+Notes:
+* The remark must be prefixed with `txt/`.
+* If multiple `txt/` prefixes are provided, only the first `txt/` is treated as a prefix, subsequent `txt/` prefixes will be treated as part of the remark
+* There is a limit of 100 characters per remark. Remember to be concise!
+
+Example:
+```
+remark 1 txt/Needs more practice on txt/recursion
+```
+will be stored as `Needs more practice on txt/recursion`
+
 ##
 
 <a name="unremark"></a>
 ### Removing a remark : `unremark`
 
-Removes the specified remark from the student.
+You may sometimes need to remove a remark that is outdated, incorrect, or no longer useful. For example, a CS2100 TA may have previously added the remark **"Weak understanding of Sequential Circuits"** for a student, but later decide to remove it after the student improves. The `unremark` feature allows you to delete a specific remark from the student’s record.
 
 Format:
 ```
