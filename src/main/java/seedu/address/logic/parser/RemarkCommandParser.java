@@ -27,15 +27,25 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
 
-        if (argMultimap.getPreamble().isBlank() || argMultimap.getValue(PREFIX_REMARK).isEmpty()) {
+        if (argMultimap.getPreamble().isBlank()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+
+        if (argMultimap.getValue(PREFIX_REMARK).isEmpty()) {
+            throw new ParseException(ParserMessages.missingPrefixValue(
+                PREFIX_REMARK.toString(),
+                "Remark cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE));
         }
 
         Index index = ParserUtil.parseIndex(argMultimap.getPreamble());
         String remarkText = argMultimap.getValue(PREFIX_REMARK).get().trim();
 
         if (remarkText.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            throw new ParseException(ParserMessages.missingPrefixValue(
+                PREFIX_REMARK.toString(),
+                "Remark cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE));
         }
 
         Remark remark = new Remark(remarkText, LocalDate.now());

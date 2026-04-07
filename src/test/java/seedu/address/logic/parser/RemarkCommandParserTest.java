@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -30,27 +31,30 @@ public class RemarkCommandParserTest {
     @Test
     public void parse_argumentsWithMissingPrefix_returnsFailure() {
         assertParseFailure(parser, "1 Participates actively in class",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                PREFIX_REMARK.toString(),
+                "Remark cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidPrefix_returnsFailure() {
         assertParseFailure(parser, "1 r/Participates actively in class",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE)
+            ParserMessages.missingPrefixValue(
+                PREFIX_REMARK.toString(),
+                "Remark cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE)
         );
     }
 
     @Test
     public void parse_missingRemarkAfterPrefix_returnsFailure() {
         assertParseFailure(parser, "1 txt/",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                PREFIX_REMARK.toString(),
+                "Remark cannot be empty.",
+                RemarkCommand.MESSAGE_USAGE));
     }
-
-    // @Test
-    // public void parse_longRemark_returnsFailure() {
-    //     assertParseFailure(parser, "1 txt/" + "a".repeat(101),
-    //         "Remark is too long. Maximum length is 100 characters.");
-    // }
 
     @Test
     public void parse_missingIndex_returnsFailure() {

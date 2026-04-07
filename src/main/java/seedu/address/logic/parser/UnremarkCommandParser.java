@@ -24,15 +24,25 @@ public class UnremarkCommandParser implements Parser<UnremarkCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_UNREMARK);
 
-        if (argMultimap.getPreamble().isBlank() || argMultimap.getValue(PREFIX_UNREMARK).isEmpty()) {
+        if (argMultimap.getPreamble().isBlank()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
         }
 
-        Index personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
+        if (argMultimap.getValue(PREFIX_UNREMARK).isEmpty()) {
+            throw new ParseException(ParserMessages.missingPrefixValue(
+                PREFIX_UNREMARK.toString(),
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
+        }
 
+        Index personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
         String remarkIndexString = argMultimap.getValue(PREFIX_UNREMARK).get().trim();
+
         if (remarkIndexString.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            throw new ParseException(ParserMessages.missingPrefixValue(
+                PREFIX_UNREMARK.toString(),
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
         }
 
         Index remarkIndex = ParserUtil.parseIndex(remarkIndexString);

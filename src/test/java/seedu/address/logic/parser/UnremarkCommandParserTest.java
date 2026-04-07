@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_UNREMARK;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -52,19 +53,28 @@ public class UnremarkCommandParserTest {
     @Test
     public void parse_missingPrefix_returnsFailure() {
         assertParseFailure(parser, " 1 1",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                PREFIX_UNREMARK.toString(),
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidPrefix_returnsFailure() {
         assertParseFailure(parser, "1 txt/1",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                PREFIX_UNREMARK.toString(),
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_missingRemarkIndex_returnsFailure() {
         assertParseFailure(parser, "1 r/",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
+            ParserMessages.missingPrefixValue(
+                PREFIX_UNREMARK.toString(),
+                "Remark index cannot be empty.",
+                UnremarkCommand.MESSAGE_USAGE));
     }
 
     @Test
