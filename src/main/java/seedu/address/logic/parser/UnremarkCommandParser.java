@@ -13,6 +13,9 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class UnremarkCommandParser implements Parser<UnremarkCommand> {
 
+    private static final Prefix[] ALLOWED_PREFIXES = {PREFIX_UNREMARK};
+    private static final String ALLOWED_PREFIXES_HUMAN_READABLE = "r/";
+
     /**
      * Parses the given {@code String} of arguments in the context of the UnremarkCommand
      * and returns an UnremarkCommand object for execution.
@@ -22,11 +25,31 @@ public class UnremarkCommandParser implements Parser<UnremarkCommand> {
     public UnremarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
+        ParserValidators.checkForUnknownPrefixTokens(
+            args,
+            ALLOWED_PREFIXES,
+            ALLOWED_PREFIXES_HUMAN_READABLE,
+            UnremarkCommand.MESSAGE_USAGE
+        );
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_UNREMARK);
 
         if (argMultimap.getPreamble().isBlank() || argMultimap.getValue(PREFIX_UNREMARK).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
         }
+
+        ParserValidators.checkForBarePrefixes(
+            argMultimap,
+            ALLOWED_PREFIXES,
+            UnremarkCommand.MESSAGE_USAGE
+        );
+
+        ParserValidators.checkForMissingValues(
+            argMultimap,
+            ALLOWED_PREFIXES,
+            new String[] {"r/"},
+            new String[] {"Remark index cannot be empty."},
+            UnremarkCommand.MESSAGE_USAGE);
 
         Index personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
 
