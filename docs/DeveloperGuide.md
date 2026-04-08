@@ -289,21 +289,49 @@ The chosen design introduces a confirmation step. This adds extra classes and co
 
 #### Overview
 
-Describe the purpose of the `updateprogress` command and how it helps TAs track a student’s academic standing or follow-up status.
+The `progress` command allows TAs to record a student's current academic or follow-up status in TeachAssist.
+
+This helps TAs quickly identify which students are doing well, which students may need support, and which students require closer monitoring. By storing progress directly in each student record, TeachAssist makes it easier to keep track of follow-up priorities across multiple students.
 
 #### Progress representation
 
-Explain the valid progress states supported by TeachAssist and describe how the progress status is represented in the model.
+TeachAssist represents progress using a `Progress` enum in the model.
+
+The supported progress values are:
+- `ON_TRACK`
+- `NEEDS_ATTENTION`
+- `AT_RISK`
+- `NOT_SET`
+
+`NOT_SET` is the default value and represents the absence of an explicitly assigned progress status.
+
+Using an enum ensures that only valid progress values can be stored, which simplifies validation and prevents inconsistent states.
 
 #### Implementation
 
-Explain how the command identifies the target student, validates the new progress value, updates the relevant `Person` object, and replaces the old record in the model.
+The `progress` feature is implemented using `ProgressCommand`, `ProgressCommandParser`, the `Progress` enum, and the model's person update mechanism.
 
-Relevant diagram: Sequence diagram showing how the command identifies the student, validates the progress status, and updates the model.
+When the user enters a `progress` command, `AddressBookParser` delegates parsing of the command arguments to `ProgressCommandParser`. `ProgressCommandParser` parses the target student index and the new progress value. The parser validates that the index is present and in a valid format, that the `p/` prefix is provided, and that the progress value is one of the supported enum values. After successful parsing, a `ProgressCommand` is created.
+
+During execution, `ProgressCommand` retrieves the student at the specified index from the current filtered student list. If the index is out of range, the command fails. If the index is valid, a new `Person` object is created based on the original student but with the updated progress value. The old student record is then replaced with the updated one through the model.
+
+This follows the same general approach as other commands that modify a student record: instead of mutating the existing student directly, TeachAssist creates an updated `Person` object and replaces the original in the model. If the new progress value is `NOT_SET`, the student's progress is effectively cleared.
+
+<box type="info" seamless>
+
+**Note:** The sequence diagram illustrating how `ProgressCommand` is executed is shown in the [Logic component](#logic-component) section above.
+
+</box>
 
 #### UI integration
 
-Describe how progress is displayed in the UI.
+Progress is displayed on each student card in the UI as a progress label. The label is colour-coded to help TAs quickly distinguish student status across `ON_TRACK`, `NEEDS_ATTENTION`, and `AT_RISK`. If the progress value is `NOT_SET`, no progress label is shown. This design keeps the UI uncluttered while still surfacing important student status information when it is available.
+
+#### Design considerations
+
+A key design consideration was how to represent progress in the model. One possible approach was to store progress as a plain string. However, this would require repeated string validation and would make invalid values easier to introduce. The chosen approach was to represent progress using an enum, which ensures that only valid progress states can exist and makes the implementation easier to maintain.
+
+Another design consideration was whether to show `NOT_SET` explicitly in the UI. Showing `NOT_SET` as a visible label would make the implementation more uniform, but it would also add unnecessary visual clutter for students whose progress has not been set. The chosen design hides `NOT_SET` in the UI, so only meaningful progress statuses are shown.
 
 ### Feature: Mark Attendance
 
