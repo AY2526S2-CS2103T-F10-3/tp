@@ -933,15 +933,27 @@ testers are expected to do more *exploratory* testing.
 
     2. **Expected behaviour:** The pending deletion is cancelled, no student is removed, and a cancellation message is shown.
 
-5. Deleting with invalid command format
+5. Entering another command while deletion is pending
+
+    1. **Test case:** Enter a valid delete command such as `delete 1`, then enter another command such as `list`
+
+    2. **Expected behaviour:** The pending deletion is cleared and the new command is processed normally. No student is deleted unless the user re-enters the delete command and confirms it.
+
+6. Deleting with invalid command format
 
     1. **Test case:** `delete abc`
 
-    2. **Expected behaviour:** The command is rejected, no confirmation is requested, and an error message is shown to indicate that the command format is invalid.
+    2. **Expected behaviour:** The command is rejected, no confirmation is requested, and an error message is shown.
 
-6. Deleting a non-existent student
+7. Deleting with invalid index format
 
-    1. **Prerequisite:** ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
+    1. **Test case:** `delete -1`
+
+    2. **Expected behaviour:** The command is rejected, no confirmation is requested, and an error message is shown to indicate that the index is invalid.
+
+8. Deleting a non-existent student by details
+
+    1. **Prerequisite:** Ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
 
     2. **Test case:** `delete id/A0000000Z crs/CS9999 tg/T99`
 
@@ -961,13 +973,11 @@ testers are expected to do more *exploratory* testing.
 
     2. **Expected behaviour:** The command is rejected, no student record is updated, and an error message is shown to indicate that the progress status is invalid.
 
-3. Updating progress for a non-existent student
+3. Updating progress with an invalid index
 
-    1. **Prerequisite:** ensure that no student in the currently displayed list matches these 3 fields: `id/A0000000Z crs/CS9999 tg/T99`
+    1. **Test case:** `progress 999 p/AT_RISK`
 
-    2. **Test case:** `progress id/A0000000Z crs/CS9999 tg/T99 p/AT_RISK`
-
-    3. **Expected behaviour:** The command is rejected because no matching student exists in the current filtered list, no student record is updated, and an error message is shown.
+    2. **Expected behaviour:** If index `999` is outside the bounds of the current filtered list, the command is rejected, no student record is updated, and an error message is shown.
 
 4. Removing progress using `NOT_SET`
 
@@ -975,6 +985,11 @@ testers are expected to do more *exploratory* testing.
 
     2. **Expected behaviour:** If index `1` refers to a valid student in the current filtered list, the student’s progress is updated to `NOT_SET`. The progress tag is removed from the student card in the UI, and a success message is shown.
 
+5. Updating progress with invalid command format
+
+    1. **Test case:** `progress p/ON_TRACK`
+
+    2. **Expected behaviour:** The command is rejected because the required student index is missing, no student record is updated, and an error message is shown.
 ### Marking attendance
 
 1. Marking attendance with valid input
