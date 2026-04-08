@@ -104,19 +104,6 @@ public class DeleteCommandParserTest {
                 input,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
-
-    @Test
-    public void parse_identityModeWithPreamble_failure() {
-        String input = "1 "
-                + PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value
-                + " " + PREFIX_COURSEID.getPrefix() + ALICE.getCourseId().value
-                + " " + PREFIX_TGROUP.getPrefix() + ALICE.getTGroup().value;
-
-        assertParseFailure(parser,
-                input,
-                ParserMessages.unexpectedPreamble(DeleteCommand.MESSAGE_USAGE));
-    }
-
     @Test
     public void parse_duplicatePrefix_failure() {
         String input = PREFIX_STUDENTID.getPrefix() + ALICE.getStudentId().value

@@ -46,7 +46,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         boolean isIdentityMode = hasStudentId || hasCourseId || hasTGroup;
 
         if (isIdentityMode) {
-          if (!argMultimap.arePrefixesPresent(PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP)
+            if (!argMultimap.arePrefixesPresent(PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP)
                     || !argMultimap.getPreamble().isEmpty()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
             }

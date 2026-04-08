@@ -8,8 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENTID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TGROUP;
 
-import java.util.stream.Stream;
-
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.CourseId;
@@ -44,8 +42,6 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
                 allowedReadable, AddCommand.MESSAGE_USAGE);
-        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
-                AddCommand.MESSAGE_USAGE);
 
         Prefix[] requiredPrefixes = {
             PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP
