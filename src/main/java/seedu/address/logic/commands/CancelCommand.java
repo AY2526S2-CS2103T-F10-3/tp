@@ -10,9 +10,6 @@ public class CancelCommand extends Command {
 
     public static final String COMMAND_WORD = "no";
 
-    public static final String MESSAGE_NO_PENDING_CONFIRMATION =
-            "There is no pending action to cancel.";
-
     public static final String MESSAGE_CANCEL_SUCCESS =
             "Delete operation cancelled.";
 
