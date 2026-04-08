@@ -86,29 +86,49 @@ public class FilterCommandTest {
         assertFilterCommandSuccess(predicate);
         assertTrue(model.getFilteredPersonList().isEmpty());
     }
-
     @Test
     public void equals() {
-        // EP: Identity (Same object)
         FilterMatchesPredicate firstPredicate = new FilterMatchesPredicate(
                 Optional.of(ALICE.getCourseId()),
                 Optional.empty(), Optional.empty(), Optional.empty());
-        FilterCommand filterFirstCommand = new FilterCommand(firstPredicate);
-        assertEquals(filterFirstCommand, filterFirstCommand);
+        FilterCommand firstCommand = new FilterCommand(firstPredicate);
 
-        // EP: Structural Equality (Different objects, same data)
-        FilterMatchesPredicate identicalFirstPredicate = new FilterMatchesPredicate(
+        // same object -> true
+        assertEquals(firstCommand, firstCommand);
+
+        // same values -> true
+        FilterMatchesPredicate samePredicate = new FilterMatchesPredicate(
                 Optional.of(ALICE.getCourseId()),
                 Optional.empty(), Optional.empty(), Optional.empty());
-        assertEquals(filterFirstCommand, new FilterCommand(identicalFirstPredicate));
+        FilterCommand sameCommand = new FilterCommand(samePredicate);
+        assertEquals(firstCommand, sameCommand);
 
-        // EP: Inequality (Different data)
-        FilterMatchesPredicate secondPredicate = new FilterMatchesPredicate(
+        // different values -> false
+        FilterMatchesPredicate differentPredicate = new FilterMatchesPredicate(
                 Optional.of(BENSON.getCourseId()),
                 Optional.empty(), Optional.empty(), Optional.empty());
-        assertNotEquals(filterFirstCommand, new FilterCommand(secondPredicate));
+        FilterCommand differentCommand = new FilterCommand(differentPredicate);
+        assertNotEquals(firstCommand, differentCommand);
+
+        // null -> false
+        assertNotEquals(firstCommand, null);
+
+        // different type -> false
+        assertNotEquals(firstCommand, 5);
     }
 
+    @Test
+    public void toString_method() {
+        FilterMatchesPredicate predicate = new FilterMatchesPredicate(
+                Optional.of(ALICE.getCourseId()),
+                Optional.empty(), Optional.empty(), Optional.empty());
+        FilterCommand command = new FilterCommand(predicate);
+
+        String result = command.toString();
+
+        assertTrue(result.contains("predicate"));
+        assertTrue(result.contains(predicate.toString()));
+    }
     private void assertFilterCommandSuccess(FilterMatchesPredicate predicate) {
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
