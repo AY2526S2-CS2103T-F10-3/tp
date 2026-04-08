@@ -16,26 +16,17 @@ package "Logic" {
         abstract class Command
         class DeleteCommand
         class ConfirmedDeleteCommand
-        class ConfirmCommand
-        class CancelCommand
     }
 
-    class ConfirmationManager
+    class LogicManager
 }
 
 Command <|-- DeleteCommand
 Command <|-- ConfirmedDeleteCommand
-Command <|-- ConfirmCommand
-Command <|-- CancelCommand
 
 DeleteCommandParser --> DeleteCommand : creates
-DeleteCommandParser --> ConfirmationManager
-
-DeleteCommand --> ConfirmationManager
 DeleteCommand ..> ConfirmedDeleteCommand : creates
+LogicManager --> ConfirmedDeleteCommand : stores pending command
+LogicManager --> DeleteCommand : handles
 
-ConfirmCommand --> ConfirmationManager
-CancelCommand --> ConfirmationManager
-
-ConfirmationManager --> Command : stores pending
 @enduml

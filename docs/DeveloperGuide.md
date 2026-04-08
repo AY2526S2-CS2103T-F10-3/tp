@@ -267,7 +267,7 @@ This separation keeps responsibilities clear:
 
 **Relevant diagram:** Delete-related class structure.
 
-<puml src="diagrams/DeleteClassDiagram.puml" width="700" />
+<puml src="diagrams/DeleteClassDiagram.puml" width="600" />
 
 </box>
 
