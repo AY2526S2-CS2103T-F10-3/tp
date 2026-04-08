@@ -195,6 +195,12 @@ public class MainWindow extends UiPart<Stage> {
         if (viewWindowPlaceholder.getChildren().isEmpty()) {
             viewWindowPlaceholder.getChildren().add(viewWindow.getRoot());
         }
+        // Ensure the person list selection reflects the person being viewed.
+        // This keeps the UI selection (blue highlight) in sync with the embedded view.
+        if (personListPanel != null && personListPanel.getPersonListView() != null) {
+            personListPanel.getPersonListView().getSelectionModel().select(person);
+            personListPanel.getPersonListView().scrollTo(person);
+        }
     }
 
     /**
@@ -284,6 +290,11 @@ public class MainWindow extends UiPart<Stage> {
                 .findFirst()
                 .map(updatedPerson -> {
                     viewWindow.setPerson(updatedPerson);
+                    // Keep list selection in sync when view is auto-refreshed
+                    if (personListPanel != null && personListPanel.getPersonListView() != null) {
+                        personListPanel.getPersonListView().getSelectionModel().select(updatedPerson);
+                        personListPanel.getPersonListView().scrollTo(updatedPerson);
+                    }
                     return true;
                 })
                 .orElse(false);
@@ -299,6 +310,10 @@ public class MainWindow extends UiPart<Stage> {
     private void clearViewWindow() {
         viewWindow.clear();
         viewWindowPlaceholder.getChildren().clear();
+        // Also clear selection in the person list to avoid stale blue highlight
+        if (personListPanel != null && personListPanel.getPersonListView() != null) {
+            personListPanel.getPersonListView().getSelectionModel().clearSelection();
+        }
     }
 }
 
