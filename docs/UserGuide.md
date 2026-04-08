@@ -1,7 +1,7 @@
 ---
-  layout: default.md
-  title: "User Guide"
-  pageNav: 3
+layout: default.md
+title: "User Guide"
+pageNav: 3
 ---
 
 # TeachAssist User Guide
@@ -134,6 +134,7 @@ Format:
 ```
 list
 ```
+
 
 
 <a name="add"></a>
@@ -515,7 +516,7 @@ The student list updates instantly. The Result Box will display the total count:
 
 **Tip:** if a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 
-##
+
 
 <a name="edit"></a>
 ### Editing a student: `edit`
@@ -536,7 +537,7 @@ Examples:
 * `edit 6 id/A1234567B crs/CS2040S tg/T12` - Edits the student ID, course ID, and tutorial group of the 6th student.
 * `edit 7 n/John Tan id/A1234567B e1384397@u.nus.edu crs/CS2105 tg/T08 tel/@john_tan` - Edits all editable fields of the 7th student.
 
-##
+
 
 <a name="view"></a>
 ### Viewing a student: `view`
@@ -560,6 +561,8 @@ The **View Window** on the right side of the application updates to show the sel
 </box>
 
 <a name="mark-attendance"></a>
+
+
 
 
 
@@ -602,11 +605,41 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 * `updateprogress id/A1234567X crs/CS2103T tg/T01 p/needs_attention` - Sets the progress of the student with student ID A1234567X, course CS2103T, and tutorial group T01 to `needs_attention`.
 * `updateprogress 2 p/not_set` - Clears the progress status of the 2nd student in the currently displayed student list.
 
-##
 
 
-<div markdown="span" class="alert alert-primary"></div>
-:bulb: **Tip:**
+<a name="remark"></a>
+### Adding a remark : `remark`
+
+Adds a textual remark to the student.
+
+Format:
+```
+remark INDEX txt/REMARK
+```
+
+Examples:
+```
+remark 1 txt/Participates actively in class!
+```
+
+
+
+<a name="unremark"></a>
+### Removing a remark : `unremark`
+
+Removes the specified remark from the student.
+
+Format:
+```
+unremark INDEX r/REMARK_INDEX
+```
+
+Examples:
+```
+unremark 1 r/2
+```
+
+
 
 <a name='remark'></a>
 ### Adding a remark: `remark`
