@@ -23,8 +23,6 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    // Error Messages (made public for use in tests) — delegate wording to ParserMessages to ensure
-    // consistent parser UX across commands while keeping these constants public for tests.
     public static final String MESSAGE_INVALID_PREFIX = ParserMessages.invalidPrefix(
             "crs/, tg/, p/, and abs./", FilterCommand.MESSAGE_USAGE);
     public static final String MESSAGE_UNEXPECTED_PREAMBLE = ParserMessages.unexpectedPreamble(

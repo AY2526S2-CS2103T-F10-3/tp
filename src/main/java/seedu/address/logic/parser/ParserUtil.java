@@ -290,6 +290,11 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_ABSENCE_COUNT);
         }
 
-        return Integer.parseInt(trimmed);
+        try {
+            return Integer.parseInt(trimmed);
+        } catch (NumberFormatException e) {
+            // Input contains only digits but is outside the range of int
+            throw new ParseException("Absence count is too large.", e);
+        }
     }
 }
