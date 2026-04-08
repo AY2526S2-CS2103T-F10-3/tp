@@ -556,6 +556,10 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 
 - `delete id/A1234567X crs/CS2103T tg/T01` followed by `yes` - deletes the student with student ID `A1234567X`, course `CS2103T`, and tutorial group `T01`.
 
+<box type="info">
+**Note**:
+    This method searches the **entire TeachAssist list**, not just the students currently displayed. This means a student can still be deleted even if they are currently hidden by a filter.
+</box>
 
 <a name="clear"></a>
 ### Clears all students : `clear`
