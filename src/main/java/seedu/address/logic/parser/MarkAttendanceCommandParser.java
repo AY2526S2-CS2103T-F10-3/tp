@@ -48,9 +48,6 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
                 MarkAttendanceCommand.MESSAGE_USAGE
         );
 
-        ParserValidators.checkForBarePrefixes(argMultimap, PREFIXES,
-                MarkAttendanceCommand.MESSAGE_USAGE);
-
         ParserValidators.checkForUnknownPrefixTokens(args, PREFIXES,
                 "week/ and sta/",
                 MarkAttendanceCommand.MESSAGE_USAGE);

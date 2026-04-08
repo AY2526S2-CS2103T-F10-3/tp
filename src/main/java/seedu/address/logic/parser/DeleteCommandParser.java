@@ -46,13 +46,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         boolean isIdentityMode = hasStudentId || hasCourseId || hasTGroup;
 
         if (isIdentityMode) {
-            ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes, DeleteCommand.MESSAGE_USAGE);
-
-            if (!argMultimap.getPreamble().trim().isEmpty()) {
-                throw new ParseException(ParserMessages.unexpectedPreamble(DeleteCommand.MESSAGE_USAGE));
-            }
-
-            if (!(hasStudentId && hasCourseId && hasTGroup)) {
+          if (!argMultimap.arePrefixesPresent(PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP)
+                    || !argMultimap.getPreamble().isEmpty()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
             }
 
@@ -63,7 +58,6 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             return new DeleteCommand(studentId, courseId, tGroup);
         }
 
-        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes, DeleteCommand.MESSAGE_USAGE);
 
         if (trimmedInput.matches("[1-9]\\d*\\s+.+")) {
             throw new ParseException(DeleteCommand.MESSAGE_UNEXPECTED_TEXT_AFTER_INDEX
