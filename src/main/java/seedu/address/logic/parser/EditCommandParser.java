@@ -38,8 +38,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
                 allowedReadable, AddCommand.MESSAGE_USAGE);
-        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
-                AddCommand.MESSAGE_USAGE);
+
         ParserValidators.checkForMissingValues(argMultimap,
                 new Prefix[]{
                     PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP},
@@ -85,8 +84,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
                 allowedReadable, AddCommand.MESSAGE_USAGE);
-        ParserValidators.checkForBarePrefixes(argMultimap, allowedPrefixes,
-                AddCommand.MESSAGE_USAGE);
+
         ParserValidators.checkForMissingValues(argMultimap,
                 new Prefix[] {
                     PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP },
