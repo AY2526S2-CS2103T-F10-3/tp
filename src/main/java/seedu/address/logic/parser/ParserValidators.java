@@ -1,7 +1,8 @@
 package seedu.address.logic.parser;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.List;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -13,50 +14,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public final class ParserValidators {
 
     private ParserValidators() {}
-
-    /**
-     * Checks both the preamble and all prefix values for tokens that look like bare prefixes
-     * (e.g., "crs" instead of "crs/"). This catches errors at the start of input
-     * and those swallowed by the greedy tokenizer (e.g., "filter abs/2 crs").
-     *
-     * @param argMultimap the tokenized argument map to inspect
-     * @param allowedPrefixes the set of prefixes that are valid for the command
-     * @param commandUsage usage text of the command; appended to the error message
-     * @throws ParseException if a bare prefix token is detected anywhere
-     */
-    public static void checkForBarePrefixes(ArgumentMultimap argMultimap, Prefix[] allowedPrefixes,
-                                            String commandUsage) throws ParseException {
-        // 1. Check Preamble
-        checkStringForBarePrefixes(argMultimap.getPreamble(), allowedPrefixes, commandUsage);
-
-        // 2. Check all Values
-        for (Prefix p : allowedPrefixes) {
-            Optional<String> value = argMultimap.getValue(p);
-            if (value.isPresent()) {
-                checkStringForBarePrefixes(value.get(), allowedPrefixes, commandUsage);
-            }
-        }
-    }
-
-    /**
-     * Helper method to scan a specific string for tokens matching bare prefix names.
-     */
-    private static void checkStringForBarePrefixes(String input, Prefix[] allowedPrefixes,
-                                                   String commandUsage) throws ParseException {
-        String trimmedInput = input.trim();
-        if (trimmedInput.isEmpty()) {
-            return;
-        }
-
-        for (String token : trimmedInput.split("\\s+")) {
-            for (Prefix p : allowedPrefixes) {
-                String bare = p.getPrefix().replace("/", "");
-                if (token.equalsIgnoreCase(bare)) {
-                    throw new ParseException(ParserMessages.possiblePrefixMissingSlash(commandUsage));
-                }
-            }
-        }
-    }
 
     /**
      * Scans the raw input string for tokens that contain a slash and verifies
@@ -123,27 +80,13 @@ public final class ParserValidators {
             String[] prefixStrings,
             String commandUsage) throws ParseException {
 
-        StringBuilder missing = getMissing(argMultimap, prefixes, prefixStrings);
+        List<String> missing = getMissingList(argMultimap, prefixes, prefixStrings);
 
         if (!missing.isEmpty()) {
             throw new ParseException(
-                    "Missing required prefix(es): " + missing.toString()
+                    "Missing required prefix(es): " + String.join(", ", missing)
                             + "\n" + commandUsage);
         }
-    }
-
-    private static StringBuilder getMissing(ArgumentMultimap argMultimap, Prefix[] prefixes, String[] prefixStrings) {
-        StringBuilder missing = new StringBuilder();
-
-        for (int i = 0; i < prefixes.length; i++) {
-            if (argMultimap.getValue(prefixes[i]).isEmpty()) {
-                if (!missing.isEmpty()) {
-                    missing.append(", ");
-                }
-                missing.append(prefixStrings[i]);
-            }
-        }
-        return missing;
     }
 
     /**
@@ -160,22 +103,34 @@ public final class ParserValidators {
             String[] prefixStrings,
             String commandUsage) throws ParseException {
 
-        StringBuilder missingParts = new StringBuilder();
+        List<String> missingParts = new ArrayList<>();
         if (argMultimap.getPreamble().trim().isEmpty()) {
-            missingParts.append("student index");
+            missingParts.add("student index");
         }
-        StringBuilder missingPrefixes = getMissing(argMultimap, prefixes, prefixStrings);
+
+        List<String> missingPrefixes = getMissingList(argMultimap, prefixes, prefixStrings);
         if (!missingPrefixes.isEmpty()) {
-            if (!missingParts.isEmpty()) {
-                missingParts.append(" AND ");
-            }
-            missingParts.append("prefix(es): ").append(missingPrefixes);
+            missingParts.add("prefix(es): " + String.join(", ", missingPrefixes));
         }
+
         if (!missingParts.isEmpty()) {
             throw new ParseException(
-                    "Missing required: " + missingParts.toString()
+                    "Missing required: " + String.join(" AND ", missingParts)
                             + "\n" + commandUsage
             );
         }
+    }
+
+    /**
+     * Internal helper to identify missing prefixes.
+     */
+    private static List<String> getMissingList(ArgumentMultimap argMultimap, Prefix[] prefixes, String[] prefixStrings) {
+        List<String> missing = new ArrayList<>();
+        for (int i = 0; i < prefixes.length; i++) {
+            if (argMultimap.getValue(prefixes[i]).isEmpty()) {
+                missing.add(prefixStrings[i]);
+            }
+        }
+        return missing;
     }
 }
