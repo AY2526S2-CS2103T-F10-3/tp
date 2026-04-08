@@ -455,9 +455,11 @@ remark INDEX txt/REMARK
 
 **Expected output:**
 
-The selected student's record is updated with the new remark, and the Result Box displays a confirmation message. Remarks are shown when you select that student, allowing you to view the newly added remark together with any existing remarks.
+The selected student's record is updated with the new remark, and the Result Box displays a confirmation message. 
+To view all existing remarks of a student, go to [View](#view).
+Remarks are shown when you select that student, allowing you to view the newly added remark together with any existing remarks.
 
-<img src="images/remarksuccess.png" alt="remark success" width="900">
+<img src="images/remarksuccessmessage.png" alt="remark success message" width="700">
 
 
 <a name="unremark"></a>
@@ -496,7 +498,8 @@ view INDEX
 **Expected Output:**
 
 The **View Window** on the right side of the application updates to show the selected student's details. A confirmation message also appears in the Result Box:
-> `Viewing student: Alex Tan; Student ID: ...`
+
+<img src="images/viewsuccess.png" alt="view success" width="900">
 
 
 <a name="delete"></a>
