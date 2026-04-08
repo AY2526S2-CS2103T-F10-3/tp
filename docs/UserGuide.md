@@ -438,6 +438,10 @@ exit
 
 TeachAssist data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
+### Known issues
+
+1. Cancelled-week recovery is transient: When a week is cancelled, the app stores previous per-student attendance statuses in memory to allow in-session recovery. However, this transient state is not persisted to disk. As a result, after the application is closed and restarted, recovering the pre-cancellation Y/A/N statuses may not be possible. Consider this when cancelling weeks; if you need to retain historical statuses across restarts, avoid relying on the transient recovery mechanism.
+
 [end]
 
 
@@ -602,7 +606,7 @@ updateprogress id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP p/PROGRESS
 
 
 <div markdown="span" class="alert alert-primary"></div>
-:bulb: **Tip:**<br><br>
+:bulb: **Tip:**
 
 <a name='remark'></a>
 ### Adding a remark: `remark`
