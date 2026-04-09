@@ -78,7 +78,6 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
-        viewWindow = new ViewWindow();
     }
 
     /**
@@ -138,13 +137,10 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-        // Open detail view when a student row is clicked
-        personListPanel.getPersonListView().setOnMouseClicked(event -> {
-            Person selected = personListPanel.getPersonListView().getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                handleView(selected);
-            }
-        });
+
+        viewWindow = new ViewWindow(logic.getFilteredPersonList(), personListPanel);
+
+        personListPanel.setClickHandler(this::handleView);
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -197,10 +193,7 @@ public class MainWindow extends UiPart<Stage> {
         }
         // Ensure the person list selection reflects the person being viewed.
         // This keeps the UI selection (blue highlight) in sync with the embedded view.
-        if (personListPanel != null && personListPanel.getPersonListView() != null) {
-            personListPanel.getPersonListView().getSelectionModel().select(person);
-            personListPanel.getPersonListView().scrollTo(person);
-        }
+        personListPanel.selectPerson(person);
     }
 
     /**
@@ -226,18 +219,12 @@ public class MainWindow extends UiPart<Stage> {
         }
         primaryStage.hide();
     }
-
-    /**
-     * Returns the person list panel displayed in this window.
-     */
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
-    }
-
     /**
      * Executes the command and returns the result.
      *
      * @see seedu.address.logic.Logic#execute(String)
+     * @throws CommandException If an error occurs during command execution.
+     * @throws ParseException If an error occurs during parsing.
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
@@ -247,9 +234,6 @@ public class MainWindow extends UiPart<Stage> {
 
             // Process various command outcomes
             handleCommandResult(commandResult);
-
-            // SLAP: Extract the complex view-refresh logic to a helper
-            updateViewWindowAfterCommand();
 
             return commandResult;
         } catch (CommandException | ParseException e) {
@@ -274,45 +258,6 @@ public class MainWindow extends UiPart<Stage> {
 
         if (commandResult.isExit()) {
             handleExit();
-        }
-    }
-
-    /**
-     * Updates or clears the view window based on the current state of the filtered person list.
-     */
-    private void updateViewWindowAfterCommand() {
-        if (viewWindowPlaceholder.getChildren().isEmpty()) {
-            return;
-        }
-
-        boolean stillViewing = logic.getFilteredPersonList().stream()
-                .filter(p -> viewWindow.isViewing(p))
-                .findFirst()
-                .map(updatedPerson -> {
-                    viewWindow.setPerson(updatedPerson);
-                    // Keep list selection in sync when view is auto-refreshed
-                    if (personListPanel != null && personListPanel.getPersonListView() != null) {
-                        personListPanel.getPersonListView().getSelectionModel().select(updatedPerson);
-                        personListPanel.getPersonListView().scrollTo(updatedPerson);
-                    }
-                    return true;
-                })
-                .orElse(false);
-
-        if (!stillViewing) {
-            clearViewWindow();
-        }
-    }
-
-    /**
-     * Clears the view window and its placeholder.
-     */
-    private void clearViewWindow() {
-        viewWindow.clear();
-        viewWindowPlaceholder.getChildren().clear();
-        // Also clear selection in the person list to avoid stale blue highlight
-        if (personListPanel != null && personListPanel.getPersonListView() != null) {
-            personListPanel.getPersonListView().getSelectionModel().clearSelection();
         }
     }
 }

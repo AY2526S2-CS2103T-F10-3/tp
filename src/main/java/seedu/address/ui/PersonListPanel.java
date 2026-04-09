@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -30,10 +31,31 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     /**
-     * Exposes the underlying ListView so callers may attach listeners (e.g., click handlers).
+     * Sets a click handler for the person list.
+     *
+     * @param handler The consumer to handle the clicked person.
      */
-    public ListView<Person> getPersonListView() {
-        return personListView;
+    public void setClickHandler(Consumer<Person> handler) {
+        personListView.setOnMouseClicked(event -> {
+            Person selected = personListView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                handler.accept(selected);
+            }
+        });
+    }
+
+    /**
+     * Selects and scrolls to the given person in the list.
+     *
+     * @param person The person to select.
+     */
+    public void selectPerson(Person person) {
+        if (person != null) {
+            personListView.getSelectionModel().select(person);
+            personListView.scrollTo(person);
+        } else {
+            personListView.getSelectionModel().clearSelection();
+        }
     }
 
     /**

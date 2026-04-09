@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -18,12 +20,15 @@ import seedu.address.model.person.Remark;
 public class ViewWindow extends UiPart<Region> {
 
     private static final String FXML = "ViewWindow.fxml";
-    private static final int HEADER_ROW_INDEX = 0;
     private static final int FIRST_REMARK_ROW_INDEX = 1;
+    private static final int COL_INDEX = 0;
+    private static final int COL_DATE = 1;
+    private static final int COL_TEXT = 2;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
     private Person person;
+    private PersonListPanel personListPanel;
 
     @FXML
     private Label nameLabel;
@@ -39,9 +44,14 @@ public class ViewWindow extends UiPart<Region> {
     /**
      * Creates a new {@code ViewWindow} that is intended to be embedded inside
      * the main application window (no separate Stage).
+     *
+     * @param personList The observable list of persons to listen to for changes.
+     * @param personListPanel The person list panel to control selection.
      */
-    public ViewWindow() {
+    public ViewWindow(ObservableList<Person> personList, PersonListPanel personListPanel) {
         super(FXML);
+        this.personListPanel = personListPanel;
+        personList.addListener(this::onPersonListChanged);
     }
 
     /**
@@ -56,14 +66,32 @@ public class ViewWindow extends UiPart<Region> {
     }
 
     /**
-     * Checks if the window is currently displaying information for the given {@code Person}.
-     * This is used to determine if the window needs an auto-refresh after a command execution.
+     * Handles changes in the person list.
      *
-     * @param other The person to check against.
-     * @return True if the current person being viewed matches the other person.
+     * @param c The change notification.
      */
-    public boolean isViewing(Person other) {
-        return person != null && person.equals(other);
+    private void onPersonListChanged(ListChangeListener.Change<? extends Person> c) {
+        if (person == null) {
+            return; // Nothing to do if no person is being viewed
+        }
+
+        while (c.next()) {
+            c.getAddedSubList().stream()
+                    .filter(p -> p.isSamePerson(person))
+                    .findFirst()
+                    .ifPresent(updatedPerson -> {
+                        setPerson(updatedPerson);
+                        personListPanel.selectPerson(updatedPerson);
+                    });
+
+            if (c.getRemoved().stream().anyMatch(p -> p.isSamePerson(person))) {
+                boolean wasUpdated = c.getAddedSubList().stream().anyMatch(p -> p.isSamePerson(person));
+                if (!wasUpdated) {
+                    clear();
+                    personListPanel.selectPerson(null);
+                }
+            }
+        }
     }
 
     /**
@@ -89,12 +117,7 @@ public class ViewWindow extends UiPart<Region> {
      * The header row is defined in FXML and preserved.
      */
     private void refreshRemarksGrid() {
-        remarksGrid.getChildren().removeIf(node -> {
-            Integer rowIndex = GridPane.getRowIndex(node);
-            int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
-            return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
-        });
-
+        clearRemarksGrid();
         int rowIndex = FIRST_REMARK_ROW_INDEX;
         for (Remark remark : person.getRemarks()) {
             addRemarkRow(remark, rowIndex);
@@ -122,9 +145,9 @@ public class ViewWindow extends UiPart<Region> {
         remarkLabel.getStyleClass().add("remark-cell");
         remarkLabel.setWrapText(true);
         remarkLabel.setMaxWidth(Double.MAX_VALUE);
-        remarksGrid.add(indexLabel, 0, rowIndex);
-        remarksGrid.add(dateLabel, 1, rowIndex);
-        remarksGrid.add(remarkLabel, 2, rowIndex);
+        remarksGrid.add(indexLabel, COL_INDEX, rowIndex);
+        remarksGrid.add(dateLabel, COL_DATE, rowIndex);
+        remarksGrid.add(remarkLabel, COL_TEXT, rowIndex);
     }
     /**
      * Clears the current view and resets UI components.
@@ -135,11 +158,16 @@ public class ViewWindow extends UiPart<Region> {
         studentIdLabel.setText("");
         courseIdLabel.setText("");
         tGroupLabel.setText("");
-        // remove remark rows (preserve header row)
+        clearRemarksGrid();
+    }
+
+    /**
+     * Clears all remark rows from the grid, preserving the header.
+     */
+    private void clearRemarksGrid() {
         remarksGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
-            int effectiveRowIndex = rowIndex == null ? HEADER_ROW_INDEX : rowIndex;
-            return effectiveRowIndex >= FIRST_REMARK_ROW_INDEX;
+            return (rowIndex != null && rowIndex >= FIRST_REMARK_ROW_INDEX) || (rowIndex == null && node != null);
         });
     }
 }
