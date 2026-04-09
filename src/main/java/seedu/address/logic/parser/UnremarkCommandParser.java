@@ -38,12 +38,6 @@ public class UnremarkCommandParser implements Parser<UnremarkCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnremarkCommand.MESSAGE_USAGE));
         }
 
-        ParserValidators.checkForBarePrefixes(
-            argMultimap,
-            ALLOWED_PREFIXES,
-            UnremarkCommand.MESSAGE_USAGE
-        );
-
         ParserValidators.checkForMissingValues(
             argMultimap,
             ALLOWED_PREFIXES,
