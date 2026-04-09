@@ -102,13 +102,28 @@ public class MarkAttendanceCommand extends Command {
         Person editedPerson = createEditedPerson(personToEdit, updatedWeekList);
 
         model.setPerson(personToEdit, editedPerson);
+        String statusMessage = getStatuMessage();
         return new CommandResult(String.format(MESSAGE_SUCCESS,
                         weekNumber.getOneBased(),
-                        status,
+                        statusMessage,
                         formatPerson(personToEdit))
         );
     }
-
+    /**
+     * Gets the correct satusmessage from Status
+     */
+    private String getStatuMessage() throws CommandException {
+        switch (status) {
+        case Y:
+            return "Y (Present)";
+        case A:
+            return "A (Absent)";
+        case N:
+            return "N (Not Marked)";
+        default:
+            throw new CommandException("Invalid attendance status.");
+        }
+    }
     /**
      * Applies the correct attendance update based on status.
      */
