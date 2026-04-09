@@ -1,7 +1,11 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_MISSING_INDEX;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_TOO_MANY_ARGUMENTS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.jupiter.api.Test;
@@ -26,23 +30,38 @@ public class ViewCommandParserTest {
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        // Non-numeric input
-        assertParseFailure(parser, "a",
-                ParserUtil.MESSAGE_INVALID_INDEX + "\n" + ViewCommand.MESSAGE_USAGE);
+        String expectedInvalidIndexMessage = MESSAGE_INVALID_INDEX + "\n" + ViewCommand.MESSAGE_USAGE;
+        String expectedTooManyArgsMessage = MESSAGE_TOO_MANY_ARGUMENTS + "\n" + ViewCommand.MESSAGE_USAGE;
 
-        // Zero index (AB3 indexes are 1-based)
-        assertParseFailure(parser, "0",
-                ParserUtil.MESSAGE_INVALID_INDEX + "\n" + ViewCommand.MESSAGE_USAGE);
+        // Non-numeric input
+        assertParseFailure(parser, "a", expectedInvalidIndexMessage);
+
+        // Zero index
+        assertParseFailure(parser, "0", expectedInvalidIndexMessage);
 
         // Negative index
-        assertParseFailure(parser, "-1",
-                ParserUtil.MESSAGE_INVALID_INDEX + "\n" + ViewCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "-1", expectedInvalidIndexMessage);
 
-        // Empty string or whitespace only
-        assertParseFailure(parser, "",
-                ParserUtil.MESSAGE_MISSING_INDEX + "\n" + ViewCommand.MESSAGE_USAGE);
+        // Input larger than Integer.MAX_VALUE
+        assertParseFailure(parser, "2147483648", expectedInvalidIndexMessage);
 
-        assertParseFailure(parser, "   ",
-                ParserUtil.MESSAGE_MISSING_INDEX + "\n" + ViewCommand.MESSAGE_USAGE);
+        // Too many arguments
+        assertParseFailure(parser, "1 2", expectedTooManyArgsMessage);
+    }
+
+    @Test
+    public void parse_missingIndex_throwsParseException() {
+        String expectedMissingIndexMessage = MESSAGE_MISSING_INDEX + "\n" + ViewCommand.MESSAGE_USAGE;
+        // Empty string
+        assertParseFailure(parser, "", expectedMissingIndexMessage);
+
+        // Whitespace only
+        assertParseFailure(parser, "   ", expectedMissingIndexMessage);
+    }
+
+    @Test
+    public void parse_nullArgs_throwsNullPointerException() {
+        // Null input
+        assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
 }
