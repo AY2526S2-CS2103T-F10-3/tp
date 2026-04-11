@@ -145,7 +145,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_cancelWeek() throws Exception {
         CancelWeekCommand command = (CancelWeekCommand) parser.parseCommand(
-                CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1");
+                CancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1");
         assertEquals(new CancelWeekCommand(new seedu.address.model.person.CourseId("CS2103T"),
                 new seedu.address.model.person.TGroup("T01"),
                 seedu.address.commons.core.index.Index.fromOneBased(1)), command);
@@ -154,7 +154,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unCancelWeek() throws Exception {
         UnCancelWeekCommand command = (UnCancelWeekCommand) parser.parseCommand(
-                UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 week/1");
+                UnCancelWeekCommand.COMMAND_WORD + " crs/CS2103T tg/T01 wk/1");
         assertEquals(new UnCancelWeekCommand(new seedu.address.model.person.CourseId("CS2103T"),
                 new seedu.address.model.person.TGroup("T01"),
                 seedu.address.commons.core.index.Index.fromOneBased(1)), command);
@@ -163,7 +163,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_markAttendance() throws Exception {
         MarkAttendanceCommand command = (MarkAttendanceCommand) parser.parseCommand(
-                MarkAttendanceCommand.COMMAND_WORD + " 1 week/1 sta/Y");
+                MarkAttendanceCommand.COMMAND_WORD + " 1 wk/1 s/Y");
         assertEquals(new MarkAttendanceCommand(INDEX_FIRST_PERSON,
                 seedu.address.commons.core.index.Index.fromOneBased(1),
                 seedu.address.model.person.Week.Status.Y), command);
