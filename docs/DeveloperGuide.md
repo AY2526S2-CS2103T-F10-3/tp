@@ -1321,21 +1321,95 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a remark with valid input
 
-    1. _{Fill in test case}_
+    1. Test case: `remark 1 txt/Participates actively in class`
+       Preconditions: There is at least one student shown in the current list.
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: A remark is added to the first student, tagged with the current date. A success message is shown.
 
-2. Adding a remark with invalid input
+2. Adding a remark with missing prefix
 
-    1. _{Fill in test case}_
+    1. Test case: `remark 1 hello`
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: No remark is added. An error message is shown because the required `txt/` prefix is missing.
 
-3. Adding a remark to a non-existent student
+3. Adding a remark with missing remark text
 
-    1. _{Fill in test case}_
+    1. Test case: `remark 1 txt/`
 
-    2. _{Fill in expected behaviour}_
+    2. Expected: No remark is added. An error message is shown because the remark text is empty.
+
+4. Adding a remark with missing student index
+
+    1. Test case: `remark txt/Participates actively in class`
+
+    2. Expected: No remark is added. An error message is shown because the student index is missing.
+
+5. Adding a remark with an invalid student index format
+
+    1. Test case: `remark abc txt/Needs follow-up`
+
+    2. Expected: No remark is added. An error message is shown because the student index is invalid.
+
+6. Adding a remark to a non-existent student
+
+    1. Test case: `remark 999 txt/Needs follow-up`  
+       Preconditions: The displayed student list has fewer than 999 students.
+
+    2. Expected: No remark is added. An error message is shown indicating that the student index is invalid.
+
+7. Adding a remark with overly long text
+
+    1. Test case: `remark 1 txt/` followed by a remark longer than 100 characters.  
+       Preconditions: There is at least one student shown in the current list.
+    
+    2. Expected: No remark is added. An error message is shown because the remark exceeds the maximum allowed length.
+
+### Removing a remark
+
+1. Removing a remark with valid input
+
+    1. Test case: `unremark 1 r/1`  
+       Preconditions: The first student in the displayed list has at least one remark.
+
+    2. Expected: The first remark of the first student is removed. A success message is shown.
+
+2. Removing a remark with missing prefix
+
+    1. Test case: `unremark 1 1`
+
+    2. Expected: No remark is removed. An error message is shown because the required `r/` prefix is missing.
+
+3. Removing a remark with missing remark index
+
+    1. Test case: `unremark 1 r/`
+
+    2. Expected: No remark is removed. An error message is shown because the remark index is missing.
+
+4. Removing a remark with missing student index
+
+    1. Test case: `unremark r/1`
+
+    2. Expected: No remark is removed. An error message is shown because the student index is missing.
+
+5. Removing a remark with an invalid student index format
+
+    1. Test case: `unremark abc r/1`
+
+    2. Expected: No remark is removed. An error message is shown because the student index is invalid.
+
+6. Removing a remark from a non-existent student
+
+    1. Test case: `unremark 999 r/1`  
+       Preconditions: The displayed student list has fewer than 999 students.
+
+    2. Expected: No remark is removed. An error message is shown indicating that the student index is invalid.
+
+7. Removing a non-existent remark
+
+    1. Test case: `unremark 1 r/999`  
+       Preconditions: The first student in the displayed list has fewer than 999 remarks.
+
+    2. Expected: No remark is removed. An error message is shown because the remark index is invalid.
 
 ### Viewing student details / remarks
 
