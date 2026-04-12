@@ -150,10 +150,11 @@
         "clears-all-students-clear": "Clears all students : clear",
         "exiting-the-program-exit": "Exiting the program : exit",
         "saving-the-data": "Saving the data",
-        "known-issues": "Known issues",
         "command-summary": "Command Summary",
         "parameter-summary": "Parameter Summary",
-        "faq": "FAQ"
+        "known-issues": "Known issues",
+        "faq": "FAQ",
+        "glossary": "Glossary"
       },
       "headingKeywords": {}
     },
