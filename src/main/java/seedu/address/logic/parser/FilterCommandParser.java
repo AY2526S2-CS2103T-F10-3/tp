@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSEID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PROGRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TGROUP;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import seedu.address.logic.commands.FilterCommand;
@@ -23,10 +22,17 @@ import seedu.address.model.person.TGroup;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    public static final String MESSAGE_EMPTY_COURSE_ID = ParserMessages.missingPrefixValue(
-            "crs/", "Course ID cannot be empty.", FilterCommand.MESSAGE_USAGE);
     public static final String MESSAGE_NO_FILTERS =
             "At least one filter must be provided.\n" + FilterCommand.MESSAGE_USAGE;
+    /**
+     * Functional interface for a parser function that can throw ParseException.
+     * @param <T> The type of the input string.
+     * @param <R> The type of the result.
+     */
+    @FunctionalInterface
+    private interface ThrowingFunction<T, R> {
+        R apply(T t) throws ParseException;
+    }
 
     /**
      * The list of prefixes that this parser is able to handle.
@@ -51,12 +57,30 @@ public class FilterCommandParser implements Parser<FilterCommand> {
 
         validateInput(args, argMultimap);
 
-        Optional<CourseId> courseId = parseCourseId(argMultimap);
-        Optional<TGroup> tGroup = parseTGroup(argMultimap);
-        Optional<Progress> progress = parseProgress(argMultimap);
-        Optional<Integer> absenceCount = parseAbsenceCount(argMultimap);
+        Optional<CourseId> courseId = parseField(argMultimap, PREFIX_COURSEID, ParserUtil::parseCourseId);
+        Optional<TGroup> tGroup = parseField(argMultimap, PREFIX_TGROUP, ParserUtil::parseTGroup);
+        Optional<Progress> progress = parseField(argMultimap, PREFIX_PROGRESS, ParserUtil::parseProgress);
+        Optional<Integer> absenceCount = parseField(argMultimap, PREFIX_ABSENCE, ParserUtil::parseAbsenceCount);
 
         return new FilterCommand(new FilterMatchesPredicate(courseId, tGroup, progress, absenceCount));
+    }
+
+    /**
+     * A generic helper method to parse a value from the argument multimap.
+     *
+     * @param argMultimap The map of arguments.
+     * @param prefix The prefix to look for.
+     * @param parser The function to parse the string value.
+     * @return An optional containing the parsed value, or empty if the prefix is not present.
+     * @throws ParseException if the value is present but invalid.
+     */
+    private <T> Optional<T> parseField(ArgumentMultimap argMultimap, Prefix prefix,
+                                       ThrowingFunction<String, T> parser) throws ParseException {
+        Optional<String> value = argMultimap.getValue(prefix);
+        if (value.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(parser.apply(value.get()));
     }
 
     /**
@@ -68,7 +92,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     private void validateInput(String args, ArgumentMultimap argMultimap) throws ParseException {
         ParserValidators.checkForUnknownPrefixTokens(args, FILTER_PREFIXES, "crs/, tg/, p/, and abs/",
                 FilterCommand.MESSAGE_USAGE);
-        ensureAtLeastOneFilterPresent(argMultimap);
+        ParserValidators.ensureAtLeastOnePrefixPresent(argMultimap, FILTER_PREFIXES, FilterCommand.MESSAGE_USAGE);
         ParserValidators.checkForUnexpectedPreamble(argMultimap, FilterCommand.MESSAGE_USAGE);
         argMultimap.verifyNoDuplicatePrefixesFor(FILTER_PREFIXES);
         ParserValidators.checkForMissingValues(argMultimap, FILTER_PREFIXES,
@@ -76,17 +100,6 @@ public class FilterCommandParser implements Parser<FilterCommand> {
                 new String[] {"Course ID cannot be empty.", "Tutorial group cannot be empty.",
                     "Progress cannot be empty.", "Absence count cannot be empty."},
                 FilterCommand.MESSAGE_USAGE);
-    }
-
-    /**
-     * Ensures that the user has provided at least one criteria to filter by.
-     */
-    private void ensureAtLeastOneFilterPresent(ArgumentMultimap argMultimap) throws ParseException {
-        boolean anyPresent = Arrays.stream(FILTER_PREFIXES)
-                .anyMatch(prefix -> argMultimap.getValue(prefix).isPresent());
-        if (!anyPresent) {
-            throw new ParseException(MESSAGE_NO_FILTERS);
-        }
     }
 
     /**
