@@ -65,15 +65,6 @@ public class AddressBookParserTest {
         assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
     }
 
-    // @Test
-    // public void parseCommand_edit() throws Exception {
-    //     Person person = new PersonBuilder().build();
-    //     EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-    //             + INDEX_FIRST_PERSON.getOneBased() + " " + "n/ddddd");
-    //     assertEquals(new EditCommand(INDEX_FIRST_PERSON,
-    //             new EditPersonDescriptorBuilder().withName("ddddd").build()), command);
-    // }
-
     @Test
     public void parseCommand_exit() throws Exception {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD) instanceof ExitCommand);
