@@ -53,7 +53,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
             PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE);
 
-        ensureAtLeastOneFieldPresent(argMultimap);
+        ParserValidators.ensureAtLeastOnePrefixPresent(argMultimap, allowedPrefixes, EditCommand.MESSAGE_USAGE);
 
         ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
                 allowedReadable, EditCommand.MESSAGE_USAGE);
