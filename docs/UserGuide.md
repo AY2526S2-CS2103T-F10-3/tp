@@ -188,8 +188,8 @@ It must be noted that when entering parameters, they should not be blank.
 Warning:
 What makes an entry a duplicate?
 
-* When a student that already exists in TeachAssist is being added,
- they must be of a different `COURSE_ID` and `TUTORIAL_GROUP`. 
+* When a student that already exists in TeachAssist is being added (same `STUDENT_ID`, `EMAIL` or `TELEGRAM_USERNAME`),
+ they must be of a different `COURSE_ID` and `TUTORIAL_GROUP`.
 
 **Examples:**
 ```
@@ -460,8 +460,6 @@ remark INDEX txt/REMARK
 **Examples:**
 
 - `remark 1 txt/Participates actively in class!`
-- `remark 1 txt/Shows steady improvements.`
-- `remark 1 txt/Was absent for consultation.`
 
 **Expected output:**
 
@@ -486,6 +484,7 @@ unremark INDEX r/REMARK_INDEX
 - The index refers to the index number shown iabs/14n the currently displayed student list.
 - The remark index refers to the position of the remark in that student's remark list.
 - Both `INDEX` and `REMARK_INDEX` must be positive integers 1, 2, 3, …
+- If multiple `r/` prefixes are provided, only the last specified remark index is removed
 
 **Examples:**
 
