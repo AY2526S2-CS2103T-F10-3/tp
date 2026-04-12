@@ -904,30 +904,32 @@ TeachAssist provides a high-speed, structured student management system that bri
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a … | I want to … | So that I can… |
-|----------|--------|-------------|---------------|
-| `**` | new user | see a welcome message on first launch | know how to get started |
-| `**` | new user | view a help command listing all available commands | understand what commands the system supports |
-| `**` | new user | view preloaded sample student data | understand how student records are structured |
-| `**` | new user | purge all sample data | start working with my real student records |
-| `***` | TA | add a student with fields such as name, student ID, course ID, tutorial group, email, and Telegram handle | maintain complete and structured student records |
-| `***` | TA | edit a student’s details | keep student records accurate and up to date |
-| `***` | TA | delete a student by index | quickly remove an incorrect or outdated student record |
-| `***` | TA | delete a student by student details | remove a specific student even when I do not want to rely on the displayed index |
-| `***` | careful TA | be asked to confirm before deleting a student | avoid accidentally deleting the wrong student record |
-| `***` | TA | view the full student list | get an overview of all the students I am managing |
-| `**` | TA handling multiple classes | filter or narrow down the displayed student list | focus on the relevant group of students more quickly |
-| `**` | TA handling multiple classes | identify students using course ID and tutorial group in addition to name | avoid confusion between students from different classes or students with similar names |
-| `***` | TA tracking student performance | update a student’s progress status | quickly identify which students are on track or need support |
-| `**` | TA preparing for class | view a student’s progress status in the UI | understand the student’s standing at a glance |
-| `***` | TA taking tutorial attendance | mark attendance for a student | keep a record of who attended class |
-| `***` | TA who conducts consultations | add remarks to a student’s record | remember important discussion points and follow-up actions |
-| `***` | TA who conducts consultations | view a student’s remarks and details | prepare for future consultations more effectively |
-| `**` | TA managing many students | keep remarks together with each student record | avoid scattering notes across separate apps or documents |
-| `**` | TA managing multiple tutorial groups | keep all students across different courses and tutorial groups in one application | avoid maintaining multiple spreadsheets or lists |
-| `**` | careful TA | receive clear error messages when a command format is invalid | correct mistakes quickly |
-| `**` | careful TA | be prevented from adding duplicate student records | maintain clean and consistent data |
-| `**` | TA | clear the current filter | return to the full student list after narrowing it down |
+| Priority | As a …                               | I want to …                                                                                               | So that I can…                                                             |
+|----------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `**` | new user                             | see a welcome message on first launch                                                                     | know how to get started                                                    |
+| `**` | new user                             | view a help command listing all available commands                                                        | understand what commands the system supports                               |
+| `**` | new user                             | view preloaded sample student data                                                                        | understand how student records are structured                              |
+| `**` | new user                             | purge all sample data                                                                                     | start working with my real student records                                 |
+| `***` | TA                                   | add a student with fields such as name, student ID, course ID, tutorial group, email, and Telegram handle | maintain complete and structured student records                           |
+| `***` | TA                                   | edit a student’s details                                                                                  | keep student records accurate and up to date                               |
+| `***` | TA                                   | delete a student by index                                                                                 | quickly remove an incorrect or outdated student record                     |
+| `***` | TA                                   | delete a student by student details                                                                       | remove a specific student even when I do not want to rely on the displayed index |
+| `***` | careful TA                           | be asked to confirm before deleting a student                                                             | avoid accidentally deleting the wrong student record                       |
+| `***` | TA                                   | view the full student list                                                                                | get an overview of all the students I am managing                          |
+| `**` | TA handling multiple classes         | filter or narrow down the displayed student list                                                          | focus on the relevant group of students more quickly                       |
+| `**` | TA handling multiple classes         | identify students using course ID and tutorial group in addition to name                                  | avoid confusion between students from different classes or students with similar names |
+| `***` | TA tracking student performance      | update a student’s progress status                                                                        | quickly identify which students are on track or need support               |
+| `**` | TA preparing for class               | view a student’s progress status in the UI                                                                | understand the student’s standing at a glance                              |
+| `***` | TA taking tutorial attendance        | mark attendance for a student                                                                             | keep a record of who attended class                                        |
+| `***` | TA who conducts consultations        | add remarks to a student’s record                                                                         | remember important discussion points and follow-up actions                 |
+| `***` | TA who conducts consultations        | view a student’s remarks and details                                                                      | prepare for future consultations more effectively                          |
+| `**` | TA managing many students            | keep remarks together with each student record                                                            | avoid scattering notes across separate apps or documents                   |
+| `**` | TA managing multiple tutorial groups | keep all students across different courses and tutorial groups in one application                         | avoid maintaining multiple spreadsheets or lists                           |
+| `**` | careful TA                           | receive clear error messages when a command format is invalid                                             | correct mistakes quickly                                                   |
+| `**` | careful TA                           | be prevented from adding duplicate student records                                                        | maintain clean and consistent data                                         |
+| `**` | TA who cancelled a class             | cancels class for his specific course and tutorial during that week                                       |                                                                            |
+| `**` | TA who cancelled a class accidently  | uncancels class for his specific course and tutorial during that week                                     |  |
+| `**` | TA                                   | clear the current filter                                                                                  | return to the full student list after narrowing it down                    |
 
 
 ### Use cases
