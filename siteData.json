@@ -151,6 +151,7 @@
         "clears-all-students-clear": "Clears all students : clear",
         "exiting-the-program-exit": "Exiting the program : exit",
         "saving-the-data": "Saving the data",
+        "editing-the-data": "Editing the data",
         "command-summary": "Command Summary",
         "parameter-summary": "Parameter Summary",
         "known-issues": "Known issues",
