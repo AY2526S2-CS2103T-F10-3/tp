@@ -180,65 +180,38 @@ This section describes some noteworthy details on how certain features are imple
 ### Feature: Filter Command
 
 #### Overview
-The filter command allows Teaching Assistants (TAs) to narrow down the displayed student list using one or more criteria. This is especially useful for managing large cohorts and identifying specific groups, such as students who are at-risk or frequently absent.
-The command only affects the current view and does not modify any underlying student data.
+The `filter` command allows TAs to narrow down the displayed student list using one or more criteria. This is useful for managing large cohorts and identifying specific groups, such as students who are at-risk or frequently absent. The command only affects the current view and does not modify any underlying student data.
+
 The supported criteria are:
-* Course ID (crs/)
-* Tutorial Group (tg/)
-* Progress Status (p/)
-* Minimum Absence Count (abs/)
-The expected format is:
-filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS_STATUS] [abs/MIN_ABSENCE_COUNT]
-Example:
-filter crs/CS2103T tg/T01 abs/3
-This displays students in CS2103T T01 with at least 3 absences.
-#### Filtering behavior
-Multiple criteria are combined using logical AND
-A student is shown only if they satisfy all provided filters
-If no criteria are provided, the command is considered invalid
-Matching rules:
-Course ID and Tutorial Group → case-insensitive exact match
-Progress Status → exact enum match
-Absences → threshold match (>=)
+* Course ID (`crs/`)
+* Tutorial Group (`tg/`)
+* Progress Status (`p/`)
+* Minimum Absence Count (`abs/`)
+
+Multiple criteria are combined using logical AND — a student is shown only if they satisfy all provided filters. If no criteria are provided, the command is rejected.
 
 #### Implementation
-The filter feature is implemented using:
-FilterCommand
-FilterCommandParser
-FilterMatchesPredicate
-**Execution flow:**
-1. FilterCommandParser parses input arguments and validates prefixes
-2. Ensures at least one filtering criterion is present
-3. Constructs a FilterMatchesPredicate with the provided conditions
-4. FilterCommand#execute(Model model) is invoked by the LogicManager
-5. Command calls model.updateFilteredPersonList(predicate)
-6. The model updates the filtered list
-7. UI automatically refreshes via its binding to the observable list
-8. A CommandResult is returned showing the number of matched students
 
-Predicate design
-FilterMatchesPredicate implements Predicate<Person> and stores each criterion as an optional field.
-The test(Person person) method evaluates:
-Course and tutorial group matching
-Progress status equality
-Absence count threshold
-A student passes the predicate only if all present criteria evaluate to true.
+The filter feature introduces one key class beyond the standard parser–command pattern: `FilterMatchesPredicate`.
 
-Design Considerations
-Aspect: Combining multiple criteria
-Current choice: Logical AND
-Pros: Predictable; supports narrowing down results effectively
-Cons: Cannot perform OR-based queries (e.g., Course A or Course B)
-Alternative: Logical OR
-Pros: Enables broader searches
-Cons: Less useful for refinement; may return overly large result sets
-Aspect: Representation of filtering logic
-Current choice: Single predicate with optional fields
-Pros: Simple and centralized logic; easy to debug
-Cons: May become bulky as more criteria are added
-Alternative: Predicate composition (e.g., chaining smaller predicates)
-Pros: More modular and flexible
-Cons: Adds complexity; harder to trace combined filtering behavior
+`FilterMatchesPredicate` implements `Predicate<Person>` and stores each filtering criterion as an optional field. Its `test(Person)` method evaluates all present criteria against the given student:
+* Course ID and Tutorial Group use case-insensitive exact matching.
+* Progress Status uses exact enum matching.
+* Absence Count uses threshold matching (≥).
+
+A student passes the predicate only if all present criteria evaluate to true. During execution, `FilterCommand` passes this predicate to `Model#updateFilteredPersonList(Predicate)`, which updates the observable list that the UI is bound to.
+
+#### Design considerations
+
+**Aspect: Combining multiple criteria**
+
+* **Current choice — Logical AND:** Predictable behaviour; supports narrowing down results effectively. However, it does not support OR-based queries (e.g., Course A or Course B).
+* **Alternative — Logical OR:** Enables broader searches, but is less useful for refinement and may return overly large result sets.
+
+**Aspect: Representation of filtering logic**
+
+* **Current choice — Single predicate with optional fields:** Simple and centralised logic; easy to debug. However, it may become bulky as more criteria are added.
+* **Alternative — Predicate composition (chaining smaller predicates):** More modular and flexible, but adds complexity and makes combined filtering behaviour harder to trace.
 
 
 ### Feature: Delete Student
@@ -314,9 +287,9 @@ This keeps the destructive part of the operation isolated and ensures that a stu
 
 <box type="info" seamless>
 
-**Relevant diagram:** Successful confirmation flow after the user enters `yes`.
+**Relevant diagram:** Delete confirmation workflow.
 
-<@isha to put sequence diagram here>
+<puml src="diagrams/DeleteConfirmationActivityDiagram.puml" width="600" />
 
 </box>
 
@@ -559,24 +532,77 @@ The following sequence diagram provides a simplified view of how the updated add
 
 #### Overview
 
-The `view` command opens a dedicated panel on the right-hand side of the UI to display the full details of a single student. This provides a comprehensive, at-a-glance summary, including the student's attendance record and all associated remarks, which are not fully visible in the main list.
+The `view` command opens a dedicated panel on the right-hand side of the UI to display the full details of a single student. This provides a comprehensive, at-a-glance summary including the student's attendance record and all associated remarks, which are not fully visible in the main list. The same panel also opens when the user clicks on a student row in the list.
 
 #### Implementation
 
-The `view` command is implemented by `ViewCommand`, `ViewCommandParser`, and the `ViewWindow` UI component.
+The `view` feature is implemented by `ViewCommand`, `ViewCommandParser`, the `ViewWindow` UI component, and the auto-sync logic in `MainWindow`.
 
-1.  **`ViewCommandParser`**: Parses the user input to extract the target student's index from the currently displayed list.
-2.  **`ViewCommand`**: Retrieves the `Person` object from the `Model` at the specified index. It then returns a `CommandResult` with the `showView` flag set to `true` and a reference to the `Person` object to be viewed.
-3.  **`MainWindow`**: Receives the `CommandResult` and calls `handleView(person)`. This method updates the `ViewWindow` with the student's data and displays it in the `viewWindowPlaceholder`.
-4.  **`ViewWindow`**: A `UiPart` that contains FXML elements for displaying person details. Its `setPerson(Person person)` method populates the UI fields with the student's information, including dynamically generated cards for each remark.
+1. **`ViewCommand`**: Retrieves the `Person` object from the model's filtered list at the specified index. It returns a `CommandResult` that carries a reference to the `Person` to be viewed. `CommandResult#shouldShowView()` returns `true` when this reference is non-null.
+2. **`MainWindow#handleCommandResult`**: Checks `shouldShowView()` on the returned `CommandResult`. If true, it calls `handleView(person)`, which passes the `Person` to `ViewWindow#setPerson` and lazily adds the `ViewWindow` root node to `viewWindowPlaceholder` if not already present. It also syncs the list selection highlight to the viewed student.
+3. **`ViewWindow#setPerson`**: Populates the UI labels with the student's metadata (name, student ID, course, tutorial group) and dynamically generates a row of `Label` nodes in a `GridPane` for each remark.
+4. **Click-to-view**: `MainWindow#fillInnerParts` registers a mouse click handler on the `PersonListPanel` that calls `handleView(selectedPerson)`, providing the same view behaviour without typing a command.
 
 #### View Window Auto-Sync
 
-The `ViewWindow` has logic to automatically update or clear itself after any command is executed. This ensures the displayed details do not become stale. For example, if the user edits a student who is currently being viewed, the view should refresh. If the student is deleted or filtered out of the main list, the view should be cleared.
+After every command execution, `MainWindow#updateViewWindowAfterCommand()` ensures the view panel stays in sync with the underlying data. This runs regardless of which command was executed.
 
-The activity diagram below illustrates this logic, which is primarily handled by the `updateViewWindowAfterCommand()` method in `MainWindow`.
+The logic is:
 
-<puml src="diagrams/ViewWindowSyncActivityDiagram.puml" alt="View Window Auto-Sync Logic" />
+1. If the `ViewWindow` is not currently visible (i.e. `viewWindowPlaceholder` is empty), do nothing.
+2. Otherwise, search the current filtered person list for the student being viewed, using `ViewWindow#isViewing(Person)`. This method compares using `Person#isSamePerson` (name + course + tutorial group) rather than `equals`, so the view persists even when identity fields like student ID or email are edited.
+3. If the student is found in the list, refresh `ViewWindow` with the updated `Person` object and re-select them in the list.
+4. If the student is not found (e.g. deleted, or filtered out), clear the `ViewWindow`, remove it from the display, and clear the list selection highlight.
+
+
+### \[Proposed\] Batch Attendance Marking
+
+#### Motivation
+
+Currently, the `marka` command marks attendance for a single student at a time. In practice, TAs typically mark attendance for an entire tutorial group in one sitting. For a class of 20+ students this requires 20+ individual `marka` commands — slow and error-prone. A batch marking command would allow TAs to mark all students in a course–tutorial group for a given week in a single command.
+
+#### Proposed command format
+
+`markall crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK_NUMBER sta/STATUS`
+
+Example: `markall crs/CS2103T tg/T01 week/3 sta/Y` marks week 3 as attended for every student in CS2103T T01.
+
+#### Proposed implementation
+
+The feature would introduce two new classes: `MarkAllCommand` and `MarkAllCommandParser`.
+
+**Parsing phase:**
+`MarkAllCommandParser` validates that all four prefixes (`crs/`, `tg/`, `week/`, `sta/`) are present and parses their values into a `CourseId`, `TGroup`, week `Index`, and `Week.Status`.
+
+**Execution phase:**
+`MarkAllCommand#execute(Model)` proceeds as follows:
+
+1. Retrieve the full person list from the model.
+2. Filter to students matching the given `CourseId` and `TGroup`.
+3. If no students match, throw a `CommandException`.
+4. For each matching student:
+   a. Copy the student's `WeekList`.
+   b. Check the target week's status. If the week is **cancelled**, skip this student and add them to a skipped list.
+   c. Otherwise, mark the week with the given status and replace the student in the model via `Model#setPerson`.
+5. Return a `CommandResult` summarising how many students were marked and how many were skipped due to cancellation.
+
+This is a **partial-success** design: students with cancelled weeks are skipped rather than causing the entire command to fail. This is preferable in a batch context because a single cancelled week (e.g. from a makeup tutorial) should not block the TA from marking the rest of the class.
+
+The sequence diagram below illustrates the execution flow, including the loop over matching students and the alt branch for cancelled weeks.
+
+<puml src="diagrams/MarkAllSequenceDiagram.puml" width="750" />
+
+#### Design considerations
+
+**Aspect: Handling cancelled weeks in a batch operation**
+
+* **Chosen approach — Partial success (skip and report):** Each student is processed independently. Students whose target week is cancelled are silently skipped and reported in the summary. This is the most practical behaviour for TAs: they can mark the whole class and review the skipped list afterward.
+* **Alternative — All-or-nothing (transactional):** If any student's week is cancelled, the entire batch fails and no attendance is updated. This is safer against inconsistency, but impractical — a single cancelled week would force the TA to manually mark every other student individually, defeating the purpose of the batch command.
+
+**Aspect: Matching students by course and tutorial group vs. by current filtered list**
+
+* **Chosen approach — Explicit `crs/` and `tg/` prefixes:** The command always targets a specific course–tutorial group pair regardless of the current displayed list. This makes the command self-contained and deterministic — the same command always affects the same students.
+* **Alternative — Operate on the current filtered list:** `markall week/3 sta/Y` would mark all currently displayed students. This is more flexible but also more dangerous: the TA might forget they have an active filter, leading to unintended partial marking. The explicit approach is safer for a batch write operation.
 
 
 --------------------------------------------------------------------------------------------------------------------
