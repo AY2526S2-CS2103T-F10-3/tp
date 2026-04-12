@@ -34,20 +34,19 @@ public class EditCommandParser implements Parser<EditCommand> {
             PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL,
             PREFIX_COURSEID, PREFIX_TGROUP, PREFIX_TELE
         };
-        String allowedReadable = "n/, sid/, e/, crs/, tg/, tele/";
+        String allowedReadable = "n/, id/, e/, crs/, tg/, tel/";
 
         ParserValidators.checkForUnknownPrefixTokens(args, allowedPrefixes,
                 allowedReadable, AddCommand.MESSAGE_USAGE);
 
         ParserValidators.checkForMissingValues(argMultimap,
                 new Prefix[]{
-                    PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP},
+                    PREFIX_NAME, PREFIX_STUDENTID, PREFIX_COURSEID, PREFIX_TGROUP},
                 new String[]{
-                    "n/", "sid/", "e/", "crs/", "tg/"},
+                    "n/", "id/", "crs/", "tg/"},
                 new String[]{
                     "Name cannot be empty.", "Student ID cannot be empty.",
-                    "Email cannot be empty.", "Course ID cannot be empty.",
-                    "Tutorial group cannot be empty."},
+                    "Course ID cannot be empty.", "Tutorial group cannot be empty."},
                 AddCommand.MESSAGE_USAGE);
 
         Index index;
@@ -89,11 +88,10 @@ public class EditCommandParser implements Parser<EditCommand> {
                 new Prefix[] {
                     PREFIX_NAME, PREFIX_STUDENTID, PREFIX_EMAIL, PREFIX_COURSEID, PREFIX_TGROUP },
                 new String[] {
-                    "n/", "sid/", "e/", "crs/", "tg/" },
+                    "n/", "id/", "crs/", "tg/" },
                 new String[] {
                     "Name cannot be empty.", "Student ID cannot be empty.",
-                    "Email cannot be empty.", "Course ID cannot be empty.",
-                    "Tutorial group cannot be empty." },
+                    "Course ID cannot be empty.", "Tutorial group cannot be empty." },
                 AddCommand.MESSAGE_USAGE);
 
         return new EditCommand(index, editPersonDescriptor);

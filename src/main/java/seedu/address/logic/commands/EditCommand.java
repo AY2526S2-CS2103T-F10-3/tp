@@ -50,6 +50,8 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_EDITED_STRING_SAME = "Edited field values must be"
+            + " different from the existing values.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
 
     private final Index index;
@@ -85,6 +87,10 @@ public class EditCommand extends Command {
 
         if (!personToEdit.equals(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        if (!editPersonDescriptor.isFieldChanged(personToEdit)) {
+            throw new CommandException(MESSAGE_EDITED_STRING_SAME);
         }
 
         model.setPerson(personToEdit, editedPerson);
@@ -170,6 +176,18 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, studentId, email, courseId, tGroup, tele);
+        }
+
+        /**
+         * Returns true if at least one field is different from the corresponding field value in the given person.
+         */
+        public boolean isFieldChanged(Person personToEdit) {
+            return (name.equals(personToEdit.getName()))
+                    || (studentId.equals(personToEdit.getStudentId()))
+                    || (Objects.equals(email, personToEdit.getEmail()))
+                    || (courseId.equals(personToEdit.getCourseId()))
+                    || (tGroup.equals(personToEdit.getTGroup()))
+                    || (Objects.equals(tele, personToEdit.getTele()));
         }
 
         public void setName(Name name) {
