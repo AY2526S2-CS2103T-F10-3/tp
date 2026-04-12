@@ -376,7 +376,7 @@ Another design consideration was whether to show `NOT_SET` explicitly in the UI.
 
 #### Overview
 
-The `markattendance` command allows tutors to record or update a student’s attendance for a specific week. This feature enables per-week attendance tracking instead of aggregate counts, providing finer control over tutorial participation records.
+The `marka` command allows tutors to record or update a student’s attendance for a specific week. This feature enables per-week attendance tracking instead of aggregate counts, providing finer control over tutorial participation records.
 
 Each student’s attendance is tracked weekly, allowing tutors to:
 - Mark attendance as **attended (Y)**, **absent (A)**, or **not marked (N)**
@@ -411,11 +411,11 @@ Cancelled weeks are derived from a **course–tutorial level cancelled week map*
 
 #### Implementation
 
-The `markattendance` feature is implemented using `MarkAttendanceCommand` and `MarkAttendanceCommandParser`.
+The `marka` feature is implemented using `MarkAttendanceCommand` and `MarkAttendanceCommandParser`.
 
 **Parsing phase:**
 1. User input is tokenized using `ArgumentTokenizer`
-2. Required prefixes (`week/`, `sta/`) are validated
+2. Required prefixes (`wk/`, `s/`) are validated
 3. Values are parsed into:
     - `Index` (student)
     - `Index` (week)
@@ -446,13 +446,13 @@ The following diagram shows how attendance input is parsed, validated, and appli
 
 #### Overview
 
-The `cancelweek` command allows tutors to mark a specific tutorial week as cancelled for **all students belonging to a given course and tutorial group**. This is useful when a tutorial session is cancelled due to public holidays, instructor absence, or rescheduled lessons.
+The `cancelw` command allows tutors to mark a specific tutorial week as cancelled for **all students belonging to a given course and tutorial group**. This is useful when a tutorial session is cancelled due to public holidays, instructor absence, or rescheduled lessons.
 
-The command word is `cancelweek`, and its expected format is:
+The command word is `cancelw`, and its expected format is:
 
-`cancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK_NUMBER`
+`cancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER`
 
-For example, `cancelweek crs/CS2103T tg/T01 week/5` cancels week 5 for all students in CS2103T T01.
+For example, `cancelw crs/CS2103T tg/T01 wk/5` cancels week 5 for all students in CS2103T T01.
 
 ---
 
@@ -475,10 +475,10 @@ When a week is cancelled:
 
 #### Implementation
 
-The `cancelweek` feature is implemented using `CancelWeekCommand` and `CancelWeekCommandParser`.
+The `cancelw` feature is implemented using `CancelWeekCommand` and `CancelWeekCommandParser`.
 
 Execution flow:
-1. Parser validates `crs/`, `tg/`, and `week/`
+1. Parser validates `crs/`, `tg/`, and `wk/`
 2. Command checks that `(CourseId, TGroup)` exists
 3. Command validates week range
 4. Model checks duplicate cancellation
@@ -492,13 +492,13 @@ If the week is already cancelled, a `CommandException` is thrown.
 
 #### Overview
 
-The `uncancelweek` command removes a previously cancelled week for a specific course and tutorial group. This restores the week’s attendance status for all affected students.
+The `uncancelw` command removes a previously cancelled week for a specific course and tutorial group. This restores the week’s attendance status for all affected students.
 
-The command word is `uncancelweek`, and its expected format is:
+The command word is `uncancelw`, and its expected format is:
 
-`uncancelweek crs/COURSE_ID tg/TUTORIAL_GROUP week/WEEK_NUMBER`
+`uncancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER`
 
-For example, `uncancelweek crs/CS2103T tg/T01 week/5` restores week 5.
+For example, `uncancelw crs/CS2103T tg/T01 wk/5` restores week 5.
 
 ---
 
@@ -514,7 +514,7 @@ When a cancelled week is restored:
 
 #### Implementation
 
-The `uncancelweek` feature is implemented using `UnCancelWeekCommand` and `UnCancelWeekCommandParser`.
+The `uncancelw` feature is implemented using `UnCancelWeekCommand` and `UnCancelWeekCommandParser`.
 
 Execution flow:
 1. Parser validates prefixes
@@ -1214,35 +1214,35 @@ testers are expected to do more *exploratory* testing.
 
 1. Marking attendance with valid input
 
-   1. Test case: `markattendance 1 week/3 sta/Y`
+   1. Test case: `marka 1 wk/3 s/Y`
 
    2. Expected: Student at index 1 has week 3 marked as attended. Success message displayed.
 
 2. Marking attendance with invalid week
 
-   1. Test case: `markattendance 1 week/20 sta/Y`
+   1. Test case: `marka 1 wk/20 s/Y`
 
    2. Expected: Command rejected with invalid week message.
 
 3. Marking attendance with cancelled week
 
    1. Test case:
-      `cancelweek crs/CS2103T tg/T01 week/3`
-      `markattendance 1 week/3 sta/Y`
+      `cancelw crs/CS2103T tg/T01 wk/3`
+      `marka 1 wk/3 s/Y`
 
    2. Expected: Command rejected. Week is cancelled.
 
 4. Marking attendance duplicate status
 
    1. Test case:
-      `markattendance 1 week/2 sta/Y`
-      `markattendance 1 week/2 sta/Y`
+      `marka 1 wk/2 s/Y`
+      `marka 1 wk/2 s/Y`
 
    2. Expected: Second command rejected.
 
 5. Marking attendance for non-existent student
 
-   1. Test case: `markattendance 999 week/2 sta/Y`
+   1. Test case: `marka 999 wk/2 s/Y`
 
    2. Expected: Invalid index error.
 
@@ -1250,7 +1250,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Cancelling a week with valid input
 
-   1. Test case: `cancelweek crs/CS2103T tg/T01 week/5`
+   1. Test case: `cancelw crs/CS2103T tg/T01 wk/5`
 
    2. Expected: Week 5 marked cancelled for all students.
 
@@ -1262,13 +1262,13 @@ testers are expected to do more *exploratory* testing.
 
 3. Cancelling invalid week
 
-   1. Test case: `cancelweek crs/CS2103T tg/T01 week/20`
+   1. Test case: `cancelw crs/CS2103T tg/T01 wk/20`
 
    2. Expected: Invalid week error.
 
 4. Cancelling non-existent course/tutorial
 
-   1. Test case: `cancelweek crs/CS9999 tg/T99 week/2`
+   1. Test case: `cancelw crs/CS9999 tg/T99 wk/2`
 
    2. Expected: Course/tutorial not found.
 
@@ -1277,26 +1277,26 @@ testers are expected to do more *exploratory* testing.
 1. Uncancelling valid week
 
    1. Test case:
-      `cancelweek crs/CS2103T tg/T01 week/4`
-      `uncancelweek crs/CS2103T tg/T01 week/4`
+      `cancelw crs/CS2103T tg/T01 wk/4`
+      `uncancelw crs/CS2103T tg/T01 wk/4`
 
    2. Expected: Week restored for all students.
 
 2. Uncancelling non-cancelled week
 
-   1. Test case: `uncancelweek crs/CS2103T tg/T01 week/3`
+   1. Test case: `uncancelw crs/CS2103T tg/T01 wk/3`
 
    2. Expected: No change.
 
 3. Uncancelling invalid week
 
-   1. Test case: `uncancelweek crs/CS2103T tg/T01 week/20`
+   1. Test case: `uncancelw crs/CS2103T tg/T01 wk/20`
 
    2. Expected: Invalid week error.
 
 4. Uncancelling non-existent course/tutorial
 
-   1. Test case: `uncancelweek crs/CS9999 tg/T99 week/1`
+   1. Test case: `uncancelw crs/CS9999 tg/T99 wk/1`
    2. Expected: Course/tutorial not found.
 
 ### Adding a remark
