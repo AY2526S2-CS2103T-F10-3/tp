@@ -12,11 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-<<<<<<< HEAD
-         title="TeachAssist" minWidth="1100" minHeight="700" onCloseRequest="#handleExit">
-=======
-         title="Address App" minWidth="1150" minHeight="600" onCloseRequest="#handleExit">
->>>>>>> 7058a4e038011b83d2219a36309395d3f562caed
+         title="TeachAssist" minWidth="1150" minHeight="600" onCloseRequest="#handleExit">
   <icons>
     <Image url="@/images/address_book_32.png" />
   </icons>
