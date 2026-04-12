@@ -16,9 +16,9 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/Isha-Sovasaria)]
 
 
-* Role: Team lead
+* Role: Team lead, Developer
 
-* Responsibilities:In-charge of Deliverables and Deadlines , Scheduling and tracking , Git expert
+* Responsibilities:In-charge of Deliverables and Deadlines , Git expert, in-charge of Model component, Testing,
 
 ### Chen Guanyou
 
@@ -26,7 +26,8 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/guanyouu)]
 
-* Role: Code Quality / Integration Supervisor
+* Role: Developer
+* Responsibilities:Code Quality / Integration Supervisor
 
 ### Hyder
 
@@ -35,7 +36,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/amir-hyder)]
 
 * Role: Developer
-* Responsibilities: Testing
+* Responsibilities: Storage, Developer Guide
 
 ### Ashutosh Menon Rajeev
 
@@ -44,7 +45,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/poaoaooa)]
 
 * Role: Developer
-* Responsibilities: Developer's Guide
+* Responsibilities: In-charge of UI component 
 
 ### Ariel Chua
 
@@ -53,4 +54,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/arielchua)]
 
 * Role: Developer
-* Responsibilities: Documentation and User Guide
+* Responsibilities: User Guide, In-charge of Logic component

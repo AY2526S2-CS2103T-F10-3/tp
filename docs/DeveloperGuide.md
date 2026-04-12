@@ -29,6 +29,10 @@ This project was forked from [se-edu/addressbook-level3](https://github.com/se-e
 - **MarkBind** — for authoring and publishing the user and developer guides. ([markbind.org](https://markbind.org))
 - **GitHub Actions** — for continuous integration and automated build testing. ([github.com/features/actions](https://github.com/features/actions))
 
+### **AI-Assisted Tools**
+
+- **GitHub Copilot** — used as a code-completion assistant throughout the project. Copilot suggestions were used to accelerate writing of routine boilerplate code, test cases, and JavaDoc comments. It was also used to help identify and extract duplicated logic into shared utility methods and common helper classes across command and parser implementations, reducing code duplication. All AI-generated suggestions were reviewed, tested, and adapted by the team before being committed.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
@@ -64,7 +68,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `add n/John id/A0123456X ...`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -85,7 +89,9 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `ViewWindow`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+
+The `ViewWindow` is an embedded detail panel that displays a single student's full information (including past remarks). It is shown inside the `MainWindow` when the user executes a `view` command or clicks a student row, and is automatically refreshed or cleared after subsequent commands to keep the displayed data in sync.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
@@ -95,6 +101,7 @@ The `UI` component,
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* automatically refreshes or clears the `ViewWindow` after every command execution — if the viewed student is still in the filtered list, the panel is refreshed with the latest data; if the student has been deleted or filtered out, the panel is cleared.
 
 
 ### Logic component
@@ -943,7 +950,59 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 <find student>
 
+**Use Case: UC03 – Find Students by Name**<br>
+**Actor:** User<br>
+**MSS:**
+
+1. User enters a `find` command with one or more name keywords.
+2. TeachAssist validates that each keyword contains only alphabetic characters.
+3. TeachAssist searches the student list for students whose name contains a word starting with any of the keywords (case-insensitive, prefix-matching, OR across keywords).
+4. TeachAssist updates the displayed list to show only matching students.
+5. TeachAssist displays a result message showing the number of students found.
+6. Use case ends.
+
+**Extensions:**
+
+* 1a. The user enters `find` with no keywords or only whitespace.
+    * 1a1. TeachAssist rejects the command with an error message and shows the correct command format.
+    * Use case ends.
+* 2a. One or more keywords contain non-alphabetic characters (e.g., digits, symbols).
+    * 2a1. TeachAssist rejects the command with an error message indicating that keywords must be alphabetic.
+    * Use case ends.
+* 3a. No students match any of the keywords.
+    * 3a1. TeachAssist displays an empty list and a message indicating 0 students found.
+    * Use case ends.
+
 <filter student>
+
+**Use Case: UC04 – Filter Student List**<br>
+**Actor:** User<br>
+**MSS:**
+
+1. User enters a `filter` command with one or more criteria using the prefixes `crs/`, `tg/`, `p/`, and/or `abs/`.
+2. TeachAssist validates the prefix format and the value for each provided criterion.
+3. TeachAssist applies logical AND across all criteria: a student is shown only if they satisfy every provided filter.
+4. TeachAssist updates the displayed list to show only matching students.
+5. TeachAssist displays a result message showing the number of students matching the filter.
+6. Use case ends.
+
+**Extensions:**
+
+* 1a. The user enters `filter` with no criteria at all.
+    * 1a1. TeachAssist rejects the command with an error message stating that at least one filter must be provided.
+    * Use case ends.
+* 2a. A required value is missing for a prefix (e.g., `crs/` with no course ID).
+    * 2a1. TeachAssist rejects the command with an error message identifying the missing value.
+    * Use case ends.
+* 2b. The progress value is not one of the supported statuses (`on_track`, `needs_attention`, `at_risk`, `clear`).
+    * 2b1. TeachAssist rejects the command and lists the valid progress values.
+    * Use case ends.
+* 2c. The absence count is not a valid integer between 0 and 13 inclusive.
+    * 2c1. TeachAssist rejects the command with an error message indicating the valid absence range.
+    * Use case ends.
+* 4a. The criteria are valid but no students match.
+    * 4a1. TeachAssist displays an empty list and a message indicating 0 students matching the filter.
+    * Use case ends.
 
 <edit student>
 **Use Case: UC02 – Edit Student**<br>
@@ -1038,14 +1097,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Actor:** User<br>
 **MSS:**
 
-1. User issues the `view` command with a student index.
-2. TeachAssist displays the selected student's detailed information and remark entries in the UI.
-3. Use case ends.
+1. User enters the `view` command with a student index.
+2. TeachAssist validates the index against the currently displayed student list.
+3. TeachAssist retrieves the student's full details (name, student ID, course, tutorial group, email, Telegram handle, weekly attendance, progress, and remarks).
+4. TeachAssist opens the detail panel on the right side of the UI and populates it with the student's information.
+5. TeachAssist highlights the corresponding student row in the list.
+6. TeachAssist displays a success message confirming which student is being viewed.
+7. Use case ends.
 
-**Extensions**
+**Extensions:**
 
-* 1a. The specified index is out of range.
-    * 1a1. TeachAssist informs the user that the specified student does not exist and aborts the operation.
+* 2a. The index is out of range (exceeds the displayed list size or is zero/negative).
+    * 2a1. TeachAssist rejects the command with an error message. The detail panel remains unchanged.
+    * Use case ends.
+* 7a. While the detail panel is open, the user executes another command that modifies the viewed student (e.g., `edit`, `remark`, `marka`).
+    * 7a1. TeachAssist automatically refreshes the detail panel with the updated student data.
+    * Use case resumes from step 7.
+* 7b. While the detail panel is open, the user executes a command that removes or filters out the viewed student (e.g., `delete`, `filter`, `find`).
+    * 7b1. TeachAssist detects that the viewed student is no longer in the displayed list.
+    * 7b2. TeachAssist clears the detail panel and removes the list highlight.
     * Use case ends.
 
 **Use Case: UC10 – View Help Command** <br>
@@ -1106,56 +1176,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. TeachAssist displays the full student list (any active filters are cleared for the displayed view).
 3. Use case ends.
 
-**Use Case: UC14 – Filter Student List** <br>
-**Actor:** User <br>
-**MSS:**
-
-1. User enters a `filter` command with one or more criteria (e.g., `crs/`, `tg/`, `p/`, `abs/`).
-2. TeachAssist updates the displayed student list to show only students matching all provided criteria.
-3. TeachAssist displays feedback summarising the active filter and the number of matching students.
-4. Use case ends.
-
-**Extensions:**
-
-* 2a. A required parameter value is missing for one of the criteria (e.g., `crs/` with no course id).
-    * 2a1. TeachAssist informs the user of the missing value and shows correct usage.
-    * Use case ends.
-* 2b. A provided criterion has an invalid format (e.g., malformed tutorial group `tg/@@@`).
-    * 2b1. TeachAssist informs the user about the invalid format for that criterion.
-    * Use case ends.
-* 2c. A provided progress value is not one of the supported statuses.
-    * 2c1. TeachAssist informs the user of valid progress values and rejects the filter.
-    * Use case ends.
-* 2d. The absence count (`abs/`) is not a non-negative integer.
-    * 2d1. TeachAssist informs the user that absence must be a non-negative integer.
-    * Use case ends.
-* 2e. The combination of criteria is valid but yields no matches.
-    * 2e1. TeachAssist displays an empty list and a message indicating that no students match the filter.
-    * Use case ends.
-* 2f. Multiple criteria are supplied.
-    * 2f1. TeachAssist combines criteria using logical AND semantics and updates the list accordingly.
-    * Use case ends.
-* 2g. The user issues `filter` while another view or filter is active.
-    * 2g1. TeachAssist replaces the currently displayed view with the new filtered results.
-    * Use case ends.
-
-**Use Case: UC15 – Find Students** <br>
-**Actor:** User <br>
-**MSS:**
-
-1. User enters a `find` command with one or more keywords (e.g., parts of a name or student id).
-2. TeachAssist searches the student records for matches and updates the displayed list to show matching students.
-3. TeachAssist displays feedback indicating the number of students found and the search terms used.
-4. Use case ends.
-
-**Extensions:**
-
-* 2a. The `find` command contains illegal characters or is an empty query.
-    * 2a1. TeachAssist informs the user of the correct syntax for the `find` command.
-    * Use case ends.
-* 2b. No students match the query.
-    * 2b1. TeachAssist displays an empty list and a message such as "No students found for: <query>".
-    * Use case ends.
 
 **Use Case: UC16 – Mark Student Attendance**<br>
 **Actor:** User<br>
