@@ -96,7 +96,7 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    After a few seconds, the GUI should appear, similar to the screenshot below.
    Notice that the app starts with some sample data for you to try out the commands.
 
-   ![Ui](images/Ui.png)
+    <img src="images/UiAnnotated.png" alt="help window" width="800">
 
 6. **Try entering a command in the command box.**
    A good place to start is help. Type it in and press Enter to open the help window and view the list of available commands.
@@ -354,15 +354,15 @@ marka INDEX wk/WEEK_NUMBER s/STATUS
 
 **Examples**:
 
-- `marka 1 wk/3 s/y` - marks the attendance of the 1st student's attendance in week 3 as present -> Green.
+- `marka 1 wk/3 s/a` - marks the attendance of the 1st student's attendance in week 3 as absent -> Red.
 
 **Expected output:**
 
 The selected student's attendance record is updated immediately in the student list, and the corresponding week is shown with the updated attendance status.
-mark
 
-The following shows week 3 marked as present(green) for Alex Tan, week 6 marked as absent(red) for Bernice Yu, and unmarked(default) for everything else.
-<img src="images/markattendancesuccess.png" alt="marka success" width="700">
+The following shows week 3 marked as absent(red) for Alex Yeoh.
+
+<img src="images/markattendancesuccess.png" alt="marka success" width="500">
 
 <a name="cancel-week"></a>
 #### Cancelling a tutorial's week: `cancelw`
@@ -391,9 +391,9 @@ If a tutorial does not take place for a certain week, such as a public holiday o
 
 **Expected output:**
 
-All students in CS2103T, tutorial T02 will show week 5 as cancelled (represented by an X) in their attendance records.
+All students in CS2103T, tutorial T12 will show week 5 as cancelled (represented by an X) in their attendance records, all other students remain unchanged.
 
-<img src="images/cancelweeksuccess.png" alt="cancelw success" width="700">
+<img src="images/cancelweeksuccess.png" alt="cancelw success" width="500">
 
 
 <a name="uncancel-week"></a>
@@ -566,9 +566,9 @@ delete INDEX
 
 After you enter a valid `delete` command, TeachAssist will show a confirmation message.
 
-You should see this confirmation message shown after a valid `delete` command:
+You should see a similar confirmation message shown after a valid `delete` command:
 
-<img src="images/deleteconfirmation.png" alt="delete confirmation" width="700">
+> Are you sure you want to delete Alex Yeoh? Type 'yes' to confirm or 'no' to cancel.
 
 Enter `yes` to proceed with the deletion, or `no` to cancel it.
 
@@ -581,7 +581,7 @@ Enter `yes` to proceed with the deletion, or `no` to cancel it.
 
 If the deletion is confirmed, TeachAssist will display a success message so you know the student has been successfully removed.
 
-<img src="images/deleteconfirmation.png" alt="delete confirmation" width="700">
+> Deleted Person: Alex Yeoh; Student ID: A0123456X; Email: alexyeoh@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @alexyeoh
 
 Did you get it? If you did, congrats!
 
@@ -603,7 +603,8 @@ delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP
 - `delete id/A1234567X crs/CS2103T tg/T01` followed by `yes` - deletes the student with student ID `A1234567X`, course `CS2103T`, and tutorial group `T01`.
 
 <box type="info">
-Note:
+
+**Note:**
     This method searches the entire TeachAssist list, not just the students currently displayed. This means a student can still be deleted even if they are currently hidden by a filter.
 </box>
 
@@ -637,14 +638,14 @@ TeachAssist data are saved automatically as a JSON file [JAR file location]/data
 
 <box type="warning">
 
-  **Warning:**
-  If your changes to the data file makes its format invalid, TeachAssist will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.
+**Warning:**
+If your changes to the data file makes its format invalid, TeachAssist will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.
 Furthermore, certain edits can cause the TeachAssist to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 ## Command Summary
 
-Action | Format, Examples
+Action | Format
 -------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Help** | `help`
 **List** | `list`
@@ -659,7 +660,7 @@ Action | Format, Examples
 **Remark** | `remark INDEX txt/REMARK`<br> e.g., `remark 1 txt/Participates actively in class!`
 **Unremark** | `unremark INDEX r/REMARK_INDEX`<br> e.g., `unremark 1 r/2`
 **View** | `view INDEX`<br> e.g., `view 1`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`<br> or `delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP`<br> e.g., `delete id/A1234567X crs/CS2103T tg/T01`
+**Delete** | By index: `delete INDEX`<br>e.g., `delete 3`<br><br>By student details: `delete id/STUDENT_ID crs/COURSE_ID tg/TUTORIAL_GROUP`<br>e.g., `delete id/A1234567X crs/CS2103T tg/T01`
 **Clear** | `clear`
 **Exit** | `exit`
 
@@ -709,9 +710,6 @@ TeachAssist follows the NUS 13-week teaching schedule (weeks 1–13). Week numbe
 
 Term | Meaning
 -----|--------
-**Command Box** | The text field at the top of the TeachAssist window where you type commands.
-**Result Box** | The area directly below the Command Box that displays feedback messages after each command (e.g., success or error messages).
-**View Window** | The panel on the right side of the TeachAssist window that shows a selected student's detailed information and remarks.
 **Prefix** | A short tag ending with `/` that tells TeachAssist which parameter you are providing (e.g., `n/` for name, `crs/` for course ID). See the [Parameter Summary](#parameter-summary) for the full list.
 **JSON (JavaScript Object Notation)** | The file format TeachAssist uses to store your data (`data/addressbook.json`). It is a human-readable text format.
 **Home Folder** | The folder where you placed `TeachAssist.jar`. TeachAssist creates a `data/` subfolder here to store your student data.
