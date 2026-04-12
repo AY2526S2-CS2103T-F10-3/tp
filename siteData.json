@@ -60,7 +60,6 @@
         "feature-cancel-week": "Feature: Cancel Week",
         "feature-uncancel-week": "Feature: Uncancel Week",
         "feature-remark-command": "Feature: Remark Command",
-        "feature-unremark-command": "Feature: Unremark Command",
         "feature-view-command": "Feature: View Command",
         "documentation-logging-testing-configuration-dev-ops": "Documentation, logging, testing, configuration, dev-ops",
         "appendix-requirements": "Appendix: Requirements",
