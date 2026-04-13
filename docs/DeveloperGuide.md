@@ -327,19 +327,76 @@ Another design consideration was whether to show `NOT_SET` explicitly in the UI.
 
 The `marka` command allows tutors to record or update a student’s attendance for a specific week. This feature enables per-week attendance tracking instead of aggregate counts, providing finer control over tutorial participation records.
 
-This command operates on a single student identified by index from the currently displayed list and updates the attendance status for one week.
-
-Supported statuses:
+##### Attendance Fields
+Status: This represents the attendance status of a student.
 - `Y` → Present
 - `A` → Absent
 - `N` → Not marked
+Week Number: This represents the week in a regular NUS semester and ranges from (1 to 13)
 
-**Format:**
-marka <INDEX> wk/<WEEK_NUMBER> s/<STATUS>
+##### Command
+The command targets a student by their displayed index in the current person list and applies an attendance status to a specified week. The command word is `marka`, and its expected format is:
 
-**Example:**
-marka 1 wk/5 s/Y
+`marka INDEX wk/WEEK_NUMBER s/STATUS`
 
+For example, `marka 1 wk/3 s/Y` marks week 3 as attended for the first student in the displayed list.
+
+#### Attendance representation
+
+Attendance is modeled using `Week` and `WeekList`.
+
+Each `Week` object represents the attendance state for a specific week and encapsulates:
+- the week number
+- the attendance status (`Y`, `A`, or `N`)
+- whether the week is cancelled (`C`)
+
+Each `Person` contains a `WeekList`, which represents attendance across all weeks.
+
+- `WeekList` is stored as part of each `Person`
+- Each `Week` enforces its own state constraints
+- Updates to attendance are performed through controlled methods such as:
+  - `markWeekAsAttended`
+  - `markWeekAsAbsent`
+  - `markWeekAsDefault`
+
+This design ensures that attendance rules are enforced consistently at the model level.
+
+#### Implementation
+
+When the user enters a `marka` command, it is parsed into a `MarkAttendanceCommand`.
+
+After successful parsing, `MarkAttendanceCommand#execute` is invoked to perform the update.
+
+When `MarkAttendanceCommand#execute` is called, the command retrieves the currently filtered person list from the model and checks whether the provided index is within bounds. If the index is invalid, a `CommandException` is thrown.
+
+Next, the command validates that the specified week number falls within the allowed range. It then retrieves the target `Person` and creates a defensive copy of the person’s `WeekList` to preserve immutability.
+
+Before applying any update, the command checks whether the selected week has been marked as cancelled. If the week is cancelled, the operation is rejected.
+
+The attendance status is then updated according to the specified status.
+
+If the requested status is already set, the command rejects the operation to prevent redundant updates.
+
+After the update, a new `Person` object is created with the modified `WeekList`, and the model is updated using `model.setPerson(personToEdit, editedPerson)`. A success message is then returned to the user.
+
+An important implementation detail is that the command does not mutate the original `Person` or `WeekList` directly. Instead, it operates on a copied `WeekList` and replaces the original `Person` in the model. This keeps updates explicit and consistent with the application’s design.
+
+#### Key Behaviours
+
+- **Strict index validation**  
+  Invalid student indices are rejected.
+
+- **Week boundary validation**  
+  Only valid week numbers are accepted.
+
+- **Cancelled week protection**  
+  Attendance cannot be modified for cancelled weeks.
+
+- **Duplicate state protection**  
+  Reapplying the same attendance status is not allowed.
+
+- **Immutability**  
+  Updates are performed on copies, and the modified student replaces the original in the model.
 
 #### Design Considerations
 
@@ -353,6 +410,11 @@ marka 1 wk/5 s/Y
 * **Current choice - Copy-on-write (WeekList duplication before update):** This preserves immutability of Person objects and prevents unintended side effects across references. However, it causes slight performance overhead due to object copying.
 * **Alternative - Direct mutation of WeekList:** This would be more efficient but risks shared-state bugs and inconsistent UI updates.
 
+**Aspect: Responsibility separation**
+* **Command:** Handles semantic validation and business rules
+* **Model:** Performs state updates only after validation
+* This separation ensures clear layering and maintainability of the system.
+
 #### Sequence diagram
 
 The following diagram shows how attendance input is parsed, validated, and applied to the target student.
@@ -363,17 +425,70 @@ The following diagram shows how attendance input is parsed, validated, and appli
 
 #### Overview
 
-The `cancelw` command marks a specific week as cancelled for all students in a given course and tutorial group.
+The `cancelw` command allows a teaching assistant to mark a specific week as cancelled for all students within a given course and tutorial group. This is useful for handling situations such as public holidays or cancelled classes.
 
-A cancelled week:
-- Cannot be marked for attendance
-- Is excluded from attendance calculations
+A cancelled week has the following properties:
+- It cannot be marked for attendance
+- It is excluded from attendance-related calculations
 
-**Format:**
-cancelw crs/<COURSE_ID> tg/<TUTORIAL_GROUP> wk/<WEEK_NUMBER>
+The command word is `cancelw`, and its expected format is:
 
-**Example:**
-cancelw crs/CS2103T tg/T01 wk/5
+`cancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER`
+
+For example, `cancelw crs/CS2103T tg/T01 wk/5` marks week 5 as cancelled for all students in course CS2103T and tutorial group T01.
+
+#### Cancellation representation
+
+Cancellation state is managed using both a centralized structure and per-student data.
+
+At the model level:
+- Cancelled weeks are tracked using a `cancelledWeeksMap` in `ModelManager`
+- The key is a combination of course ID and tutorial group
+- The value is a set of cancelled week indices
+
+At the individual level:
+- Each `Person` contains a `WeekList`
+- Each `Week` stores whether it has been cancelled
+- When a week is cancelled, its previous attendance state is preserved internally
+
+This dual-layer design ensures both efficient lookup and consistent propagation of cancellation state.
+
+#### Implementation
+
+When the user enters a `cancelw` command, it is parsed into `CancelWeekCommand`.
+
+After successful parsing, `CancelWeekCommand#execute` is invoked to perform the update.
+
+When `CancelWeekCommand#execute` is called, the command first validates that the specified course and tutorial group exist in the model. If not, a `CommandException` is thrown.
+
+Next, the command validates that the provided week number falls within the allowed range. It also checks whether the week has already been marked as cancelled. If the week is already cancelled, the operation is rejected.
+
+After validation, the command delegates the update to the model via `model.addCancelledWeek(courseId, tGroup, weekIndex)`.
+
+#### Model-Level Logic
+
+`ModelManager#addCancelledWeek` handles the core cancellation logic.
+
+It first constructs a key using the course ID and tutorial group, then retrieves or initializes the corresponding set of cancelled weeks. The specified week index is added to this set.
+
+The cancellation is then propagated to all students belonging to the same course and tutorial group:
+- each affected student is updated using the same copy-and-replace pattern described in the Mark Attendance feature
+
+Finally, the updated cancellation state is persisted to the address book.
+
+#### Key Behaviours
+
+- **Strict validation**  
+  Invalid course–tutorial group combinations are rejected, and attempting to cancel an already cancelled week results in an error.
+
+- **Batch update**  
+  Cancellation is applied consistently across all students in the same course and tutorial group.
+
+- **State preservation**  
+  Any existing attendance status for the week is retained internally within the `Week` object.
+
+- **Immutability**  
+  Updates are performed on copies of `WeekList`, and modified `Person` objects replace the originals in the model.
 
 
 #### Design Considerations
@@ -391,41 +506,77 @@ cancelw crs/CS2103T tg/T01 wk/5
 
 #### Overview
 
-The `uncancelw` command reverses a previously cancelled week for a given course and tutorial group.
+The `uncancelw` command allows a teaching assistant to reverse a previously cancelled week for a given course and tutorial group. This is useful when a cancelled class is reinstated and attendance tracking needs to resume.
 
 After uncancelling:
 - The week becomes available for attendance marking
-- The previously stored attendance status is restored
+- The previously stored attendance status is restored (within the same session)
+
+**Format:**
+uncancelw crs/COURSE_ID tg/TUTORIAL_GROUP wk/WEEK_NUMBER
+
+For example, `uncancelw crs/CS2103T tg/T01 wk/5` restores week 5 for all students in course CS2103T and tutorial group T01.
+
+#### Cancellation reversal representation
+
+Uncancellation builds on the same `Week` and `WeekList` structures described in the Mark Attendance feature.
 
 <box type="info" seamless></box>
 
 **Note:** Transience of Previous Week Status
 
-The `prevStatus` field in `Week` is **transient and not persisted to storage**. 
-It is only used during runtime to support the uncancel operation, allowing a cancelled week to restore its previous attendance state.
+The `prevStatus` field in `Week` is transient and not persisted to storage. It is only used during runtime to support uncancellation within the same session.
 
-This design is intentional because:
+This means:
+- If a week is uncancelled within the same session, its previous attendance state is restored
+- If the application is restarted, uncancelling restores the week to its default state
 
-- `prevStatus` is only meaningful during a single session’s cancellation lifecycle
-- Persisting it would unnecessarily increase storage complexity and risk stale state restoration
+This design avoids persisting temporary state and keeps storage simpler.
+</box>
 
-As a result, uncancelling after restart restores to default.
+#### Implementation
 
-</box></box>
+When the user enters a `uncancelw` command, it is parsed into `UnCancelWeekCommand`.
 
+After successful parsing, `UnCancelWeekCommand#execute` is invoked to perform the update.
 
-**Format:**
-uncancelw crs/<COURSE_ID> tg/<TUTORIAL_GROUP> wk/<WEEK_NUMBER>
+When `UnCancelWeekCommand#execute` is called, the command validates that the specified course–tutorial group exists and that the week number is within the valid range.
 
-**Example:**
-uncancelw crs/CS2103T tg/T01 wk/5
+It then checks whether the specified week is currently cancelled. If the week is not cancelled, the operation is rejected.
+
+After validation, the command delegates the update to the model via `model.removeCancelledWeek(courseId, tGroup, weekIndex)`.
+
+#### Model-Level Logic
+
+`ModelManager#removeCancelledWeek` performs the uncancellation.
+
+It locates the corresponding entry in `cancelledWeeksMap` and removes the specified week index.
+
+The change is then propagated to all students in the same course and tutorial group:
+- updates follow the same copy-and-replace pattern described earlier, with the week restored to its previous state
+
+Finally, the updated state is persisted.
+
+#### Key Behaviours
+
+- **Strict validation**  
+  Only cancelled weeks can be uncancelled; invalid operations are rejected.
+
+- **State restoration**  
+  The original attendance status is restored when available within the same session.
+
+- **Batch update**  
+  All affected students are updated consistently.
+
+- **Immutability**  
+  Updates are applied on copied `WeekList` instances and reflected via person replacement.
 
 
 #### Design Considerations
 
 **Aspect: Restoring previous attendance state**
 
-* **Current choice - Store previous status inside Week:** This ensures accurate restoration of original attendance and preserves user input history. However there is additional state management complexity.
+* **Current choice - Store previous status inside Week:** This ensures accurate restoration of original attendance and preserves user input history. However, this introduces additional state management complexity.
 * **Alternative - Reset to default status:** This requires simpler implementation but causes loss of original attendance information.
 
 
