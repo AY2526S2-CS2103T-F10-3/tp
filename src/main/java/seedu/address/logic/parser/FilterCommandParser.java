@@ -72,7 +72,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
      * @return An optional containing the parsed value, or empty if the prefix is not present.
      * @throws ParseException if the value is present but invalid.
      * Note: This method was generated with the assistance of GitHub Copilot to
-     *     handle generic functional parsing of CLI arguments.
+     *    handle generic functional parsing of CLI arguments.
      */
     private <T> Optional<T> parseField(ArgumentMultimap argMultimap, Prefix prefix,
                                        ThrowingFunction<String, T> parser) throws ParseException {
