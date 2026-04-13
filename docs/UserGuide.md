@@ -367,6 +367,8 @@ The following shows week 3 marked as absent(red) for Alex Yeoh.
 
 <img src="images/markattendancesuccess.png" alt="marka success" width="400">
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 <a name="cancel-week"></a>
 #### Cancelling a tutorial's week: `cancelw`
 
@@ -398,6 +400,8 @@ Mark a whole week as cancelled for an entire class — handy for public holidays
 All students in CS2103T, tutorial T12 will show week 5 as cancelled (represented by an X) in their attendance records, all other students remain unchanged.
 
 <img src="images/cancelweeksuccess.png" alt="cancelw success" width="400">
+
+<div style="page-break-before: always; break-before: page;"></div>
 
 
 <a name="uncancel-week"></a>
@@ -648,6 +652,8 @@ If your changes to the data file makes its format invalid, TeachAssist will disc
 Furthermore, certain edits can cause the TeachAssist to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 ## Command Summary
 
 Action | Format
@@ -689,7 +695,6 @@ Parameter             | Prefix  | Constraints                                   
 **REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                                                                                                                                    | `1`, `2`
 
 --------------------------------------------------------------------------------------------------------------------
-<div style="page-break-before: always; break-before: page;"></div>
 
 ## Known issues
 1. If you minimize the Help Window and then run the help command (or use the Help menu, or the keyboard shortcut F1) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
