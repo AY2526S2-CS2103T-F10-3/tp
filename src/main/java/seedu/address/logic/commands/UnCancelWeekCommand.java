@@ -19,7 +19,7 @@ public class UnCancelWeekCommand extends Command {
 
     public static final String COMMAND_WORD = "uncancelw";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Uncancels the week from attendance table.\n"
-            + "Parameters: crs/COURSE_ID tg/TUTORIAL_ID "
+            + "Parameters: crs/COURSE_ID tg/TUTORIAL_GROUP "
             + PREFIX_WEEK + "WEEK_NUMBER\n"
             + "All parameters must be included\n"
             + "Example: " + COMMAND_WORD + " crs/CS2103T tg/T01 wk/5";
