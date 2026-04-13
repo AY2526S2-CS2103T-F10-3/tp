@@ -41,6 +41,7 @@ MainWindow *-down-> "1" ViewWindow
 PersonListPanel -down-> "*" PersonCard
 
 MainWindow -left-|> UiPart
+ViewWindow --|> UiPart
 ViewWindow -down-> Person
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
