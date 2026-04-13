@@ -252,13 +252,6 @@ For detail-based deletion, the match is performed against the **entire TeachAssi
 
 The `delete` feature is implemented primarily using `DeleteCommand`, `ConfirmedDeleteCommand`, and `LogicManager`.
 
-<box type="info" seamless>
-
-**Relevant diagram:** Delete-related class structure.
-
-<puml src="diagrams/DeleteClassDiagram.puml" width="600" />
-
-</box>
 
 When the user enters a `delete` command, the command is first parsed into a `DeleteCommand`. However, the student is **not deleted immediately**.
 
@@ -531,9 +524,6 @@ The feature would introduce two new classes: `MarkAllCommand` and `MarkAllComman
 
 This is a **partial-success** design: students with cancelled weeks are skipped rather than causing the entire command to fail. This is preferable in a batch context because a single cancelled week (e.g. from a makeup tutorial) should not block the TA from marking the rest of the class.
 
-The sequence diagram below illustrates the execution flow, including the loop over matching students and the alt branch for cancelled weeks.
-
-<puml src="diagrams/MarkAllSequenceDiagram.puml" width="750" />
 
 #### Design considerations
 
@@ -546,6 +536,32 @@ The sequence diagram below illustrates the execution flow, including the loop ov
 
 * **Chosen approach — Explicit `crs/` and `tg/` prefixes:** The command always targets a specific course–tutorial group pair regardless of the current displayed list. This makes the command self-contained and deterministic — the same command always affects the same students.
 * **Alternative — Operate on the current filtered list:** `markall week/3 sta/Y` would mark all currently displayed students. This is more flexible but also more dangerous: the TA might forget they have an active filter, leading to unintended partial marking. The explicit approach is safer for a batch write operation.
+
+
+### \[Proposed\] Undo / Redo
+
+#### Motivation
+
+Currently, TeachAssist has no way to reverse a command after execution. A TA who accidentally deletes the wrong student, overwrites attendance, or edits the wrong field must manually re-enter the correct data. An undo/redo mechanism would let users recover from mistakes instantly.
+
+#### Proposed implementation
+
+The feature centres on a `VersionedAddressBook` that extends `AddressBook` with an internal state history list and a `currentStatePointer`. Each mutating command (e.g., `add`, `edit`, `delete`, `marka`) calls `Model#commitAddressBook()` after execution, which saves a copy of the current address book state to the history.
+
+- `UndoCommand` calls `Model#undoAddressBook()`, which decrements the pointer and restores the previous state.
+- `RedoCommand` calls `Model#redoAddressBook()`, which increments the pointer and restores the next state.
+- If a new mutating command is executed after an undo, all forward states beyond the pointer are discarded.
+
+The sequence diagram below shows how `VersionedAddressBook` restores a previous state when `undo` is invoked. The outer command execution flow (LogicManager → UndoCommand → Model) follows the same pattern shown in the [Logic component](#logic-component) section.
+
+<puml src="diagrams/UndoSequenceDiagram.puml" width="600" />
+
+#### Design considerations
+
+**Aspect: State storage granularity**
+
+* **Chosen approach — Full address book snapshots:** Each commit stores a complete copy of the address book. Simple to implement and reason about, but uses more memory for large datasets.
+* **Alternative — Command-level inverse operations:** Store the inverse of each command (e.g., an `add` stores a corresponding `delete`). More memory-efficient, but significantly harder to implement correctly for commands that modify multiple records (e.g., `cancelw` affecting all students in a group).
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -564,19 +580,17 @@ The sequence diagram below illustrates the execution flow, including the loop ov
 
 ### Product scope
 
-TeachAssist is a standalone, local CLI application designed to streamline student data management for university teaching assistants through a high-speed, typing-based interface. The system focuses exclusively on the structured organization of student information and manual consultation logging, deliberately eschewing integration with external platforms like Canvas or cloud-based databases. To maintain its lightweight and specialized nature, TeachAssist does not include features for automated communication, calendar scheduling, or academic analytics; it does not compute grades, generate transcripts, or provide predictive student tracking. By prioritizing a command-line workflow over a traditional GUI, TeachAssist provides an efficient, distraction-free environment for TAs to manage high volumes of contacts and administrative records across multiple classes.
+TeachAssist is a desktop CLI application for university teaching assistants at NUS to manage student data. It supports structured storage of student records, attendance tracking, progress tagging, and remarks. It is a local, offline tool — it does not integrate with external platforms, compute grades, or provide automated analytics.
 
 **Target user profile**:
 
-TeachAssist is specifically optimized for a distinct niche of academic administrators. Our ideal user:
-* Role: Full-time University Teaching Assistants (TAs) at NUS.
-* Workload: Manages a significant volume of student contacts and consultation records across multiple classes and tutorial groups each semester.
-* Platform Preference: Prefers a dedicated desktop environment over web-based tools.
-* Technical Proficiency: Reasonably comfortable with Command Line Interface (CLI) applications and values the precision of text-based input.
-* Performance: A fast typist who finds traditional Mouse/GUI interactions cumbersome and "slow" for repetitive data entry.
+* Full time University Teaching Assistants (TAs) at NUS
+* Manages student contacts and records across multiple courses and tutorial groups
+* Prefers desktop applications over web-based tools
+* Comfortable with CLI applications and fast at typing
 
 **Value proposition**:
-TeachAssist provides a high-speed, structured student management system that bridges the gap between disorganized spreadsheets and overly complex enterprise software. By utilizing a typing-based interface, it allows TAs to execute administrative tasks—such as updating student details or logging consultation notes—significantly faster than a typical mouse-driven application.
+TeachAssist consolidates student data, attendance, progress tracking, and consultation remarks into a single application, eliminating the need to juggle multiple platforms and spreadsheets. Its typing-based command interface lets TAs perform these tasks faster than a typical mouse-driven application.
 
 
 ### User stories
