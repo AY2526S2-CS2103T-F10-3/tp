@@ -248,10 +248,9 @@ The `delete` feature is implemented as a two-stage confirmation workflow to prev
 - `LogicManager` (pending command storage and routing)
 - `ConfirmedDeleteCommand#execute(Model)`
 
-<box type="info" seamless>
 **Relevant diagram:** Delete confirmation workflow.
 <puml src="diagrams/DeleteConfirmationActivityDiagram.puml" width="600" />
-</box>
+
 
 #### Design Logic
 **Two-Stage Workflow:**
@@ -647,14 +646,6 @@ The feature centres on a `VersionedAddressBook` that extends `AddressBook` with 
 - `UndoCommand` calls `Model#undoAddressBook()`, which decrements the pointer and restores the previous state.
 - `RedoCommand` calls `Model#redoAddressBook()`, which increments the pointer and restores the next state.
 - If a new mutating command is executed after an undo, all forward states beyond the pointer are discarded.
-
-#### Design considerations
-
-**Aspect: State storage granularity**
-
-* **Chosen approach — Full address book snapshots:** Each commit stores a complete copy of the address book. Simple to implement and reason about, but uses more memory for large datasets.
-* **Alternative — Command-level inverse operations:** Store the inverse of each command (e.g., an `add` stores a corresponding `delete`). More memory-efficient, but significantly harder to implement correctly for commands that modify multiple records (e.g., `cancelw` affecting all students in a group).
-
 
 --------------------------------------------------------------------------------------------------------------------
 
