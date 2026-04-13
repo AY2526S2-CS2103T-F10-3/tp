@@ -1,0 +1,41 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant ":VersionedAddressBook" as VAB MODEL_COLOR
+end box
+
+note over Model : UndoCommand calls\nModel#undoAddressBook()
+
+[-> Model : undoAddressBook()
+activate Model
+
+Model -> VAB : undo()
+activate VAB
+
+VAB -> VAB : assert currentStatePointer > 0
+activate VAB MODEL_COLOR_T1
+VAB --> VAB
+deactivate VAB
+
+VAB -> VAB : currentStatePointer--
+activate VAB MODEL_COLOR_T1
+VAB --> VAB
+deactivate VAB
+
+VAB -> VAB : resetData(stateList\n[currentStatePointer])
+activate VAB MODEL_COLOR_T1
+VAB --> VAB
+deactivate VAB
+
+VAB --> Model
+deactivate VAB
+
+[<-- Model
+deactivate Model
+
+
+@enduml
+
