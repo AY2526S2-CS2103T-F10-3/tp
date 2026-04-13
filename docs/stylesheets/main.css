@@ -150,7 +150,12 @@ mark {
 
   body,
   #content-wrapper,
-  #content-wrapper * {
+  #content-wrapper p,
+  #content-wrapper li,
+  #content-wrapper a,
+  #content-wrapper span,
+  #content-wrapper td,
+  #content-wrapper th {
     font-size: 1rem !important;
   }
 }
