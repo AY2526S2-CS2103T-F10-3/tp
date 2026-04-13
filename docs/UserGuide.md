@@ -196,6 +196,8 @@ It must be noted that when entering parameters, they should not be blank.
 * `EMAIL` is optional and should only end with valid NUS domains ("@u.nus.edu", "@u.duke.nus.edu", "@u.yale-nus.edu.sg"). The local part before the '@' should be alphanumeric and can contain these special characters: " . ", " _ ", " - ", without any spaces.
 * `TELEGRAM_USERNAME` is optional and should only contain alphanumeric characters and underscores, with no spaces and an optional '@' as a starting character.
 
+<div style="page-break-before: always; break-before: page;"></div>
+
 <box type="warning">
 
 **Warning:** What makes an entry a duplicate? <br>
