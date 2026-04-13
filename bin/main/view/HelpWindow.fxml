@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.stage.Stage?>
+
+        <!-- Solution below inspired by https://github.com/AY2526S1-CS2103T-T09-3/tp/blob/master/src/main/resources/view/HelpWindow.fxml -->
+<fx:root title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <icons>
+    <Image url="@/images/help_icon.png" />
+  </icons>
+  <scene>
+    <Scene>
+      <stylesheets>
+        <URL value="@HelpWindow.css" />
+      </stylesheets>
+      <BorderPane >
+        <top>
+          <HBox fx:id="helpMessageContainer" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+              <Insets bottom="15.0" left="10.0" right="10.0" top="15.0"/>
+            </padding>
+            <Label fx:id="helpMessage" style="-fx-text-fill: white;" text="For full details, see the User Guide."/>
+            <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" text="Copy URL"/>
+          </HBox>
+        </top>
+        <center>
+          <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox spacing="15.0">
+              <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+              </padding>
+              <Label text="CORE MANAGEMENT" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: list" styleClass="command-title"/>
+                <Label text="Format: list" wrapText="true" styleClass="command-format"/>
+                <Label text="Lists all students stored in ascending alphabetical order." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: add" styleClass="command-title"/>
+                <Label text="Format: add n/NAME id/STUDENT_ID e/EMAIL crs/COURSE_ID tg/TUTORIAL_GROUP [tel/TELEGRAM_USERNAME]"
+                       wrapText="true" styleClass="command-format"/>
+                <Label text="Adds a student. The telegram username field is optional." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: edit" styleClass="command-title"/>
+                <Label text="Format: edit INDEX [n/NAME] [id/STUDENT_ID] [e/EMAIL] [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [tel/TELEGRAM_USERNAME]"
+                       wrapText="true" styleClass="command-format"/>
+                <Label text="Edits fields of the student at the given index. Existing values will be overwritten."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: edit 1 n/JANE DOE e/jane@u.nus.edu" wrapText="true"
+                       styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: delete" styleClass="command-title"/>
+                <Label text="Format 1: delete INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Format 2: delete id/STUDENT_ID crs/COURSE_ID tg/TGROUP" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Deletes a student. Requires confirmation ('yes' or 'no')." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: delete 2  -- deletes the second student in the displayed list" wrapText="true"
+                       styleClass="command-example"/>
+                <Label text="Example: delete id/A0123456X crs/CS2103T tg/T01  -- deletes matching student by details"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: clear" styleClass="command-title"/>
+                <Label text="Format: clear" wrapText="true" styleClass="command-format"/>
+                <Label text="Deletes all students from the address book." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <Label text="SEARCH &amp; NAVIGATION" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: find" styleClass="command-title"/>
+                <Label text="Format: find KEYWORD [MORE_KEYWORDS]..." wrapText="true" styleClass="command-format"/>
+                <Label text="Finds students whose names contain words that start with any of the given keywords (case-insensitive)."
+                       wrapText="true" styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: filter" styleClass="command-title"/>
+                <Label text="Format: filter [crs/COURSE_ID] [tg/TUTORIAL_GROUP] [p/PROGRESS] [abs/ABSENCE_COUNT]" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Filters students based on the given prefixes.Any combination of prefixes can be provided but only one value per prefix is allowed.The filter by abs prefix checks for students >= ABSENCE_COUNT" wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: view" styleClass="command-title"/>
+                <Label text="Format: view INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Shows detailed remarks for a specific student." wrapText="true"
+                       styleClass="command-description"/>
+              </VBox>
+
+              <Label text="ACADEMIC TRACKING" styleClass="section-header"
+                     style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: marka" styleClass="command-title"/>
+                <Label text="Format: marka INDEX wk/WEEK_NUMBER s/STATUS" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Updates attendance. Status: y (present), a (absent), n (reset to unmarked)."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: marka 1 wk/5 s/y  -- mark week 5 as present for student at index 1"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: updateprogress" styleClass="command-title"/>
+                <Label text="Format: updateprogress INDEX p/PROGRESS" wrapText="true" styleClass="command-format"/>
+                <Label text="Updates a student's progress status." wrapText="true" styleClass="command-description"/>
+                <Label text="Available progress values: on_track, needs_attention, at_risk, clear." wrapText="true" styleClass="command-description"/>
+                <Label text="Use 'clear' to unset a previously set progress (resets to not_set/clear)." wrapText="true" styleClass="command-description"/>
+                <Label text="Example: updateprogress 1 p/on_track  -- set student at index 1 to 'on_track'"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: remark" styleClass="command-title"/>
+                <Label text="Format: remark INDEX txt/REMARK" wrapText="true" styleClass="command-format"/>
+                <Label text="Adds a textual remark to the student's record." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: remark 1 txt/Met during consultation about assignments" wrapText="true"
+                       styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: unremark" styleClass="command-title"/>
+                <Label text="Format: unremark INDEX r/REMARK_INDEX" wrapText="true" styleClass="command-format"/>
+                <Label text="Removes the remark at the specified index from a student." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: unremark 1 r/2  -- remove the 2nd remark from student at index 1"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: cancelw" styleClass="command-title"/>
+                <Label text="Format: cancelw crs/COURSE_ID tg/TUTORIAL_ID wk/WEEK_NUMBER" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Marks a week as cancelled. Cancelled weeks cannot be marked for attendance."
+                       wrapText="true" styleClass="command-description"/>
+                <Label text="Example: cancelw crs/CS2103T tg/T01 wk/5  -- cancel week 5 for CS2103T T01"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: uncancelw" styleClass="command-title"/>
+                <Label text="Format: uncancelw crs/COURSE_ID tg/TUTORIAL_ID wk/WEEK_NUMBER" wrapText="true"
+                       styleClass="command-format"/>
+                <Label text="Reverts a previously cancelled tutorial week." wrapText="true"
+                       styleClass="command-description"/>
+                <Label text="Example: uncancelw crs/CS2103T tg/T01 wk/5  -- uncancel week 5 for CS2103T T01"
+                       wrapText="true" styleClass="command-example"/>
+              </VBox>
+
+              <Label text="SYSTEM" styleClass="section-header" style="-fx-text-fill: black; -fx-font-weight: bold;"/>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: help" styleClass="command-title"/>
+                <Label text="Format: help" wrapText="true" styleClass="command-format"/>
+                <Label text="Opens this help window." wrapText="true" styleClass="command-description"/>
+              </VBox>
+
+              <VBox styleClass="command-card" spacing="8.0">
+                <Label text="Command: exit" styleClass="command-title"/>
+                <Label text="Format: exit" wrapText="true" styleClass="command-format"/>
+                <Label text="Exits the application." wrapText="true" styleClass="command-description"/>
+              </VBox>
+
+            </VBox>
+          </ScrollPane>
+        </center>
+      </BorderPane>
+    </Scene>
+  </scene>
+</fx:root>
