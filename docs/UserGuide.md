@@ -73,7 +73,7 @@ Can't wait to get TeachAssist up and running? Let’s begin!
    > - After installation, restart your terminal and run `java -version` again to confirm that the correct version is installed.
 
 
-2. **Download the latest `TeachAssist.jar` file** from the [Releases page](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.3).
+2. **Download the latest `TeachAssist.jar` file** from the [Releases page](https://github.com/AY2526S2-CS2103T-F10-3/tp/releases/tag/v1.6).
 
 3. **Move the downloaded file into a folder you want to use as the TeachAssist home folder.**
    This folder will be used to store the app and its data.
