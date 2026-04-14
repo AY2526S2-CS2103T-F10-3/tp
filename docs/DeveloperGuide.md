@@ -530,7 +530,7 @@ The command does not mutate the original `Person` object. Instead, it creates a 
 
 The following diagram shows how remarks are converted into storage representations during the address book save operation
 
-<puml src="diagrams/RemarkSequenceDiagram.puml" width="600" />
+<puml src="diagrams/RemarkSequenceDiagram.puml" />
 
 ### Feature: View Command
 
