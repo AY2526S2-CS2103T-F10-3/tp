@@ -1,7 +1,9 @@
 package seedu.address.model.person;
 
 import java.util.Objects;
-
+// @author thomas5564-reused
+// Reused from https://github.com/AY2526S1-CS2103T-T09-3/tp
+// with major modifications(idea is same but usage and many implementations is different)
 /**
  * Represents a student's attendance status for a single week.
  */

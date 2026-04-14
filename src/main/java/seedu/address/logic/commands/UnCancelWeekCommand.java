@@ -51,7 +51,8 @@ public class UnCancelWeekCommand extends Command {
 
     /**
      * Executes the uncancel week command.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * <p>Validates that:
      * <ul>
      *     <li>The course and tutorial group exist</li>
