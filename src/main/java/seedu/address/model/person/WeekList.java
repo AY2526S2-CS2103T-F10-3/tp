@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-
+// @@author thomas5564-reused
+// Reused from https://github.com/AY2526S1-CS2103T-T09-3/tp
+// with major modifications(idea is same but usage and many implementations is different)
 /**
  * Represents a collection of tutorial attendance records for a student across all weeks.
  */

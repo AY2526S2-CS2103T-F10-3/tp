@@ -147,7 +147,8 @@ public class ModelManager implements Model {
     /**
      * Returns {@code true} if the specified week is marked as cancelled
      * for the given course ID and tutorial group.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * @param courseId The course identifier.
      * @param tGroup The tutorial group.
      * @param weekIdx The week index (0-based).
@@ -160,7 +161,8 @@ public class ModelManager implements Model {
     /**
      * Returns an unmodifiable set of cancelled week indices for the specified
      * course ID and tutorial group.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * <p>If no cancelled weeks exist for the given pair, an empty set is returned.
      *
      * @param courseId The course identifier.
@@ -238,7 +240,8 @@ public class ModelManager implements Model {
 
     /**
      * Adds a cancelled week for the specified course ID and tutorial group.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * <p>This method:
      * <ul>
      *     <li>Ensures the course–tutorial pair exists in the internal map</li>
@@ -267,7 +270,8 @@ public class ModelManager implements Model {
 
     /**
      * Removes a cancelled week for the specified course ID and tutorial group.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * <p>This method:
      * <ul>
      *     <li>Does nothing if the course–tutorial pair or week does not exist</li>
