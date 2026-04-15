@@ -62,7 +62,8 @@ public class MarkAttendanceCommand extends Command {
 
     /**
      * Executes the mark attendance command.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * <p>Performs the following steps:
      * <ul>
      *     <li>Validates the student index and week number</li>
