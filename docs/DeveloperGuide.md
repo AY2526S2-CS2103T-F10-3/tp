@@ -165,7 +165,7 @@ The `Model` component,
 <div style="page-break-before: always; break-before: page;"></div>
 
 ### Storage component
-
+//@@author amir-hyder
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
@@ -179,7 +179,7 @@ The `Storage` component,
 * is implemented primarily by `StorageManager`, which coordinates `JsonAddressBookStorage` and `JsonUserPrefsStorage` to provide a unified persistence interface.
 
 TeachAssist data stored by the `Storage` component includes not only persons, but also additional persisted fields such as cancelled weeks, weekly attendance data, progress, and remarks.
-
+//@@author
 ### Common classes
 
 Classes used by multiple components are in the `seedu.address.commons` package.
@@ -469,6 +469,7 @@ Finally, the updated state is persisted.
 **Scalability:**
 The approach is robust for session-based workflows and avoids long-term state bloat.
 //@@author
+//@@author amir-hyder
 ### Feature: Remark Command
 
 #### Technical Overview
@@ -493,6 +494,7 @@ The command does not mutate the original `Person` object. Instead, it creates a 
 The following diagram shows how remarks are converted into storage representations during the address book save operation
 
 <puml src="diagrams/RemarkSequenceDiagram.puml" />
+//@@author
 
 //@@author Isha-Sovasaria
 ### Feature: View Command
@@ -593,7 +595,7 @@ TeachAssist consolidates student data, attendance, progress tracking, and consul
 //@@author
 
 ### User stories
-
+//@@author amir-hyder
 Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *`, Low (could have) - `*`
 
 | Priority | As a … | I want to …                                                                                       | So that                                                                               |
@@ -624,7 +626,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 | `*` | TA | Copy High risk student email addresses to clipboard                                               | To make it easier to follow up with students who may be struggling                    |
 | `*` | TA  | add a consultation date for a particular student                                                  | I can keep track of the consults I have scheduled and ensure no time conflict         |
 | `*` | TA | archive completed courses                                                                         | past semester data remains accessible but does not clutter my active workspace        |
-
+//@@author
 
 
 ### Use cases
@@ -806,7 +808,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1c. The progress status is invalid.
     * 1c1. TeachAssist informs the user of valid statuses.
     * Use case ends.
+
 //@@author
+//@@author amir-hyder
 
 **Use Case: UC10 – Add Remark to Student**<br>
 **Actor:** User<br>
@@ -1258,6 +1262,7 @@ testers are expected to do more *exploratory* testing.
 
     **Expected behaviour:** Command rejected with error message: `"Course CS9999 with tutorial T99 does not exist and cannot be uncancelled."`.
 //@@author
+//@@author amir-hyder
 ### Adding a remark (`remark`)
 
 1. Adding a remark with valid input
@@ -1288,6 +1293,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `remark 999 txt/Some remark` (where index 999 exceeds the displayed list size)
 
     **Expected behaviour:** Command rejected with error message: `"The student index provided is invalid"`.
+//@@author
 //@@author Isha-Sovasaria
 ### Viewing student details / remarks (`view`)
 

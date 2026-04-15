@@ -469,7 +469,9 @@ If progress has been successfully updated, you should see the success message:
 > New progress: AT_RISK
 and a red "At Risk" label.
 
+
 //@@author
+//@@author amir-hyder
 
 ### Remarks
 
@@ -532,7 +534,7 @@ If successful, the confirmation message will be shown in the Result Box and the 
 > Deleted remark from Person:
 > Alex Yeoh; Student ID: A1234567X; Email: alexyeoh@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @alexyeoh
 > Deleted Remark: Usually well-prepared for tutorials
-
+//@@author
 
 //@@author Isha-Sovasaria
 <a name="view"></a>
