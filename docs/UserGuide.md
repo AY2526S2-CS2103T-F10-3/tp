@@ -458,7 +458,7 @@ If progress has been successfully updated, you should see the success message:
 > Updated progress for student: Bernice Yu; Student ID: A7654321X; Email: berniceyu@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @berniceyu.
 > New progress: AT_RISK
 and a red "At Risk" label.
-
+//@@author amir-hyder
 ### Remarks
 
 <a name="remark"></a>
@@ -520,7 +520,7 @@ If successful, the confirmation message will be shown in the Result Box and the 
 > Deleted remark from Person:
 > Alex Yeoh; Student ID: A1234567X; Email: alexyeoh@u.nus.edu; Course ID: CS2103T; TGroup: T12; Tele: @alexyeoh
 > Deleted Remark: Usually well-prepared for tutorials
-
+//@@author
 
 //@@author Isha-Sovasaria
 <a name="view"></a>
