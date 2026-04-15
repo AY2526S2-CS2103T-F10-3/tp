@@ -174,6 +174,7 @@ This is especially useful after using commands such as [`find`](#find) or [`filt
 ```
 list
 ```
+//@@author guanyouu
 
 <a name="add"></a>
 ### Adding a student: `add`
@@ -210,6 +211,8 @@ add n/JOHN DOE id/A0123456X e/johnd@u.nus.edu crs/CS2103T tg/T01 tel/@JOHNDOE
 When a student is added successfully, you will receive a confirmation message:
 
 > New person added: John Doe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
+
+//@@author
 
 //@@author Isha-Sovasaria
 <a name="find"></a>
@@ -296,6 +299,8 @@ The student list updates instantly. The Result Box will display the total count:
     If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 </box>
 //@@author
+
+//@@author guanyouu
 <a name="edit"></a>
 ### Editing a student: `edit`
 
@@ -320,6 +325,8 @@ The student list updates immediately to reflect the changes. The Result Box will
 When the edit is successful, you will receive the following message:
 
 > Edited Person: John Hoe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
+
+//@@author
 
 <a name="attendance"></a>
 ### Updating students' attendance
