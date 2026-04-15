@@ -5,7 +5,7 @@ pageNav: 3
 ---
 
 # TeachAssist User Guide
-
+//@@author Isha-Sovasaria
 Are you tired of juggling multiple platforms—tracking tutorials, managing attendance and searching through endless student records? Do you find yourself struggling with clunky spreadsheets and endless menus?
 
 **TeachAssist** is for you.
@@ -13,7 +13,7 @@ Are you tired of juggling multiple platforms—tracking tutorials, managing atte
 TeachAssist is a desktop application designed for **full-time University Teaching Assistants (TAs) at NUS** who manage multiple classes and tutorials each semester.If you're a fast typist, TeachAssist can help you quickly filter student lists, track attendance, and log important notes using straightforward keyboard commands, all while offering an easy-to-navigate visual interface.
 
 And the best part? No technical expertise needed—just basic computer skills like installing software and navigating files.
-
+//@@author
 ## Table of contents
 - [Quick start](#quick-start)
 - [Features](#features)
@@ -138,6 +138,7 @@ You’re all set! From here, head to the Features section to learn what TeachAss
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
+//@@author Isha-Sovasaria
 <a name="help"></a>
 ### Viewing help : `help`
 
@@ -161,9 +162,8 @@ The main TeachAssist window remains active in the background.
 **Tip:**
 Press `F1` to open the Help Window. On some Mac keyboards, you may need to press `fn + F1`.
 </box>
-
+//@@author
 <a name="list"></a>
-
 ### Listing all students: `list`
 
 If you want to see every student currently stored in TeachAssist, use the `list` command to display the full student list in alphabetical order.
@@ -211,6 +211,7 @@ When a student is added successfully, you will receive a confirmation message:
 
 > New person added: John Doe; Student ID: A0123456X; Email: johnd@u.nus.edu; Course ID: CS2103T; TGroup: T01; Tele: @JOHNDOE
 
+//@@author Isha-Sovasaria
 <a name="find"></a>
 ### Finding students by name: `find`
 
@@ -294,7 +295,7 @@ The student list updates instantly. The Result Box will display the total count:
 **Tip:**
     If a filter returns no results, verify you used the correct course ID/tutor group format and valid progress values; run `help` or check the Update Progress section for exact progress tokens.
 </box>
-
+//@@author
 <a name="edit"></a>
 ### Editing a student: `edit`
 
@@ -521,7 +522,7 @@ If successful, the confirmation message will be shown in the Result Box and the 
 > Deleted Remark: Usually well-prepared for tutorials
 
 
-
+//@@author Isha-Sovasaria
 <a name="view"></a>
 ### Viewing a student: `view`
 
@@ -548,7 +549,7 @@ The **View Window** on the right side of the application updates to show the stu
 <img src="images/viewsuccess.png" alt="view success" width="650">
 
 <div style="page-break-before: always; break-before: page;"></div>
-
+//@@author 
 <a name="delete"></a>
 ### Deleting a student: `delete`
 
@@ -693,7 +694,7 @@ Parameter             | Prefix  | Constraints                                   
 **REMARK_INDEX**      | `r/`    | Positive integer; must not exceed the number of remarks the student currently has.                                                                                                                                                    | `1`, `2`
 
 --------------------------------------------------------------------------------------------------------------------
-
+//@@author Isha-Sovasaria
 ## Known issues
 1. If you minimize the Help Window and then run the help command (or use the Help menu, or the keyboard shortcut F1) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 2. The screen size cannot be minimised smaller than the default. This is to allow a user to view TeachAssist fully without missing details when viewing in split screen mode.
@@ -724,3 +725,5 @@ Term | Meaning
 **Prefix** | A short tag ending with `/` that tells TeachAssist which parameter you are providing (e.g., `n/` for name, `crs/` for course ID). See the [Parameter Summary](#parameter-summary) for the full list.
 **JSON (JavaScript Object Notation)** | The file format TeachAssist uses to store your data (`data/addressbook.json`). It is a human-readable text format.
 **Home Folder** | The folder where you placed `TeachAssist.jar`. TeachAssist creates a `data/` subfolder here to store your student data.
+
+//@@author

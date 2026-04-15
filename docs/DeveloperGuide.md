@@ -85,7 +85,7 @@ For example, the `Logic` component defines its API in the `Logic.java` interface
 <puml src="diagrams/ComponentManagers.puml" width="300" />
 
 The sections below give more details of each component.
-
+//@@author Isha-Sovasaria
 ### UI component
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
@@ -131,7 +131,7 @@ How the `Logic` component works:
 3. The command can communicate with the `Model` when it is executed (e.g. to edit a person's details).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 4. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
-
+   //@@author
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
 <puml src="diagrams/ParserClasses.puml" width="600"/>
@@ -139,6 +139,7 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `EditCommandParser`) which tokenizes the input using `ArgumentTokenizer` (with prefixes defined in CliSyntax) into `ArgumentMultimap`. `ParserValidators` then performs structural checks on the tokenized arguments (presence of required prefixed, rejecting unknown prefixes, and flagging blank values) and produces error messages via `ParserMessages`. `ParserUtil` is then used to validate and extract the individual field values, creating a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `EditCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -185,7 +186,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 ## **Key Feature Implementation**
-
+//@@author Isha-Sovasaria
 This section describes some noteworthy details on how certain features are implemented.
 
 ### Feature: Filter Command
@@ -226,6 +227,7 @@ The design uses a single predicate class (`FilterMatchesPredicate`) with all log
 **Scalability:**
 The single-predicate approach scales well for AND-based filtering but would require refactoring for more advanced query logic (e.g., OR, NOT).
 
+//@@author
 
 ### Feature: Delete Student
 
@@ -256,6 +258,7 @@ The `delete` feature is implemented as a two-stage confirmation workflow to prev
 **The diagram below illustrates the delete command and confirmation check workflow:** Delete confirmation workflow.
 <puml src="diagrams/DeleteConfirmationActivityDiagram.puml" width="600" />
 
+//@@author Isha-Sovasaria
 ### Feature: Update Progress
 
 #### Technical Overview
@@ -267,6 +270,8 @@ The command ensures that only valid progress values (`on_track`, `needs_attentio
 The use of an enum centralizes the set of valid progress states and makes the model easier to validate and maintain. The `NOT_SET` value serves as a sentinel state in the model, representing the absence of an assigned progress status without requiring null handling or special-case logic elsewhere.
 
 In the UI, `NOT_SET` is intentionally not rendered as a visible label. This keeps the interface uncluttered while allowing the model to remain expressive. This separation of concerns ensures that the model captures the full state of a student’s progress, while the UI decides how much of that state should be shown to the user.
+
+//@@author
 
 ### Feature: Mark Attendance Command
 
@@ -488,6 +493,7 @@ The following diagram shows how remarks are converted into storage representatio
 
 <puml src="diagrams/RemarkSequenceDiagram.puml" />
 
+//@@author Isha-Sovasaria
 ### Feature: View Command
 
 
@@ -554,7 +560,7 @@ This feature would be based on a `VersionedAddressBook` that extends `AddressBoo
 - `UndoCommand` would call `Model#undoAddressBook()`, which moves the pointer to the previous state and restores it.
 - `RedoCommand` would call `Model#redoAddressBook()`, which moves the pointer to the next state and restores it.
 - If a new mutating command is executed after an undo operation, all states ahead of the current pointer would be discarded, ensuring that redo history remains consistent with the latest execution path.
-
+ //@@author
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -566,7 +572,7 @@ This feature would be based on a `VersionedAddressBook` that extends `AddressBoo
 * [DevOps guide](DevOps.md)
 
 --------------------------------------------------------------------------------------------------------------------
-
+//@@author Isha-Sovasaria
 ## **Appendix: Requirements**
 
 ### Product scope
@@ -583,6 +589,7 @@ TeachAssist is a desktop CLI application for university teaching assistants at N
 **Value proposition**:
 TeachAssist consolidates student data, attendance, progress tracking, and consultation remarks into a single application, eliminating the need to juggle multiple platforms and spreadsheets. Its typing-based command interface lets TAs perform these tasks faster than a typical mouse-driven application.
 
+//@@author
 
 ### User stories
 
@@ -620,7 +627,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 
 
 ### Use cases
-
+//@@author Isha-Sovasaria
 **Use Case: UC01 – View Help**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -633,7 +640,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 1a. The help window is already open but not minimized.
     * 1a1. TeachAssist focuses on existing help window.
     * Use case ends.
-
+//@@author
 **Use Case: UC02 – Add Student**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -651,7 +658,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 2b. The student would duplicate an existing record (same identifying fields).
     * 2b1. TeachAssist informs the user that the student already exists.
     * Use case ends.
-
+//@@author Isha-Sovasaria
 **Use Case: UC03 – Find Students by Name**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -688,7 +695,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * 2a. No students match the filter.
     * 2a1. TeachAssist displays an empty list and indicates no matches.
     * Use case ends.
-
+//@@author
+    * 
 **Use Case: UC05 – Edit Student**<br>
 **Actor:** User<br>
 **Preconditions:**
@@ -833,7 +841,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * 1c1. TeachAssist informs the user that the remark could not be found.
     * Use case ends.
 
-
+//@@author Isha-Sovasaria
 **Use Case: UC12 – View Student Details**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -849,7 +857,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * 1a1. TeachAssist displays an error and does not change the view.
     * Use case ends.
 
-
+//@@author
 **Use Case: UC13 – Delete Student**<br>
 **Actor:** User<br>
 **Main Success Scenario:**
@@ -871,7 +879,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
     * 3a1. TeachAssist cancels the pending deletion and processes the new input if applicable.
     * Use case ends.
 
-
+//@@author Isha-Sovasaria
 ### Non-Functional Requirements
 
 - The system should run on any mainstream operating system (Windows, macOS, Linux) as long as Java 17 or above is installed.
@@ -892,7 +900,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have/Should have) - `* *
 * **Week**: A numbered teaching week (1–13) in the NUS semester
 * **Remark**: A note or comment attached to a student record, used for providing additional information or feedback.
 * **TA (Teaching Assistant)**: A person who assists the instructor in teaching, grading, and supporting students in the course.
-
+  //@@author
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
@@ -904,7 +912,7 @@ Given below are instructions to test the app manually.
 **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 </box>
-
+//@@author Isha-Sovasaria
 ### Launch and shutdown
 
 1. Initial launch
@@ -925,6 +933,7 @@ testers are expected to do more *exploratory* testing.
 
     **Expected behavior**: The application closes immediately and the terminal process terminates.
 
+//@@author
 ### Adding a student (`add`)
 
 1. Adding a student with valid fields
@@ -971,7 +980,7 @@ testers are expected to do more *exploratory* testing.
 
     **Expected behaviour:** Command rejected with error message: `"At least one prefix must be provided."`.
 
-
+//@@author Isha-Sovasaria
 ### Viewing Help Window (`help`)
 
 1. Opening the Help Window with `help` command
@@ -1064,7 +1073,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `filter` (empty command, no filter criteria).
 
     **Expected behaviour:** Command rejected with error message: `"At least one prefix must be provided."` followed by the filter command usage.
-
+//@@author
 ### Deleting a student (`delete`)
 
 1. Deleting a student by index
@@ -1272,7 +1281,7 @@ testers are expected to do more *exploratory* testing.
     **Test case:** `remark 999 txt/Some remark` (where index 999 exceeds the displayed list size)
 
     **Expected behaviour:** Command rejected with error message: `"The student index provided is invalid"`.
-
+//@@author Isha-Sovasaria
 ### Viewing student details / remarks (`view`)
 
 1. Viewing a student with valid input
@@ -1287,7 +1296,7 @@ testers are expected to do more *exploratory* testing.
 
     **Expected behaviour:** Command rejected with error message: `"The student index provided is invalid"`; detail pane remains unchanged.
 
-
+//@@author
 ### Listing students (`list`)
 
 1. Listing all students
@@ -1360,6 +1369,7 @@ Note: There is no dedicated `clearfilter` command. To reset any active filter an
 
     1. **Workflow:** Make several data changes (add students, mark attendance, update progress, add remarks), then close the app with `exit`. Relaunch and verify that all changes persist. Then close without `exit` (e.g., close the window) and verify data is still saved.
 
+//@@author Isha-Sovasaria
 
 ## **Appendix: Planned Enhancements**
 
@@ -1376,3 +1386,5 @@ Note: There is no dedicated `clearfilter` command. To reset any active filter an
 6. Add support for multi-remark deletion. Currently, when multiple `r/` prefixes are entered, only the last `r/` prefix is taken; we plan to extend this to allow multiple remark indices to be chosen for deletion under a single `unremark` command.
 
 7. Prevent the cursor from changing at the divider between the person list panel and the view panel. Currently, the cursor may suggest that the divider is draggable, which can create confusion if the UI is intended to remain fixed. We plan to make this interaction clearer by keeping the cursor static at the divider.
+
+//@@author
