@@ -141,6 +141,7 @@
         "adding-a-student-add": "Adding a student: add",
         "finding-students-by-name-find": "Finding students by name: find",
         "filtering-students-filter": "Filtering students: filter",
+        "editing-a-student-edit": "Editing a student: edit",
         "updating-students-attendance": "Updating students' attendance",
         "updating-a-student-s-progress-updateprogress": "Updating a student's progress : updateprogress",
         "remarks": "Remarks",
