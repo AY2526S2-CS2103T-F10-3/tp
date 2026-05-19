@@ -56,7 +56,8 @@ public class CancelWeekCommand extends Command {
      * Executes the cancel week command.
      * Validates the input parameters and cancels the specified week for all students
      * in the given course and tutorial group.
-     *
+     * Note: this Javadoc comment was created with the help of chatgpt to make the
+     * explanation clearer to developers
      * @param model The model containing the data of the application.
      * @return A {@code CommandResult} containing a success message.
      * @throws CommandException If:

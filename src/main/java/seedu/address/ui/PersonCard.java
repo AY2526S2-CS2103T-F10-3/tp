@@ -103,7 +103,8 @@ public class PersonCard extends UiPart<Region> {
 
     /**
      * Render a Trackable attendance list as colored squares in a FlowPane.
-     *
+     * Note: this method was debugged and modified with the help of ChatGPT to
+     * make the UI less messy
      * @param weekPane The FlowPane to render into.
      * @param weekList The WeekList to render.
      */
